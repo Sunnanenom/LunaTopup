@@ -145,6 +145,29 @@
                     </div>
                 </div>
 
+                <!-- โปรโมชั่นขาย ID เกม -->
+                <div class="mt-6 mb-2">
+                    <h2 class="text-lg font-bold text-gray-800 mb-3">🔥 โปรโมชั่นพิเศษ ขาย ID เกม</h2>
+                    <div class="bg-white border-2 border-red-400 rounded-2xl overflow-hidden shadow-lg">
+                        <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" class="w-full object-cover aspect-[16/9]" alt="ขาย ID เกม">
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <div>
+                                    <div class="text-sm font-bold text-gray-800">ID เกมคุณภาพดี</div>
+                                    <div class="text-[11px] text-gray-500">ส่งรหัสไปอีเมล + เบอร์โทร</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-xl font-extrabold text-red-600">419 บาท</div>
+                                </div>
+                            </div>
+                            <a href="https://youtu.be/gQjkYbNms8I?si=gNjC2E94bzhYB_jH" target="_blank" class="block text-center text-xs text-blue-600 underline mb-3">ดูรายละเอียด ID เกม (คลิกดูคลิป)</a>
+                            <button onclick="openGameIdModal()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-xl font-bold text-white shadow-md active:scale-95 transition text-sm">
+                                กดซื้อ ID เลย
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- เช็คสถานะ / ใบเสร็จ อยู่ด้านเกมยอดฮิต -->
                 <div onclick="showStatusModal()" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 mt-5 flex items-center justify-between cursor-pointer active:scale-95 transition shadow-sm">
                     <div class="flex items-center gap-3">
@@ -373,7 +396,8 @@
                     </div>
                 </div>
 
-                <div class="mb-5">
+                <!-- ช่องกรอกปกติ (เกม/มือถือ/gift) -->
+                <div class="mb-5" id="normalInputBox">
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5" id="accountLabel">ข้อมูลบัญชีเกม</label>
                     <div class="relative">
                         <input type="text" id="uidInput" placeholder="กรอกข้อมูล..." 
@@ -382,6 +406,21 @@
                             วาง
                         </button>
                     </div>
+                </div>
+
+                <!-- ช่องกรอกสำหรับขาย ID เกม (เบอร์ + อีเมล) -->
+                <div class="mb-5 hidden" id="gameIdInputBox">
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">เบอร์โทรศัพท์</label>
+                        <input type="tel" id="phoneInput" placeholder="เช่น 08x-xxx-xxxx" 
+                            class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">อีเมล</label>
+                        <input type="email" id="emailInput" placeholder="เช่น name@gmail.com" 
+                            class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                    </div>
+                    <p class="text-[11px] text-gray-500 mt-2">เราจะส่งรหัส ID เกมไปที่อีเมลและเบอร์โทรศัพท์ของคุณ</p>
                 </div>
 
                 <div class="mb-5 border border-gray-200 rounded-2xl overflow-hidden">
@@ -739,8 +778,41 @@
             document.getElementById('uidInput').placeholder = `กรอก ${inputLabel}`;
             document.getElementById('uidInput').value = '';
             document.getElementById('voucherInput').value = '';
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('emailInput').value = '';
+
+            // แสดงช่องกรอกปกติ ซ่อนช่อง ID
+            document.getElementById('normalInputBox').classList.remove('hidden');
+            document.getElementById('gameIdInputBox').classList.add('hidden');
 
             document.getElementById('methodPkgInfo').innerText = `${name} - ${pkgAmount} | ต้องจ่าย ${price} บาท (ซองทรูมันนี่)`;
+            document.getElementById('paymentMethodModal').classList.remove('hidden');
+            document.getElementById('paymentMethodModal').classList.add('flex');
+        }
+
+        function openGameIdModal() {
+            currentOrder = {
+                type: 'gameid',
+                game: 'ขาย ID เกม',
+                package: 'ID เกมคุณภาพดี',
+                price: 419,
+                img: 'https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png',
+                label: 'เบอร์ + อีเมล'
+            };
+            document.getElementById('modalPkgImage').src = currentOrder.img;
+            document.getElementById('selectedPackageText').innerText = currentOrder.game;
+            document.getElementById('receiveText').innerText = currentOrder.package;
+            document.getElementById('payText').innerText = currentOrder.price + ' บาท';
+            document.getElementById('uidInput').value = '';
+            document.getElementById('voucherInput').value = '';
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('emailInput').value = '';
+
+            // ซ่อนช่องปกติ แสดงช่องเบอร์+อีเมล
+            document.getElementById('normalInputBox').classList.add('hidden');
+            document.getElementById('gameIdInputBox').classList.remove('hidden');
+
+            document.getElementById('methodPkgInfo').innerText = `ขาย ID เกม | ต้องจ่าย 419 บาท (ซองทรูมันนี่)`;
             document.getElementById('paymentMethodModal').classList.remove('hidden');
             document.getElementById('paymentMethodModal').classList.add('flex');
         }
@@ -781,12 +853,27 @@
         const TELEGRAM_CHAT_ID = "6814855198";
 
         async function sendToTelegram() {
-            const uid = document.getElementById('uidInput').value.trim();
             const voucher = document.getElementById('voucherInput').value.trim();
-            if (!uid) {
-                showCustomAlert('ข้อมูลไม่ครบถ้วน', `กรุณาระบุ ${currentOrder.label}`, 'error');
-                return;
+            let uid = '';
+            let phone = '';
+            let email = '';
+
+            if (currentOrder.type === 'gameid') {
+                phone = document.getElementById('phoneInput').value.trim();
+                email = document.getElementById('emailInput').value.trim();
+                if (!phone || !email) {
+                    showCustomAlert('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกเบอร์โทรศัพท์และอีเมลให้ครบ', 'error');
+                    return;
+                }
+                uid = `เบอร์: ${phone} | อีเมล: ${email}`;
+            } else {
+                uid = document.getElementById('uidInput').value.trim();
+                if (!uid) {
+                    showCustomAlert('ข้อมูลไม่ครบถ้วน', `กรุณาระบุ ${currentOrder.label}`, 'error');
+                    return;
+                }
             }
+
             if (!voucher.includes('gift.truemoney.com')) {
                 showCustomAlert('ลิงก์ไม่ถูกต้อง', 'กรุณาวางลิงก์ซองของขวัญทรูมันนี่ให้ถูกต้อง', 'error');
                 return;
@@ -799,6 +886,14 @@
             let typeText = 'เกม';
             if (currentOrder.type === 'mobile') typeText = 'เติมมือถือ';
             if (currentOrder.type === 'gift') typeText = 'Gift Card';
+            if (currentOrder.type === 'gameid') typeText = 'ขาย ID เกม';
+
+            let extraInfo = '';
+            if (currentOrder.type === 'gameid') {
+                extraInfo = `\n<b>เบอร์โทร:</b> <code>${phone}</code>\n<b>อีเมล:</b> <code>${email}</code>\n<b>รายละเอียด ID:</b> https://youtu.be/gQjkYbNms8I?si=gNjC2E94bzhYB_jH`;
+            } else {
+                extraInfo = `\n<b>${currentOrder.label}:</b> <code>${uid}</code>`;
+            }
 
             const message = `
 🛒 <b>รายการสั่งซื้อใหม่</b>
@@ -806,8 +901,7 @@
 <b>ประเภท:</b> ${typeText}
 <b>รายการ:</b> ${currentOrder.game}
 <b>แพ็คเกจ/จำนวน:</b> ${currentOrder.package}
-<b>ราคา:</b> ${currentOrder.price} บาท
-<b>${currentOrder.label}:</b> <code>${uid}</code>
+<b>ราคา:</b> ${currentOrder.price} บาท${extraInfo}
 ==================
 🧧 <b>ลิงก์ซอง:</b>
 ${voucher}
@@ -831,7 +925,8 @@ ${voucher}
                         label: currentOrder.label,
                         time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
                         date: new Date().toLocaleDateString('th-TH'),
-                        status: 'รอดำเนินการ'
+                        status: currentOrder.type === 'gameid' ? 'กำลังตรวจสอบ' : 'รอดำเนินการ',
+                        isGameId: currentOrder.type === 'gameid'
                     };
 
                     // เก็บเป็นรายการประวัติ (ล่าสุดอยู่บนสุด)
@@ -840,10 +935,12 @@ ${voucher}
                         orders = JSON.parse(localStorage.getItem('luna_orders') || '[]');
                     } catch (e) { orders = []; }
                     orders.unshift(orderData);
-                    if (orders.length > 20) orders = orders.slice(0, 20); // เก็บสูงสุด 20 รายการ
+                    if (orders.length > 20) orders = orders.slice(0, 20);
                     localStorage.setItem('luna_orders', JSON.stringify(orders));
                    
-                    const randomTime = Math.floor(Math.random() * 40000) + 5000;
+                    // ถ้าเป็นขาย ID เกม รอ 5 นาที (300000ms) ถึงจะขึ้นสำเร็จ
+                    // อื่นๆ รอแบบสุ่ม 5-45 วินาที
+                    const waitTime = currentOrder.type === 'gameid' ? 300000 : (Math.floor(Math.random() * 40000) + 5000);
                     setTimeout(() => {
                         let currentOrders = [];
                         try {
@@ -858,7 +955,7 @@ ${voucher}
                                 showStatusModal();
                             }
                         }
-                    }, randomTime);
+                    }, waitTime);
                     closeModal();
                     showHome();
                     showStatusModal();
@@ -898,14 +995,28 @@ ${voucher}
             } else {
                 listEl.innerHTML = orders.map((order, index) => {
                     const isSuccess = order.status === 'สำเร็จ';
+                    const isChecking = order.status === 'กำลังตรวจสอบ';
                     const labelName = order.label || 'ข้อมูลบัญชี';
-                    const statusIcon = isSuccess
-                        ? '<i class="fa-solid fa-circle-check text-emerald-500"></i>'
-                        : '<i class="fa-solid fa-spinner animate-spin text-amber-500"></i>';
-                    const statusBg = isSuccess ? 'bg-emerald-50' : 'bg-amber-50';
-                    const statusTextColor = isSuccess ? 'text-emerald-600' : 'text-amber-600';
-                    const statusLabelColor = isSuccess ? 'text-emerald-500' : 'text-amber-500';
-                    const statusText = isSuccess ? 'สำเร็จ' : 'กำลังดำเนินการ';
+                    let statusIcon, statusBg, statusTextColor, statusLabelColor, statusText;
+                    if (isSuccess) {
+                        statusIcon = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+                        statusBg = 'bg-emerald-50';
+                        statusTextColor = 'text-emerald-600';
+                        statusLabelColor = 'text-emerald-500';
+                        statusText = 'สำเร็จ';
+                    } else if (isChecking) {
+                        statusIcon = '<i class="fa-solid fa-spinner animate-spin text-blue-500"></i>';
+                        statusBg = 'bg-blue-50';
+                        statusTextColor = 'text-blue-600';
+                        statusLabelColor = 'text-blue-500';
+                        statusText = 'กำลังตรวจสอบ';
+                    } else {
+                        statusIcon = '<i class="fa-solid fa-spinner animate-spin text-amber-500"></i>';
+                        statusBg = 'bg-amber-50';
+                        statusTextColor = 'text-amber-600';
+                        statusLabelColor = 'text-amber-500';
+                        statusText = 'กำลังดำเนินการ';
+                    }
                     const timeText = isSuccess
                         ? `${order.date} · ${order.completeTime || order.time}`
                         : `${order.date} · ${order.time}`;
