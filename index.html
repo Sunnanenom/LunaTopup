@@ -759,62 +759,7 @@
         </div>
     </div>
 
-    <!-- ==================== โฆษณา BC.Game ==================== -->
-    <div id="bcPromoBanner" style="
-        display: none;
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        max-width: 420px;
-        background: linear-gradient(90deg, #0b0e11, #111827, #0b0e11);
-        border-top: 1px solid #30ee93;
-        box-shadow: 0 -8px 30px rgba(48, 238, 147, 0.2);
-        z-index: 45;
-        font-family: 'Prompt', sans-serif;
-        padding: 12px 16px;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        box-sizing: border-box;
-    ">
-        <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-            <div style="
-                width: 40px;
-                height: 40px;
-                background: linear-gradient(135deg, #30ee93, #10b981);
-                border-radius: 11px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                box-shadow: 0 0 16px rgba(48, 238, 147, 0.45);
-                font-weight: 800;
-                color: #0b0e11;
-                font-size: 14px;
-            ">BC</div>
-            <div style="min-width: 0;">
-                <div style="font-size: 14px; font-weight: 700; color: #ffffff; line-height: 1.2;">BC.GAME</div>
-                <div style="font-size: 12px; color: #30ee93; margin-top: 1px; font-weight: 500;">สมัครฝากเงินครั้งแรก รับโบนัส 300%</div>
-            </div>
-        </div>
-        <a href="https://bc.game/i-42irlbkch-n/" target="_blank" rel="noopener noreferrer sponsored"
-           style="
-               background: linear-gradient(90deg, #30ee93, #10b981);
-               color: #0b0e11;
-               padding: 9px 16px;
-               border-radius: 9px;
-               text-decoration: none;
-               font-size: 13px;
-               font-weight: 700;
-               white-space: nowrap;
-               box-shadow: 0 4px 14px rgba(48, 238, 147, 0.35);
-           ">
-            สมัครเลย
-        </a>
-    </div>
-    <!-- ==================== จบโฆษณา BC.Game ==================== -->
+
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
@@ -1036,8 +981,45 @@
             document.getElementById('detailPrice').innerText = price + ' บาท';
             document.getElementById('detailReceive').innerText = pkgAmount;
             document.getElementById('detailInputLabel').innerText = inputLabel;
-            document.getElementById('detailUidInput').value = '';
-            document.getElementById('detailUidInput').placeholder = 'กรอก ' + inputLabel;
+            const uidInputEl = document.getElementById('detailUidInput');
+            uidInputEl.value = '';
+            uidInputEl.placeholder = 'กรอก ' + inputLabel;
+
+            // จำกัดการกรอก UID ตามเกม
+            uidInputEl.oninput = null;
+            if (gameKey === 'ff') {
+                // Free Fire: ใส่ได้แค่ตัวเลข
+                uidInputEl.setAttribute('inputmode', 'numeric');
+                uidInputEl.setAttribute('pattern', '[0-9]*');
+                uidInputEl.setAttribute('maxlength', '15');
+                uidInputEl.oninput = function() {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                };
+            } else if (gameKey === 'pubg') {
+                // PUBG: ส่วนใหญ่เป็นตัวเลข
+                uidInputEl.setAttribute('inputmode', 'numeric');
+                uidInputEl.setAttribute('pattern', '[0-9]*');
+                uidInputEl.setAttribute('maxlength', '20');
+                uidInputEl.oninput = function() {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                };
+            } else if (gameKey === 'rov') {
+                // RoV OpenID
+                uidInputEl.setAttribute('inputmode', 'text');
+                uidInputEl.removeAttribute('pattern');
+                uidInputEl.setAttribute('maxlength', '40');
+                uidInputEl.oninput = function() {
+                    if (this.value.length > 40) this.value = this.value.slice(0, 40);
+                };
+            } else {
+                // Roblox / อื่นๆ
+                uidInputEl.setAttribute('inputmode', 'text');
+                uidInputEl.removeAttribute('pattern');
+                uidInputEl.setAttribute('maxlength', '30');
+                uidInputEl.oninput = function() {
+                    if (this.value.length > 30) this.value = this.value.slice(0, 30);
+                };
+            }
 
             // hint ตามเกม + ปุ่ม i วิธีดู UID
             const hintTextEl = document.getElementById('detailHintText');
@@ -1096,8 +1078,15 @@
 
         async function pasteDetailUid() {
             try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById('detailUidInput').value = text;
+                let text = await navigator.clipboard.readText();
+                // ถ้าเป็น Free Fire ให้เหลือแค่ตัวเลข
+                if (lastPackageGameKey === 'ff' || lastPackageGameKey === 'pubg') {
+                    text = text.replace(/[^0-9]/g, '');
+                }
+                const el = document.getElementById('detailUidInput');
+                const max = el.getAttribute('maxlength');
+                if (max) text = text.slice(0, parseInt(max));
+                el.value = text;
             } catch (err) {
                 showCustomAlert('ไม่สำเร็จ', 'กดแตะค้างที่ช่องแล้วเลือก "วาง"', 'error');
             }
@@ -1107,6 +1096,11 @@
             const uid = document.getElementById('detailUidInput').value.trim();
             if (!uid) {
                 showCustomAlert('ข้อมูลไม่ครบ', 'กรุณากรอก ' + currentOrder.label + ' ก่อนสั่งซื้อ', 'error');
+                return;
+            }
+            // Free Fire / PUBG ต้องเป็นตัวเลขเท่านั้น
+            if ((lastPackageGameKey === 'ff' || lastPackageGameKey === 'pubg') && !/^\d+$/.test(uid)) {
+                showCustomAlert('UID ไม่ถูกต้อง', 'กรุณากรอกเป็นตัวเลขเท่านั้น', 'error');
                 return;
             }
             withPageLoad(() => {
@@ -1477,15 +1471,10 @@ ${voucher}
 
         function showStatusModal() {
             const listEl = document.getElementById('statusOrderList');
-            const banner = document.getElementById('bcPromoBanner');
             let orders = [];
             try {
                 orders = JSON.parse(localStorage.getItem('luna_orders') || '[]');
             } catch (e) { orders = []; }
-
-            // แสดงแบนเนอร์ BC.Game ถ้ามีรายการที่สำเร็จอย่างน้อย 1 รายการ
-            const hasSuccess = orders.some(o => o.status === 'ยืนยันการเติมสำเร็จ' || o.status === 'สำเร็จ');
-            banner.style.display = hasSuccess ? 'flex' : 'none';
 
             if (orders.length === 0) {
                 listEl.innerHTML = `
