@@ -48,11 +48,36 @@
             width: 100%;
         }
         ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .page-loader {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.85);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .page-loader.hidden { display: none; }
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="text-gray-800 antialiased flex justify-center">
     <div class="app-container bg-white w-full min-h-screen relative pb-20 overflow-hidden flex flex-col mx-auto">
        
+        <!-- Page Loading Spinner -->
+        <div id="pageLoader" class="page-loader hidden">
+            <div class="spinner"></div>
+        </div>
+
         <!-- Header -->
         <header class="pt-4 pb-3 px-4 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50 z-20 sticky top-0 shadow-sm border-b border-blue-100">
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="showHome()">
@@ -353,26 +378,25 @@
                 </button>
 
                 <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-5">
-                    <div class="w-full bg-gray-50 flex justify-center items-center p-4">
-                        <img id="detailPkgImg" src="" class="w-full max-h-[220px] object-contain rounded-xl" alt="แพ็คเกจ">
+                    <div class="w-full flex justify-center items-center">
+                        <img id="detailPkgImg" src="" class="w-full h-auto object-contain" alt="แพ็คเกจ">
                     </div>
                     <div class="p-4 border-t border-gray-100">
-                        <div class="text-xs text-gray-400 mb-0.5" id="detailGameName">เกม</div>
-                        <div class="text-lg font-bold text-gray-800 mb-3" id="detailPkgName">แพ็คเกจ</div>
+                        <div class="text-xl font-extrabold text-gray-900 mb-4 tracking-tight" id="detailGameName">เกม</div>
                         
-                        <div class="flex gap-3 mb-4">
-                            <div class="flex-1 bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
-                                <div class="text-[10px] text-gray-500 mb-0.5">ต้องชำระ</div>
+                        <div class="flex gap-2.5 mb-5">
+                            <div class="flex-1 bg-blue-50 rounded-2xl p-3.5 text-center border border-blue-100">
+                                <div class="text-[10px] text-blue-500/80 font-semibold mb-1">ต้องชำระ</div>
                                 <div class="text-xl font-extrabold text-blue-600" id="detailPrice">0 บาท</div>
                             </div>
-                            <div class="flex-1 bg-emerald-50 rounded-xl p-3 text-center border border-emerald-100">
-                                <div class="text-[10px] text-gray-500 mb-0.5">คุณจะได้รับ</div>
-                                <div class="text-sm font-bold text-emerald-600 leading-tight" id="detailReceive">-</div>
+                            <div class="flex-1 bg-emerald-50 rounded-2xl p-3.5 text-center border border-emerald-100">
+                                <div class="text-[10px] text-emerald-600/80 font-semibold mb-1">คุณจะได้รับ</div>
+                                <div class="text-xl font-extrabold text-emerald-600 leading-tight" id="detailReceive">-</div>
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-sm font-bold text-gray-700 mb-2" id="detailInputLabel">Player ID (UID)</label>
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-gray-800 mb-2" id="detailInputLabel">Player ID (UID)</label>
                             <div class="relative">
                                 <input type="text" id="detailUidInput" placeholder="กรอกข้อมูลบัญชีเกม" 
                                     class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-16 transition">
@@ -380,7 +404,7 @@
                                     วาง
                                 </button>
                             </div>
-                            <p class="text-[11px] text-gray-400 mt-1.5 flex items-center gap-1.5 flex-wrap" id="detailInputHint">
+                            <p class="text-[11px] text-gray-400 mt-2 flex items-center gap-1.5 flex-wrap" id="detailInputHint">
                                 <span id="detailHintText">กรอกข้อมูลให้ถูกต้องเพื่อให้ระบบเติมได้ทันที</span>
                                 <button type="button" id="detailUidGuide" onclick="showUidGuide()" class="hidden inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-bold leading-none active:scale-90 transition" title="วิธีดู UID">i</button>
                             </p>
@@ -841,6 +865,20 @@
         updateHotCountdown();
         setInterval(updateHotCountdown, 1000);
 
+        // Loading effect ก่อนเปลี่ยนหน้า
+        function withPageLoad(callback, delay = 450) {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.remove('hidden');
+            }
+            setTimeout(() => {
+                if (typeof callback === 'function') callback();
+                if (loader) {
+                    loader.classList.add('hidden');
+                }
+            }, delay);
+        }
+
         function toggleSidebar() {
             const overlay = document.getElementById('sidebarOverlay');
             const menu = document.getElementById('sidebarMenu');
@@ -938,18 +976,23 @@
         }
 
         function showHome() {
-            resetNav();
-            document.getElementById('homeSection').classList.remove('hidden');
-            document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            withPageLoad(() => {
+                resetNav();
+                document.getElementById('homeSection').classList.remove('hidden');
+                document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            });
         }
 
         function showProfile() {
-            resetNav();
-            document.getElementById('profileSection').classList.remove('hidden');
-            document.getElementById('navProfile').classList.replace('text-gray-400', 'text-blue-600');
+            withPageLoad(() => {
+                resetNav();
+                document.getElementById('profileSection').classList.remove('hidden');
+                document.getElementById('navProfile').classList.replace('text-gray-400', 'text-blue-600');
+            });
         }
 
         function showPackages(gameKey) {
+            withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
             const data = gameData[gameKey];
@@ -966,11 +1009,13 @@
                 item.innerHTML = `<div class="w-full bg-gray-50 flex justify-center items-center"><img src="${pkg.img}" class="w-full h-auto object-cover rounded-t-2xl"></div><div class="p-3 text-center bg-white"><div class="text-[11px] text-gray-600 font-medium mb-2">${pkg.amount}</div><div class="bg-blue-50 text-blue-600 font-bold text-sm py-1.5 rounded-lg w-full">${pkg.price} บาท</div></div>`;
                 listEl.appendChild(item);
             });
+            });
         }
 
         let lastPackageGameKey = '';
 
         function showPackageDetail(type, name, pkgAmount, price, img, inputLabel, gameKey) {
+            withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
             document.getElementById('packageDetailSection').classList.remove('hidden');
@@ -988,7 +1033,6 @@
 
             document.getElementById('detailPkgImg').src = img;
             document.getElementById('detailGameName').innerText = name;
-            document.getElementById('detailPkgName').innerText = pkgAmount;
             document.getElementById('detailPrice').innerText = price + ' บาท';
             document.getElementById('detailReceive').innerText = pkgAmount;
             document.getElementById('detailInputLabel').innerText = inputLabel;
@@ -1023,6 +1067,7 @@
             } else {
                 guideEl.classList.add('hidden');
             }
+            });
         }
 
         function showUidGuide() {
@@ -1064,14 +1109,17 @@
                 showCustomAlert('ข้อมูลไม่ครบ', 'กรุณากรอก ' + currentOrder.label + ' ก่อนสั่งซื้อ', 'error');
                 return;
             }
-            // เก็บ uid ไว้ใน currentOrder แล้วไปหน้าชำระ
-            currentOrder.uid = uid;
-            document.getElementById('methodPkgInfo').innerText = `${currentOrder.game} - ${currentOrder.package} | ต้องจ่าย ${currentOrder.price} บาท`;
-            document.getElementById('paymentMethodModal').classList.remove('hidden');
-            document.getElementById('paymentMethodModal').classList.add('flex');
+            withPageLoad(() => {
+                // เก็บ uid ไว้ใน currentOrder แล้วไปหน้าชำระ
+                currentOrder.uid = uid;
+                document.getElementById('methodPkgInfo').innerText = `${currentOrder.game} - ${currentOrder.package} | ต้องจ่าย ${currentOrder.price} บาท`;
+                document.getElementById('paymentMethodModal').classList.remove('hidden');
+                document.getElementById('paymentMethodModal').classList.add('flex');
+            });
         }
 
         function showMobileSection() {
+            withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
             document.getElementById('mobileSection').classList.remove('hidden');
@@ -1082,6 +1130,7 @@
             });
             document.getElementById('mobileAmount').value = '';
             document.getElementById('mobileBonusBox').classList.add('hidden');
+            });
         }
 
         function selectCarrier(name) {
@@ -1123,6 +1172,7 @@
         }
 
         function showGiftSection() {
+            withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
             document.getElementById('giftSection').classList.remove('hidden');
@@ -1146,6 +1196,7 @@
                         </div>
                     </div>`;
                 listEl.appendChild(item);
+            });
             });
         }
 
@@ -1181,11 +1232,13 @@
         }
 
         function showGameIdSection() {
-            resetNav();
-            document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
-            document.getElementById('gameIdSection').classList.remove('hidden');
-            document.getElementById('gameIdPhone').value = '';
-            document.getElementById('gameIdEmail').value = '';
+            withPageLoad(() => {
+                resetNav();
+                document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('gameIdSection').classList.remove('hidden');
+                document.getElementById('gameIdPhone').value = '';
+                document.getElementById('gameIdEmail').value = '';
+            });
         }
 
         function proceedGameIdBuy() {
@@ -1232,6 +1285,7 @@
             if (method === 'truemoney') {
                 closePaymentMethodModal();
 
+                withPageLoad(() => {
                 // เตรียมหน้าชำระเงิน
                 document.getElementById('modalPkgImage').src = currentOrder.img || 'https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png';
                 document.getElementById('selectedPackageText').innerText = currentOrder.game;
@@ -1268,6 +1322,7 @@
                 }
 
                 document.getElementById('paymentModal').classList.remove('hidden');
+                });
             } else if (method === 'promptpay') {
                 showCustomAlert('ยังไม่พร้อมใช้งาน', 'ช่องทางพร้อมเพย์ปิดชั่วคราว รออัปเดตเร็วๆ นี้', 'error');
             }
