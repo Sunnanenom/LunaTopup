@@ -145,76 +145,120 @@
                     </div>
                 </div>
 
-                <!-- แพ็คเกจยอดฮิต -->
+                <!-- แพ็คเกจยอดฮิต (เลื่อน) -->
                 <div class="mt-6">
-                    <div class="flex justify-between items-end mb-3">
+                    <div class="flex justify-between items-center mb-2 px-0.5">
                         <h2 class="text-lg font-bold text-gray-800">แพ็คเกจยอดฮิต 🔥</h2>
+                        <div class="flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-600 text-[11px] font-bold px-2.5 py-1 rounded-full">
+                            <i class="fa-solid fa-clock text-[10px]"></i>
+                            <span id="hotCountdown">23:59:59</span>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <!-- FF 50 -->
-                        <div onclick="openModal('game', 'Garena Free Fire', '697 เพชร', 50, 'https://i.ibb.co/vncC3hy/Package-50.png', 'Player ID (UID)')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/vncC3hy/Package-50.png" class="h-full object-contain">
+                    <div class="swiper hotPkgSwiper overflow-hidden" style="touch-action: pan-y;">
+                        <div class="swiper-wrapper">
+                            <!-- FF 50 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Garena Free Fire', '697 เพชร', 50, 'https://i.ibb.co/vncC3hy/Package-50.png', 'Player ID (UID)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/vncC3hy/Package-50.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Free Fire</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">697 เพชร</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">Free Fire</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">697 เพชร</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">50 บาท</div>
+                            <!-- Roblox 50 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Roblox', '416 Robux', 50, 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png', 'Username (ชื่อผู้ใช้ Roblox)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Roblox</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">416 Robux</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Roblox 50 -->
-                        <div onclick="openModal('game', 'Roblox', '416 Robux', 50, 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png', 'Username (ชื่อผู้ใช้ Roblox)')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png" class="h-full object-contain">
+                            <!-- ROV 50 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Arena of Valor', '255 คูปอง', 50, 'https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png', 'OpenID / ID ผู้เล่น')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">RoV</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">255 คูปอง</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">Roblox</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">416 Robux</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">50 บาท</div>
+                            <!-- PUBG 50 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'PUBG Mobile', '255 UC', 50, 'https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png', 'Character ID (ID ตัวละคร)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">PUBG M</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">255 UC</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- ROV 50 -->
-                        <div onclick="openModal('game', 'Arena of Valor', '255 คูปอง', 50, 'https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png', 'OpenID / ID ผู้เล่น')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png" class="h-full object-contain">
+                            <!-- FF 100 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Garena Free Fire', '1818 เพชร', 100, 'https://i.ibb.co/p6p7HLWf/Package100-THB.png', 'Player ID (UID)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/p6p7HLWf/Package100-THB.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Free Fire</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">1818 เพชร</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">100 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">RoV</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">255 คูปอง</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">50 บาท</div>
+                            <!-- Roblox 100 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Roblox', '895 Robux', 100, 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png', 'Username (ชื่อผู้ใช้ Roblox)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Roblox</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">895 Robux</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">100 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <!-- PUBG 50 -->
-                        <div onclick="openModal('game', 'PUBG Mobile', '255 UC', 50, 'https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png', 'Character ID (ID ตัวละคร)')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png" class="h-full object-contain">
+                            <!-- FF 200 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Garena Free Fire', '4252 เพชร', 200, 'https://i.ibb.co/WNgf1TH4/Package200thb.png', 'Player ID (UID)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/WNgf1TH4/Package200thb.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Free Fire</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">4252 เพชร</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">200 ฿</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">PUBG M</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">255 UC</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">50 บาท</div>
-                            </div>
-                        </div>
-                        <!-- FF 100 -->
-                        <div onclick="openModal('game', 'Garena Free Fire', '1818 เพชร', 100, 'https://i.ibb.co/p6p7HLWf/Package100-THB.png', 'Player ID (UID)')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/p6p7HLWf/Package100-THB.png" class="h-full object-contain">
-                            </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">Free Fire</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">1818 เพชร</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">100 บาท</div>
-                            </div>
-                        </div>
-                        <!-- Roblox 100 -->
-                        <div onclick="openModal('game', 'Roblox', '895 Robux', 100, 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png', 'Username (ชื่อผู้ใช้ Roblox)')" class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col">
-                            <div class="w-full bg-gray-50 flex justify-center items-center p-2 h-28">
-                                <img src="https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png" class="h-full object-contain">
-                            </div>
-                            <div class="p-2.5 text-center">
-                                <div class="text-[10px] text-gray-500 font-medium">Roblox</div>
-                                <div class="text-[11px] font-bold text-gray-800 truncate">895 Robux</div>
-                                <div class="mt-1 bg-blue-50 text-blue-600 font-bold text-xs py-1 rounded-lg">100 บาท</div>
+                            <!-- Roblox 200 -->
+                            <div class="swiper-slide !w-[140px]">
+                                <div onclick="openModal('game', 'Roblox', '1955 Robux', 200, 'https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png', 'Username (ชื่อผู้ใช้ Roblox)')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
+                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
+                                        <img src="https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="p-2 text-center">
+                                        <div class="text-[10px] text-gray-500">Roblox</div>
+                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">1955 Robux</div>
+                                        <div class="mt-1 text-blue-600 font-bold text-xs">200 ฿</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -223,16 +267,16 @@
                 <!-- โปรโมชั่นขาย ID เกม (หน้าแรกโชว์โปสเตอร์) -->
                 <div class="mt-6 mb-2">
                     <h2 class="text-lg font-bold text-gray-800 mb-3">🔥 โปรโมชั่นพิเศษ ขาย ID เกม</h2>
-                    <div onclick="showGameIdSection()" class="bg-white border border-red-300 rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition">
-                        <div class="w-full flex justify-center bg-gradient-to-b from-gray-50 to-white p-3">
+                    <div onclick="showGameIdSection()" class="bg-white border border-red-200 rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition">
+                        <div class="w-full flex justify-center bg-white p-2">
                             <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" 
-                                 class="w-full max-w-[280px] rounded-xl object-cover aspect-[3/4] max-h-[240px] shadow-sm" 
+                                 class="w-full rounded-xl object-contain max-h-[260px]" 
                                  alt="ขาย ID เกม">
                         </div>
-                        <div class="px-3 py-3 text-center bg-red-50/80 border-t border-red-100">
+                        <div class="px-3 py-2.5 text-center bg-red-50 border-t border-red-100">
                             <div class="text-sm font-bold text-gray-800">ID เกมคุณภาพดี</div>
-                            <div class="text-xl font-extrabold text-red-600 mt-0.5">419 บาท</div>
-                            <div class="text-[11px] text-gray-500 mt-1">แตะเพื่อดูรายละเอียดและสั่งซื้อ</div>
+                            <div class="text-xl font-extrabold text-red-600">419 บาท</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">แตะเพื่อดูรายละเอียดและสั่งซื้อ</div>
                         </div>
                     </div>
                 </div>
@@ -253,35 +297,36 @@
 
                 <!-- ทำไมต้องเลือกเรา -->
                 <div class="mt-8 mb-4">
-                    <h2 class="text-lg font-bold text-gray-800 mb-3">ทำไมต้องเลือก LunaTopup</h2>
+                    <h2 class="text-lg font-bold text-gray-800 mb-1">ทำไมต้องเลือก LunaTopup</h2>
+                    <p class="text-[11px] text-gray-500 mb-4">บริการเติมเกมและของรางวัลที่ลูกค้าไว้ใจมากกว่า 10,000 ออเดอร์</p>
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center">
-                            <div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+                        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3.5 text-center">
+                            <div class="w-11 h-11 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
                                 <i class="fa-solid fa-bolt"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800">เติมเร็ว</div>
-                            <div class="text-[10px] text-gray-500 mt-0.5">เฉลี่ยไม่เกิน 1 นาที</div>
+                            <div class="text-xs font-bold text-gray-800 mb-1">เติมเร็วสุด</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed">ระบบออโต้ทำงานตลอด<br>เฉลี่ยเสร็จใน 30-60 วินาที<br>ไม่ต้องรอนาน</div>
                         </div>
-                        <div class="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
-                            <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+                        <div class="bg-green-50 border border-green-100 rounded-2xl p-3.5 text-center">
+                            <div class="w-11 h-11 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
                                 <i class="fa-solid fa-tags"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800">ราคาถูก</div>
-                            <div class="text-[10px] text-gray-500 mt-0.5">ถูกกว่าทั่วไป 20-40%</div>
+                            <div class="text-xs font-bold text-gray-800 mb-1">ราคาถูกจริง</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed">ถูกกว่าท้องตลาด 20-40%<br>ไม่มีค่าธรรมเนียมแอบแฝง<br>โปรโมชั่นอัปเดตบ่อย</div>
                         </div>
-                        <div class="bg-purple-50 border border-purple-100 rounded-xl p-3 text-center">
-                            <div class="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+                        <div class="bg-purple-50 border border-purple-100 rounded-2xl p-3.5 text-center">
+                            <div class="w-11 h-11 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
                                 <i class="fa-solid fa-shield-halved"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800">ปลอดภัย</div>
-                            <div class="text-[10px] text-gray-500 mt-0.5">ระบบตรวจสอบอัตโนมัติ</div>
+                            <div class="text-xs font-bold text-gray-800 mb-1">ปลอดภัย 100%</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed">ระบบตรวจซองอัตโนมัติ<br>ข้อมูลเข้ารหัส ไม่เก็บรหัส<br>รับประกันความถูกต้อง</div>
                         </div>
-                        <div class="bg-orange-50 border border-orange-100 rounded-xl p-3 text-center">
-                            <div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-sm">
+                        <div class="bg-orange-50 border border-orange-100 rounded-2xl p-3.5 text-center">
+                            <div class="w-11 h-11 bg-orange-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
                                 <i class="fa-solid fa-headset"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800">บริการ 24 ชม.</div>
-                            <div class="text-[10px] text-gray-500 mt-0.5">แอดมินตอบเร็ว</div>
+                            <div class="text-xs font-bold text-gray-800 mb-1">ดูแล 24 ชม.</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed">แอดมินตอบเร็วทุกช่วงเวลา<br>มีปัญหาแจ้งได้ทันที<br>แก้ปัญหาจนจบ</div>
                         </div>
                     </div>
                 </div>
@@ -372,9 +417,9 @@
 
                 <!-- โปสเตอร์ -->
                 <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-4">
-                    <div class="w-full flex justify-center bg-gradient-to-b from-gray-50 to-white p-4">
+                    <div class="w-full flex justify-center bg-white p-2">
                         <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" 
-                             class="w-full max-w-[300px] rounded-xl object-cover aspect-[3/4] max-h-[280px] shadow-sm" 
+                             class="w-full rounded-xl object-contain max-h-[320px]" 
                              alt="โปสเตอร์ ID เกม">
                     </div>
                 </div>
@@ -684,6 +729,47 @@
             autoplay: { delay: 3000, disableOnInteraction: false },
             pagination: { el: ".swiper-pagination", clickable: true },
         });
+
+        new Swiper(".hotPkgSwiper", {
+            slidesPerView: "auto",
+            spaceBetween: 12,
+            loop: true,
+            speed: 800,
+            autoplay: {
+                delay: 2800,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            grabCursor: true,
+            resistanceRatio: 0.6,
+            touchReleaseOnEdges: true,
+            nested: true,
+        });
+
+        // นับถอยหลัง 24 ชม. (รีเซ็ตเมื่อครบ)
+        function updateHotCountdown() {
+            const now = new Date();
+            // คำนวณวินาทีที่เหลือในรอบ 24 ชม. จาก midnight
+            const endOfDay = new Date(now);
+            endOfDay.setHours(24, 0, 0, 0); // เที่ยงคืนถัดไป
+            let diff = endOfDay - now;
+            if (diff <= 0) {
+                endOfDay.setDate(endOfDay.getDate() + 1);
+                diff = endOfDay - now;
+            }
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            const el = document.getElementById('hotCountdown');
+            if (el) {
+                el.textContent = 
+                    String(h).padStart(2,'0') + ':' + 
+                    String(m).padStart(2,'0') + ':' + 
+                    String(s).padStart(2,'0');
+            }
+        }
+        updateHotCountdown();
+        setInterval(updateHotCountdown, 1000);
 
         function toggleSidebar() {
             const overlay = document.getElementById('sidebarOverlay');
