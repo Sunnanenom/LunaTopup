@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -6,282 +5,335 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LunaTopup - บริการเติมเกม 24 ชม.</title>
    
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f1f5f9; font-family: 'Prompt', sans-serif; }
-        .app-container { max-width: 420px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        body { background-color: #f8fafc; font-family: 'Prompt', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .app-container { max-width: 420px; box-shadow: 0 0 40px rgba(0,0,0,0.08); background-color: #ffffff; }
        
-        .swiper-pagination-bullet { background: #cbd5e1; opacity: 1; }
-        .swiper-pagination-bullet-active { background: #3b82f6; width: 20px; border-radius: 10px; transition: 0.3s; }
+        /* Swiper Customization */
+        .swiper-pagination-bullet { background: #cbd5e1; opacity: 1; transition: all 0.3s ease; }
+        .swiper-pagination-bullet-active { background: #3b82f6; width: 24px; border-radius: 12px; }
         .swiper-horizontal>.swiper-pagination-bullets { bottom: 0px; }
         .swiper { padding-bottom: 25px; }
        
-        .checkout-modal {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            position: relative;
+        /* Custom UI Elements */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 15px -3px rgba(37, 99, 235, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px -2px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px -3px rgba(220, 38, 38, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn-danger:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px -2px rgba(220, 38, 38, 0.4);
+        }
+
+        /* Animations */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-section { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-modal { animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
         .sidebar-enter { transform: translateX(100%); }
        
-        .receipt-card {
-            background: #ffffff;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        .receipt-header-pattern {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            color: white;
-            padding: 24px 20px;
-            text-align: center;
-            position: relative;
-        }
-        .receipt-tear-edge {
-            background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%), #f8fafc;
-            background-size: 16px 16px;
-            height: 12px;
-            width: 100%;
-        }
         ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        /* Modern Loader */
         .page-loader {
             position: absolute;
             inset: 0;
-            background: rgba(255,255,255,0.85);
-            z-index: 50;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 60;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(2px);
+            transition: opacity 0.3s ease;
         }
-        .page-loader.hidden { display: none; }
+        .page-loader.hidden { display: none; opacity: 0; pointer-events: none; }
         .spinner {
-            width: 36px;
-            height: 36px;
-            border: 3px solid #e2e8f0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
             border-top-color: #3b82f6;
             border-radius: 50%;
-            animation: spin 0.7s linear infinite;
+            animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="text-gray-800 antialiased flex justify-center">
-    <div class="app-container bg-white w-full min-h-screen relative pb-20 overflow-hidden flex flex-col mx-auto">
+    <div class="app-container w-full min-h-screen relative pb-24 overflow-hidden flex flex-col mx-auto">
        
         <!-- Page Loading Spinner -->
         <div id="pageLoader" class="page-loader hidden">
             <div class="spinner"></div>
         </div>
 
-        <!-- Header -->
-        <header class="pt-4 pb-3 px-4 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50 z-20 sticky top-0 shadow-sm border-b border-blue-100">
-            <div class="flex items-center gap-2.5 cursor-pointer" onclick="showHome()">
-                <img src="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png" alt="Logo" class="h-9 object-contain">
+        <!-- Header (Glass Effect) -->
+        <header class="pt-5 pb-4 px-5 flex justify-between items-center glass-effect z-20 sticky top-0 border-b border-gray-100">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="showHome()">
+                <div class="relative">
+                    <img src="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png" alt="Logo" class="h-10 object-contain group-active:scale-95 transition-transform drop-shadow-sm">
+                </div>
                 <div>
-                    <div class="font-bold text-blue-700 text-lg leading-tight">LunaTopup</div>
-                    <div class="text-[10px] text-blue-500 -mt-0.5">บริการเติมเกม 24 ชม.</div>
+                    <div class="font-extrabold text-blue-700 text-xl tracking-tight leading-none mb-1">LunaTopup</div>
+                    <div class="text-[10px] font-medium text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full inline-block border border-blue-100">บริการ 24 ชม.</div>
                 </div>
             </div>
-            <div class="flex gap-4 text-gray-500 text-xl">
-                <i class="fa-solid fa-magnifying-glass active:scale-90 transition cursor-pointer"></i>
-                <i class="fa-solid fa-bell active:scale-90 transition cursor-pointer"></i>
-                <i class="fa-solid fa-bars active:scale-90 transition cursor-pointer text-blue-600" onclick="toggleSidebar()"></i>
+            <div class="flex gap-3 text-gray-500 text-xl">
+                <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50 active:bg-gray-100 active:scale-90 transition-all text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-50 active:bg-gray-100 active:scale-90 transition-all text-gray-400">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <button onclick="toggleSidebar()" class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-50 text-blue-600 active:bg-blue-100 active:scale-90 transition-all">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
             </div>
         </header>
 
         <!-- Sidebar -->
-        <div id="sidebarOverlay" class="absolute inset-0 bg-black bg-opacity-50 z-30 hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
-        <div id="sidebarMenu" class="absolute top-0 right-0 w-[70%] h-full bg-white z-40 sidebar-enter transition-transform duration-300 shadow-2xl flex flex-col">
-            <div class="p-5 bg-blue-50 flex justify-between items-center border-b border-blue-100">
-                <h3 class="font-bold text-blue-600 text-lg">เมนูหลัก</h3>
-                <i class="fa-solid fa-xmark text-2xl text-gray-400 cursor-pointer active:scale-90" onclick="toggleSidebar()"></i>
+        <div id="sidebarOverlay" class="absolute inset-0 bg-gray-900/40 z-30 hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+        <div id="sidebarMenu" class="absolute top-0 right-0 w-[75%] max-w-[300px] h-full bg-white z-40 sidebar-enter transition-transform duration-300 shadow-2xl flex flex-col rounded-l-2xl">
+            <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 flex justify-between items-center rounded-tl-2xl border-b border-blue-100/50">
+                <div>
+                    <h3 class="font-bold text-blue-700 text-lg leading-tight">เมนูหลัก</h3>
+                    <p class="text-[11px] text-blue-500 mt-0.5">LunaTopup Menu</p>
+                </div>
+                <button onclick="toggleSidebar()" class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 shadow-sm active:scale-90 transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
-            <div class="flex flex-col p-2">
-                <a href="#" onclick="toggleSidebar(); showHome()" class="p-4 border-b border-gray-100 flex items-center gap-3 text-gray-700 active:bg-gray-50"><i class="fa-solid fa-house w-6"></i> หน้าแรก</a>
-                <a href="#" onclick="toggleSidebar(); showMobileSection()" class="p-4 border-b border-gray-100 flex items-center gap-3 text-gray-700 active:bg-gray-50"><i class="fa-solid fa-mobile-screen-button w-6 text-green-500"></i> เติมเงินมือถือ</a>
-                <a href="#" onclick="toggleSidebar()" class="p-4 flex items-center gap-3 text-gray-700 active:bg-gray-50"><i class="fa-solid fa-headset w-6 text-purple-500"></i> ติดต่อแอดมิน</a>
+            <div class="flex flex-col p-3 space-y-1">
+                <a href="#" onclick="toggleSidebar(); showHome()" class="p-3.5 rounded-xl flex items-center gap-3 text-gray-700 hover:bg-gray-50 active:scale-95 transition-all font-medium"><i class="fa-solid fa-house w-6 text-blue-500"></i> หน้าแรก</a>
+                <a href="#" onclick="toggleSidebar(); showMobileSection()" class="p-3.5 rounded-xl flex items-center gap-3 text-gray-700 hover:bg-gray-50 active:scale-95 transition-all font-medium"><i class="fa-solid fa-mobile-screen-button w-6 text-green-500"></i> เติมเงินมือถือ</a>
+                <a href="#" onclick="toggleSidebar()" class="p-3.5 rounded-xl flex items-center gap-3 text-gray-700 hover:bg-gray-50 active:scale-95 transition-all font-medium"><i class="fa-solid fa-headset w-6 text-purple-500"></i> ติดต่อแอดมิน</a>
             </div>
         </div>
 
-        <main class="px-4 mt-3 flex-grow relative overflow-y-auto" id="mainContent">
+        <main class="px-5 mt-4 flex-grow relative overflow-y-auto" id="mainContent">
            
             <!-- Home -->
-            <div id="homeSection">
-                <div class="swiper promoSwiper rounded-2xl overflow-hidden">
+            <div id="homeSection" class="animate-section">
+                <!-- Promo Banner -->
+                <div class="swiper promoSwiper rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide cursor-pointer active:opacity-90" onclick="showPackages('ff')">
+                        <div class="swiper-slide cursor-pointer active:scale-[0.98] transition-transform duration-300" onclick="showPackages('ff')">
                             <img src="https://i.ibb.co/mrhTC44P/13-BC7101-AE8-E-4-C68-A997-E2-DAE49-BC998.png" class="w-full object-cover aspect-[3/2]">
                         </div>
-                        <div class="swiper-slide cursor-pointer active:opacity-90" onclick="showPackages('roblox')">
+                        <div class="swiper-slide cursor-pointer active:scale-[0.98] transition-transform duration-300" onclick="showPackages('roblox')">
                             <img src="https://i.ibb.co/8gQ9B3qb/04962-AFC-9-C9-B-4-C92-8131-CFB456-A3-EC14.png" class="w-full object-cover aspect-[3/2]">
                         </div>
-                        <div class="swiper-slide cursor-pointer active:opacity-90" onclick="showCustomAlert('ยังไม่เปิดให้เติม', 'เกมนี้ยังไม่เปิดให้เติมในตอนนี้ รออัปเดตเร็วๆ นี้', 'error')">
+                        <div class="swiper-slide cursor-pointer active:scale-[0.98] transition-transform duration-300" onclick="showCustomAlert('ยังไม่เปิดให้เติม', 'เกมนี้ยังไม่เปิดให้เติมในตอนนี้ รออัปเดตเร็วๆ นี้', 'error')">
                             <img src="https://i.ibb.co/Vc2fbVv3/89437763-E188-4-B11-84-FE-9-D12499-A65-B8.png" class="w-full object-cover aspect-[3/2]">
                         </div>
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-2 mt-2 text-center">
-                    <div class="flex flex-col items-center p-2 rounded-xl active:bg-gray-100 transition cursor-pointer" onclick="showHome()">
-                        <div class="w-11 h-11 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-gamepad"></i></div>
-                        <span class="text-[10px] font-semibold text-gray-700">เติมเกม</span>
+                <!-- 4 Quick Menus -->
+                <div class="grid grid-cols-4 gap-3 mt-5 text-center">
+                    <div class="flex flex-col items-center group cursor-pointer active:scale-90 transition-all duration-200" onclick="showHome()">
+                        <div class="w-14 h-14 bg-white border border-gray-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] text-blue-600 rounded-[20px] flex items-center justify-center mb-2 text-xl group-hover:border-blue-200 group-hover:shadow-blue-100 transition-all"><i class="fa-solid fa-gamepad"></i></div>
+                        <span class="text-[11px] font-bold text-gray-600 group-hover:text-blue-600 transition-colors">เติมเกม</span>
                     </div>
-                    <div class="flex flex-col items-center p-2 rounded-xl active:bg-gray-100 transition cursor-pointer" onclick="showGiftSection()">
-                        <div class="w-11 h-11 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-gift"></i></div>
-                        <span class="text-[10px] font-semibold text-gray-700">Gift Card</span>
+                    <div class="flex flex-col items-center group cursor-pointer active:scale-90 transition-all duration-200" onclick="showGiftSection()">
+                        <div class="w-14 h-14 bg-white border border-gray-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] text-orange-500 rounded-[20px] flex items-center justify-center mb-2 text-xl group-hover:border-orange-200 group-hover:shadow-orange-100 transition-all"><i class="fa-solid fa-gift"></i></div>
+                        <span class="text-[11px] font-bold text-gray-600 group-hover:text-orange-500 transition-colors">Gift Card</span>
                     </div>
-                    <div class="flex flex-col items-center p-2 rounded-xl active:bg-gray-100 transition cursor-pointer" onclick="showMobileSection()">
-                        <div class="w-11 h-11 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                        <span class="text-[10px] font-semibold text-gray-700">เติมมือถือ</span>
+                    <div class="flex flex-col items-center group cursor-pointer active:scale-90 transition-all duration-200" onclick="showMobileSection()">
+                        <div class="w-14 h-14 bg-white border border-gray-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] text-emerald-500 rounded-[20px] flex items-center justify-center mb-2 text-xl group-hover:border-emerald-200 group-hover:shadow-emerald-100 transition-all"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <span class="text-[11px] font-bold text-gray-600 group-hover:text-emerald-500 transition-colors">เติมมือถือ</span>
                     </div>
-                    <div onclick="showStatusModal()" class="flex flex-col items-center p-2 rounded-xl active:bg-gray-100 transition cursor-pointer">
-                        <div class="w-11 h-11 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-1 text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <span class="text-[10px] font-semibold text-gray-700">เช็คสถานะ</span>
+                    <div class="flex flex-col items-center group cursor-pointer active:scale-90 transition-all duration-200" onclick="showStatusModal()">
+                        <div class="w-14 h-14 bg-white border border-gray-100 shadow-[0_4px_15px_rgba(0,0,0,0.03)] text-purple-500 rounded-[20px] flex items-center justify-center mb-2 text-xl group-hover:border-purple-200 group-hover:shadow-purple-100 transition-all"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <span class="text-[11px] font-bold text-gray-600 group-hover:text-purple-500 transition-colors">เช็คสถานะ</span>
                     </div>
                 </div>
 
-                <div class="mt-6">
-                    <div class="flex justify-between items-end mb-3">
-                        <h2 class="text-lg font-bold text-gray-800">เกมยอดฮิต 🔥</h2>
+                <!-- เกมยอดฮิต -->
+                <div class="mt-8">
+                    <div class="flex justify-between items-end mb-4">
+                        <h2 class="text-lg font-extrabold text-gray-800 tracking-tight">เกมยอดฮิต 🔥</h2>
                     </div>
                     <div class="grid grid-cols-4 gap-3">
-                        <div onclick="showPackages('ff')" class="flex flex-col items-center cursor-pointer active:scale-90 transition">
-                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-200 object-cover mb-1">
+                        <div onclick="showPackages('ff')" class="flex flex-col items-center cursor-pointer hover:-translate-y-1 active:scale-90 transition-all">
+                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png" class="w-16 h-16 rounded-2xl shadow-sm border border-gray-100 object-cover mb-2">
                             <span class="text-[11px] font-bold text-gray-700">Free Fire</span>
                         </div>
-                        <div onclick="showPackages('rov')" class="flex flex-col items-center cursor-pointer active:scale-90 transition">
-                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/055/icon.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-200 object-cover mb-1">
+                        <div onclick="showPackages('rov')" class="flex flex-col items-center cursor-pointer hover:-translate-y-1 active:scale-90 transition-all">
+                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/055/icon.png" class="w-16 h-16 rounded-2xl shadow-sm border border-gray-100 object-cover mb-2">
                             <span class="text-[11px] font-bold text-gray-700">RoV</span>
                         </div>
-                        <div onclick="showPackages('roblox')" class="flex flex-col items-center cursor-pointer active:scale-90 transition">
-                            <img src="https://i.ibb.co/JFy0v0tW/Roblox-Corporation-2025-logo-svg.webp" class="w-16 h-16 rounded-2xl shadow-md border border-gray-200 object-cover mb-1">
+                        <div onclick="showPackages('roblox')" class="flex flex-col items-center cursor-pointer hover:-translate-y-1 active:scale-90 transition-all">
+                            <img src="https://i.ibb.co/JFy0v0tW/Roblox-Corporation-2025-logo-svg.webp" class="w-16 h-16 rounded-2xl shadow-sm border border-gray-100 object-cover mb-2">
                             <span class="text-[11px] font-bold text-gray-700">Roblox</span>
                         </div>
-                        <div onclick="showPackages('pubg')" class="flex flex-col items-center cursor-pointer active:scale-90 transition">
-                            <img src="https://i.ibb.co/PZR1zbRf/IMG-2275.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-200 object-cover mb-1">
+                        <div onclick="showPackages('pubg')" class="flex flex-col items-center cursor-pointer hover:-translate-y-1 active:scale-90 transition-all">
+                            <img src="https://i.ibb.co/PZR1zbRf/IMG-2275.png" class="w-16 h-16 rounded-2xl shadow-sm border border-gray-100 object-cover mb-2">
                             <span class="text-[11px] font-bold text-gray-700">PUBG M</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- แพ็คเกจยอดฮิต (เลื่อน) -->
-                <div class="mt-6">
-                    <div class="flex justify-between items-center mb-2 px-0.5">
-                        <h2 class="text-lg font-bold text-gray-800">แพ็คเกจยอดฮิต 🔥</h2>
-                        <div class="flex items-center gap-1.5 bg-red-50 border border-red-200 text-red-600 text-[11px] font-bold px-2.5 py-1 rounded-full">
-                            <i class="fa-solid fa-clock text-[10px]"></i>
-                            <span id="hotCountdown">23:59:59</span>
+                <div class="mt-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-extrabold text-gray-800 tracking-tight">แพ็คเกจยอดฮิต 🔥</h2>
+                        <div class="flex items-center gap-1.5 bg-red-50 border border-red-100 text-red-600 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm">
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="hotCountdown" class="tracking-wider">23:59:59</span>
                         </div>
                     </div>
-                    <div class="swiper hotPkgSwiper overflow-hidden" style="touch-action: pan-y;">
-                        <div class="swiper-wrapper">
+                    <div class="swiper hotPkgSwiper overflow-visible" style="touch-action: pan-y;">
+                        <div class="swiper-wrapper pb-2">
                             <!-- FF 50 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '697 เพชร', 50, 'https://i.ibb.co/vncC3hy/Package-50.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/vncC3hy/Package-50.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '697 เพชร', 50, 'https://i.ibb.co/vncC3hy/Package-50.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="absolute top-2 left-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10">ขายดี</div>
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/vncC3hy/Package-50.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Free Fire</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">697 เพชร</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Free Fire</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">697 เพชร</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">50 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Roblox 50 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Roblox', '416 Robux', 50, 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Roblox', '416 Robux', 50, 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Roblox</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">416 Robux</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Roblox</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">416 Robux</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">50 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- ROV 50 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Arena of Valor', '255 คูปอง', 50, 'https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png', 'OpenID / ID ผู้เล่น', 'rov')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Arena of Valor', '255 คูปอง', 50, 'https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png', 'OpenID / ID ผู้เล่น', 'rov')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">RoV</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">255 คูปอง</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">RoV</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">255 คูปอง</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">50 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- PUBG 50 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'PUBG Mobile', '255 UC', 50, 'https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png', 'Character ID (ID ตัวละคร)', 'pubg')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'PUBG Mobile', '255 UC', 50, 'https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png', 'Character ID (ID ตัวละคร)', 'pubg')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/HpxtRH1f/23-BC87-B9-4000-472-C-A842-D342-CB6-B8613.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">PUBG M</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">255 UC</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">50 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">PUBG M</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">255 UC</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">50 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- FF 100 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '1818 เพชร', 100, 'https://i.ibb.co/p6p7HLWf/Package100-THB.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/p6p7HLWf/Package100-THB.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '1818 เพชร', 100, 'https://i.ibb.co/p6p7HLWf/Package100-THB.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/p6p7HLWf/Package100-THB.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Free Fire</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">1818 เพชร</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">100 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Free Fire</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">1818 เพชร</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">100 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Roblox 100 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Roblox', '895 Robux', 100, 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Roblox', '895 Robux', 100, 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Roblox</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">895 Robux</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">100 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Roblox</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">895 Robux</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">100 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- FF 200 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '4252 เพชร', 200, 'https://i.ibb.co/WNgf1TH4/Package200thb.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/WNgf1TH4/Package200thb.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Garena Free Fire', '4252 เพชร', 200, 'https://i.ibb.co/WNgf1TH4/Package200thb.png', 'Player ID (UID)', 'ff')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/WNgf1TH4/Package200thb.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Free Fire</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">4252 เพชร</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">200 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Free Fire</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">4252 เพชร</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">200 ฿</div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Roblox 200 -->
-                            <div class="swiper-slide !w-[140px]">
-                                <div onclick="showPackageDetail('game', 'Roblox', '1955 Robux', 200, 'https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm cursor-pointer active:scale-95 transition h-full">
-                                    <div class="w-full bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                        <img src="https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png" class="w-full h-full object-cover">
+                            <div class="swiper-slide !w-[145px]">
+                                <div onclick="showPackageDetail('game', 'Roblox', '1955 Robux', 200, 'https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png', 'Username (ชื่อผู้ใช้ Roblox)', 'roblox')" class="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all h-full flex flex-col relative group">
+                                    <div class="w-full bg-gray-50/50 aspect-square flex items-center justify-center p-3">
+                                        <img src="https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png" class="w-full h-full object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                                     </div>
-                                    <div class="p-2 text-center">
-                                        <div class="text-[10px] text-gray-500">Roblox</div>
-                                        <div class="text-[11px] font-bold text-gray-800 truncate leading-tight">1955 Robux</div>
-                                        <div class="mt-1 text-blue-600 font-bold text-xs">200 ฿</div>
+                                    <div class="p-3 text-center border-t border-gray-50 flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="text-[10px] font-medium text-gray-400 mb-0.5">Roblox</div>
+                                            <div class="text-xs font-bold text-gray-800 leading-tight">1955 Robux</div>
+                                        </div>
+                                        <div class="mt-2 text-blue-600 font-extrabold text-sm">200 ฿</div>
                                     </div>
                                 </div>
                             </div>
@@ -289,69 +341,72 @@
                     </div>
                 </div>
 
-                <!-- โปรโมชั่นขาย ID เกม (หน้าแรกโชว์โปสเตอร์) -->
-                <div class="mt-6 mb-2">
-                    <h2 class="text-lg font-bold text-gray-800 mb-3">🔥 โปรโมชั่นพิเศษ ขาย ID เกม</h2>
-                    <div onclick="showGameIdSection()" class="bg-white border border-red-200 rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition">
-                        <div class="w-full flex justify-center bg-white p-2">
+                <!-- โปรโมชั่นขาย ID เกม -->
+                <div class="mt-8 mb-4">
+                    <h2 class="text-lg font-extrabold text-gray-800 mb-4 tracking-tight">🔥 โปรโมชั่นพิเศษ ขาย ID เกม</h2>
+                    <div onclick="showGameIdSection()" class="bg-white border border-red-100 rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(220,38,38,0.08)] cursor-pointer active:scale-[0.98] transition-transform group">
+                        <div class="w-full flex justify-center bg-gray-50 p-2 relative">
+                            <div class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-sm z-10 animate-pulse">Hot Deal</div>
                             <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" 
-                                 class="w-full rounded-xl object-contain max-h-[260px]" 
+                                 class="w-full rounded-2xl object-contain max-h-[260px] drop-shadow-sm group-hover:scale-105 transition-transform duration-500" 
                                  alt="ขาย ID เกม">
                         </div>
-                        <div class="px-3 py-2.5 text-center bg-red-50 border-t border-red-100">
-                            <div class="text-sm font-bold text-gray-800">ID เกมคุณภาพดี</div>
-                            <div class="text-xl font-extrabold text-red-600">419 บาท</div>
-                            <div class="text-[11px] text-gray-500 mt-0.5">แตะเพื่อดูรายละเอียดและสั่งซื้อ</div>
+                        <div class="px-4 py-4 text-center bg-gradient-to-b from-white to-red-50/30">
+                            <div class="text-sm font-bold text-gray-900">ID เกมคุณภาพดี การันตีความเทพ</div>
+                            <div class="text-2xl font-black text-red-600 mt-1">419 บาท</div>
+                            <div class="text-[11px] font-medium text-gray-500 mt-1.5 bg-white inline-block px-3 py-1 rounded-full border border-gray-100">แตะเพื่อดูรายละเอียดและสั่งซื้อ <i class="fa-solid fa-arrow-right text-[9px] ml-1"></i></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- เช็คสถานะ / ใบเสร็จ อยู่ด้านเกมยอดฮิต -->
-                <div onclick="showStatusModal()" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-4 mt-5 flex items-center justify-between cursor-pointer active:scale-95 transition shadow-sm">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-500 rounded-full text-white flex items-center justify-center shadow-md">
-                            <i class="fa-solid fa-receipt"></i>
+                <!-- เช็คสถานะแบบ Banner -->
+                <div onclick="showStatusModal()" class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-5 mt-8 flex items-center justify-between cursor-pointer shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-transform text-white">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-inner">
+                            <i class="fa-solid fa-receipt text-xl"></i>
                         </div>
                         <div>
-                            <h3 class="text-sm font-bold text-gray-800">เช็คใบเสร็จ / สถานะ</h3>
-                            <p class="text-[11px] text-gray-600">ดูรายการสั่งซื้อล่าสุดของคุณที่นี่</p>
+                            <h3 class="text-base font-bold">เช็คใบเสร็จ / สถานะ</h3>
+                            <p class="text-[11px] text-blue-100 font-medium mt-0.5">ติดตามรายการสั่งซื้อของคุณได้ที่นี่</p>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-blue-500 text-lg"></i>
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </div>
                 </div>
 
                 <!-- ทำไมต้องเลือกเรา -->
-                <div class="mt-8 mb-4">
-                    <h2 class="text-lg font-bold text-gray-800 mb-1">ทำไมต้องเลือก LunaTopup</h2>
-                    <p class="text-[11px] text-gray-500 mb-4">บริการเติมเกมและของรางวัลที่ลูกค้าไว้ใจมากกว่า 10,000 ออเดอร์</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3.5 text-center">
-                            <div class="w-11 h-11 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
+                <div class="mt-10 mb-4">
+                    <h2 class="text-lg font-extrabold text-gray-800 mb-1 tracking-tight">ทำไมต้องเลือก LunaTopup</h2>
+                    <p class="text-[11px] text-gray-500 mb-5 font-medium">ลูกค้าไว้วางใจใช้บริการมากกว่า 10,000 ออเดอร์</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white border border-gray-100 rounded-3xl p-4 text-center shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-transform">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-[18px] flex items-center justify-center mx-auto mb-3 text-xl shadow-inner">
                                 <i class="fa-solid fa-bolt"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800 mb-1">เติมเร็วสุด</div>
-                            <div class="text-[10px] text-gray-500 leading-relaxed">ระบบออโต้ทำงานตลอด<br>เฉลี่ยเสร็จใน 30-60 วินาที<br>ไม่ต้องรอนาน</div>
+                            <div class="text-sm font-bold text-gray-800 mb-1">เติมเร็วสุด</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed font-medium">ระบบออโต้ทำงานตลอด<br>เฉลี่ยเสร็จใน 30-60 วินาที</div>
                         </div>
-                        <div class="bg-green-50 border border-green-100 rounded-2xl p-3.5 text-center">
-                            <div class="w-11 h-11 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
+                        <div class="bg-white border border-gray-100 rounded-3xl p-4 text-center shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-transform">
+                            <div class="w-12 h-12 bg-green-50 text-emerald-600 rounded-[18px] flex items-center justify-center mx-auto mb-3 text-xl shadow-inner">
                                 <i class="fa-solid fa-tags"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800 mb-1">ราคาถูกจริง</div>
-                            <div class="text-[10px] text-gray-500 leading-relaxed">ถูกกว่าท้องตลาด 20-40%<br>ไม่มีค่าธรรมเนียมแอบแฝง<br>โปรโมชั่นอัปเดตบ่อย</div>
+                            <div class="text-sm font-bold text-gray-800 mb-1">ราคาถูกจริง</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed font-medium">ถูกกว่าท้องตลาด 20-40%<br>ไม่มีค่าธรรมเนียมแอบแฝง</div>
                         </div>
-                        <div class="bg-purple-50 border border-purple-100 rounded-2xl p-3.5 text-center">
-                            <div class="w-11 h-11 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
+                        <div class="bg-white border border-gray-100 rounded-3xl p-4 text-center shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-transform">
+                            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-[18px] flex items-center justify-center mx-auto mb-3 text-xl shadow-inner">
                                 <i class="fa-solid fa-shield-halved"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800 mb-1">ปลอดภัย 100%</div>
-                            <div class="text-[10px] text-gray-500 leading-relaxed">ระบบตรวจซองอัตโนมัติ<br>ข้อมูลเข้ารหัส ไม่เก็บรหัส<br>รับประกันความถูกต้อง</div>
+                            <div class="text-sm font-bold text-gray-800 mb-1">ปลอดภัย 100%</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed font-medium">ระบบตรวจซองอัตโนมัติ<br>เข้ารหัสลับ ไม่เก็บรหัส</div>
                         </div>
-                        <div class="bg-orange-50 border border-orange-100 rounded-2xl p-3.5 text-center">
-                            <div class="w-11 h-11 bg-orange-500 text-white rounded-full flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
+                        <div class="bg-white border border-gray-100 rounded-3xl p-4 text-center shadow-[0_4px_15px_rgba(0,0,0,0.03)] hover:-translate-y-1 transition-transform">
+                            <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-[18px] flex items-center justify-center mx-auto mb-3 text-xl shadow-inner">
                                 <i class="fa-solid fa-headset"></i>
                             </div>
-                            <div class="text-xs font-bold text-gray-800 mb-1">ดูแล 24 ชม.</div>
-                            <div class="text-[10px] text-gray-500 leading-relaxed">แอดมินตอบเร็วทุกช่วงเวลา<br>มีปัญหาแจ้งได้ทันที<br>แก้ปัญหาจนจบ</div>
+                            <div class="text-sm font-bold text-gray-800 mb-1">ดูแล 24 ชม.</div>
+                            <div class="text-[10px] text-gray-500 leading-relaxed font-medium">แอดมินตอบเร็วทุกเวลา<br>มีปัญหาแจ้งได้ทันที</div>
                         </div>
                     </div>
                 </div>
@@ -360,145 +415,155 @@
             </div>
 
             <!-- Package Section -->
-            <div id="packageSection" class="hidden">
-                <button onclick="showHome()" class="mb-4 text-blue-500 font-semibold flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full active:bg-blue-100">
+            <div id="packageSection" class="hidden animate-section">
+                <button onclick="showHome()" class="mb-5 text-gray-600 font-semibold flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full active:bg-gray-50 shadow-sm w-fit transition-colors">
                     <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
                 </button>
-                <div class="flex items-center gap-3 mb-4">
-                    <img id="pkgGameLogo" src="" class="w-10 h-10 rounded-xl shadow-sm border border-gray-200">
-                    <h2 id="gameTitleDisplay" class="text-xl font-bold text-gray-800">เลือกแพ็คเกจ</h2>
+                <div class="flex items-center gap-4 mb-6 bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
+                    <img id="pkgGameLogo" src="" class="w-14 h-14 rounded-2xl shadow-sm border border-gray-100 object-cover">
+                    <div>
+                        <p class="text-xs text-blue-500 font-bold mb-0.5">เลือกแพ็คเกจเกม</p>
+                        <h2 id="gameTitleDisplay" class="text-xl font-extrabold text-gray-900 tracking-tight">เกม</h2>
+                    </div>
                 </div>
-                <div id="packageList" class="grid grid-cols-2 gap-4 pb-6"></div>
+                <div id="packageList" class="grid grid-cols-2 gap-4 pb-8"></div>
             </div>
 
             <!-- Package Detail Section (หน้าแพ็คเกจก่อนชำระ) -->
-            <div id="packageDetailSection" class="hidden pb-8">
-                <button onclick="backFromPackageDetail()" class="mb-4 text-blue-500 font-semibold flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full active:bg-blue-100">
+            <div id="packageDetailSection" class="hidden pb-10 animate-section">
+                <button onclick="backFromPackageDetail()" class="mb-5 text-gray-600 font-semibold flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full active:bg-gray-50 shadow-sm w-fit transition-colors">
                     <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
                 </button>
 
-                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-5">
-                    <div class="w-full flex justify-center items-center">
-                        <img id="detailPkgImg" src="" class="w-full h-auto object-contain" alt="แพ็คเกจ">
+                <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-6">
+                    <div class="w-full flex justify-center items-center bg-gray-50/50 p-4">
+                        <img id="detailPkgImg" src="" class="w-[75%] h-auto object-contain drop-shadow-lg" alt="แพ็คเกจ">
                     </div>
-                    <div class="p-4 border-t border-gray-100">
-                        <div class="text-xl font-extrabold text-gray-900 mb-4 tracking-tight" id="detailGameName">เกม</div>
+                    <div class="p-5 border-t border-gray-50">
+                        <div class="text-[11px] font-bold text-gray-400 mb-1 tracking-wide uppercase">ตรวจสอบรายการ</div>
+                        <div class="text-2xl font-extrabold text-gray-900 mb-6 tracking-tight" id="detailGameName">เกม</div>
                         
-                        <div class="flex gap-2.5 mb-5">
-                            <div class="flex-1 bg-blue-50 rounded-2xl p-3.5 text-center border border-blue-100">
-                                <div class="text-[10px] text-blue-500/80 font-semibold mb-1">ต้องชำระ</div>
-                                <div class="text-xl font-extrabold text-blue-600" id="detailPrice">0 บาท</div>
+                        <div class="flex gap-3 mb-6">
+                            <div class="flex-1 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-4 text-center border border-blue-100 shadow-inner">
+                                <div class="text-[11px] text-blue-600/80 font-bold mb-1">ยอดที่ต้องชำระ</div>
+                                <div class="text-xl font-extrabold text-blue-700" id="detailPrice">0 บาท</div>
                             </div>
-                            <div class="flex-1 bg-emerald-50 rounded-2xl p-3.5 text-center border border-emerald-100">
-                                <div class="text-[10px] text-emerald-600/80 font-semibold mb-1">คุณจะได้รับ</div>
-                                <div class="text-xl font-extrabold text-emerald-600 leading-tight" id="detailReceive">-</div>
+                            <div class="flex-1 bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-4 text-center border border-emerald-100 shadow-inner">
+                                <div class="text-[11px] text-emerald-600/80 font-bold mb-1">คุณจะได้รับ</div>
+                                <div class="text-lg font-extrabold text-emerald-700 leading-tight flex items-center justify-center h-[28px]" id="detailReceive">-</div>
                             </div>
                         </div>
 
-                        <div class="mb-5">
+                        <div class="mb-6 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                             <label class="block text-sm font-bold text-gray-800 mb-2" id="detailInputLabel">Player ID (UID)</label>
                             <div class="relative">
                                 <input type="text" id="detailUidInput" placeholder="กรอกข้อมูลบัญชีเกม" 
-                                    class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-16 transition">
-                                <button onclick="pasteDetailUid()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold active:bg-blue-100">
+                                    class="w-full p-4 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-20 transition shadow-inner">
+                                <button onclick="pasteDetailUid()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-xs font-bold active:scale-95 transition hover:bg-blue-100">
                                     วาง
                                 </button>
                             </div>
-                            <p class="text-[11px] text-gray-400 mt-2 flex items-center gap-1.5 flex-wrap" id="detailInputHint">
-                                <span id="detailHintText">กรอกข้อมูลให้ถูกต้องเพื่อให้ระบบเติมได้ทันที</span>
-                                <button type="button" id="detailUidGuide" onclick="showUidGuide()" class="hidden inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[10px] font-bold leading-none active:scale-90 transition" title="วิธีดู UID">i</button>
-                            </p>
+                            <div class="flex justify-between items-center mt-2.5">
+                                <p class="text-[11px] text-gray-500 font-medium" id="detailHintText">กรอกข้อมูลให้ถูกต้อง</p>
+                                <button type="button" id="detailUidGuide" onclick="showUidGuide()" class="hidden flex items-center gap-1.5 text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md text-[10px] font-bold active:scale-95 transition">
+                                    <i class="fa-solid fa-circle-info"></i> วิธีดู UID
+                                </button>
+                            </div>
                         </div>
 
-                        <button onclick="proceedFromDetail()" class="w-full bg-blue-600 hover:bg-blue-700 py-3.5 rounded-xl font-bold text-white shadow-md active:scale-[0.98] transition text-sm">
-                            สั่งซื้อ
+                        <button onclick="proceedFromDetail()" class="w-full btn-primary py-4 rounded-2xl font-bold text-white text-base">
+                            ดำเนินการชำระเงิน
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Mobile Section -->
-            <div id="mobileSection" class="hidden">
-                <button onclick="showHome()" class="mb-4 text-blue-500 font-semibold flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full active:bg-blue-100">
+            <div id="mobileSection" class="hidden animate-section">
+                <button onclick="showHome()" class="mb-5 text-gray-600 font-semibold flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full active:bg-gray-50 shadow-sm w-fit transition-colors">
                     <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
                 </button>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">เติมเงินมือถือ</h2>
-                <p class="text-xs text-gray-500 mb-4">โปรโมชั่นพิเศษ ซื้อเท่าไหร่ได้คูณ 2 (สูงสุด 1,000 บาท)</p>
-
-                <div class="mb-5">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">เลือกค่าย</label>
-                    <div class="grid grid-cols-2 gap-3" id="carrierList">
-                        <button onclick="selectCarrier('AIS')" class="carrier-btn border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 active:scale-95 transition" data-carrier="AIS">
-                            <div class="w-8 h-8 bg-green-500 text-white rounded-lg flex items-center justify-center text-xs font-bold">AIS</div>
-                            <span class="text-sm font-semibold">AIS</span>
-                        </button>
-                        <button onclick="selectCarrier('TrueMove H')" class="carrier-btn border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 active:scale-95 transition" data-carrier="TrueMove H">
-                            <div class="w-8 h-8 bg-red-500 text-white rounded-lg flex items-center justify-center text-xs font-bold">True</div>
-                            <span class="text-sm font-semibold">TrueMove H</span>
-                        </button>
-                        <button onclick="selectCarrier('dtac')" class="carrier-btn border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 active:scale-95 transition" data-carrier="dtac">
-                            <div class="w-8 h-8 bg-blue-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">dtac</div>
-                            <span class="text-sm font-semibold">dtac</span>
-                        </button>
-                        <button onclick="selectCarrier('my by NT')" class="carrier-btn border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 active:scale-95 transition" data-carrier="my by NT">
-                            <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">my</div>
-                            <span class="text-sm font-semibold">my by NT</span>
-                        </button>
-                    </div>
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mb-6">
+                    <h2 class="text-xl font-extrabold text-gray-900 mb-1 tracking-tight">📱 เติมเงินมือถือ</h2>
+                    <p class="text-xs text-gray-500 font-medium">โปรโมชั่นพิเศษ ซื้อเท่าไหร่ได้คูณ 2 (สูงสุด 1,000 บาท)</p>
                 </div>
 
-                <div class="mb-5">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">จำนวนเงิน (บาท)</label>
+                <div class="mb-6 bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">1. เลือกเครือข่าย</label>
+                    <div class="grid grid-cols-2 gap-3" id="carrierList">
+                        <button onclick="selectCarrier('AIS')" class="carrier-btn border-2 border-gray-100 rounded-2xl p-3.5 flex items-center gap-3 active:scale-95 transition bg-gray-50" data-carrier="AIS">
+                            <div class="w-10 h-10 bg-green-500 text-white rounded-xl flex items-center justify-center text-xs font-bold shadow-sm">AIS</div>
+                            <span class="text-sm font-bold text-gray-700">AIS</span>
+                        </button>
+                        <button onclick="selectCarrier('TrueMove H')" class="carrier-btn border-2 border-gray-100 rounded-2xl p-3.5 flex items-center gap-3 active:scale-95 transition bg-gray-50" data-carrier="TrueMove H">
+                            <div class="w-10 h-10 bg-red-500 text-white rounded-xl flex items-center justify-center text-xs font-bold shadow-sm">True</div>
+                            <span class="text-sm font-bold text-gray-700">TrueMove H</span>
+                        </button>
+                        <button onclick="selectCarrier('dtac')" class="carrier-btn border-2 border-gray-100 rounded-2xl p-3.5 flex items-center gap-3 active:scale-95 transition bg-gray-50" data-carrier="dtac">
+                            <div class="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center text-xs font-bold shadow-sm">dtac</div>
+                            <span class="text-sm font-bold text-gray-700">dtac</span>
+                        </button>
+                        <button onclick="selectCarrier('my by NT')" class="carrier-btn border-2 border-gray-100 rounded-2xl p-3.5 flex items-center gap-3 active:scale-95 transition bg-gray-50" data-carrier="my by NT">
+                            <div class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center text-xs font-bold shadow-sm">my</div>
+                            <span class="text-sm font-bold text-gray-700">my by NT</span>
+                        </button>
+                    </div>
+
+                    <label class="block text-sm font-bold text-gray-700 mt-6 mb-3">2. จำนวนเงิน (บาท)</label>
                     <div class="relative">
                         <input type="number" id="mobileAmount" min="10" max="1000" step="10" placeholder="เช่น 50, 100, 200" 
-                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500"
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-base font-bold focus:outline-none focus:border-blue-500 shadow-inner"
                             oninput="updateMobileBonus()">
-                        <span class="absolute right-3 top-3 text-xs text-gray-400">บาท</span>
+                        <span class="absolute right-4 top-4 text-sm font-bold text-gray-400">THB</span>
                     </div>
-                    <p class="text-[11px] text-gray-500 mt-1.5">กรอกได้เฉพาะหลักสิบ (10, 20, 30 ... 1000)</p>
-                    <div id="mobileBonusBox" class="mt-3 hidden bg-green-50 border border-green-200 rounded-xl p-3 text-center">
-                        <div class="text-xs text-green-700">คุณจะได้รับเงินเข้าเบอร์โทรศัพท์</div>
-                        <div class="text-xl font-bold text-green-600" id="mobileBonusText">0 บาท</div>
+                    <p class="text-[11px] text-gray-500 mt-2 font-medium">กรอกได้เฉพาะหลักสิบ (10, 20, 30 ... 1000)</p>
+                    <div id="mobileBonusBox" class="mt-4 hidden bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4 text-center shadow-sm">
+                        <div class="text-xs text-green-700 font-bold mb-1">🎁 คุณจะได้รับเงินเข้าเบอร์โทรศัพท์</div>
+                        <div class="text-2xl font-extrabold text-green-600" id="mobileBonusText">0 บาท</div>
                     </div>
                 </div>
 
-                <button onclick="proceedMobileTopup()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-bold text-white shadow-md transition active:scale-95 text-sm">
-                    ดำเนินการต่อ
+                <button onclick="proceedMobileTopup()" class="w-full btn-primary py-4 rounded-2xl font-bold text-white text-base">
+                    ดำเนินการชำระเงิน
                 </button>
             </div>
 
             <!-- Gift Card Section -->
-            <div id="giftSection" class="hidden">
-                <button onclick="showHome()" class="mb-4 text-blue-500 font-semibold flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full active:bg-blue-100">
+            <div id="giftSection" class="hidden animate-section">
+                <button onclick="showHome()" class="mb-5 text-gray-600 font-semibold flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full active:bg-gray-50 shadow-sm w-fit transition-colors">
                     <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
                 </button>
-                <h2 class="text-xl font-bold text-gray-800 mb-1">Gift Card ราคาโคตรถูก</h2>
-                <p class="text-xs text-gray-500 mb-4">ถูกกว่าท้องตลาดแรง ระบบส่งโค้ดหลังชำระด้วยซองทรูมันนี่</p>
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 mb-6">
+                    <h2 class="text-xl font-extrabold text-gray-900 mb-1 tracking-tight">🎁 Gift Card ราคาพิเศษ</h2>
+                    <p class="text-xs text-gray-500 font-medium">ถูกกว่าท้องตลาด ระบบส่งโค้ดหลังชำระผ่านซองทรูมันนี่</p>
+                </div>
 
-                <div class="grid grid-cols-2 gap-3 pb-6" id="giftList"></div>
+                <div class="grid grid-cols-2 gap-4 pb-10" id="giftList"></div>
             </div>
 
             <!-- Game ID Detail Section -->
-            <div id="gameIdSection" class="hidden pb-8">
-                <button onclick="showHome()" class="mb-4 text-blue-500 font-semibold flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full active:bg-blue-100">
+            <div id="gameIdSection" class="hidden pb-10 animate-section">
+                <button onclick="showHome()" class="mb-5 text-gray-600 font-semibold flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full active:bg-gray-50 shadow-sm w-fit transition-colors">
                     <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
                 </button>
 
-                <h2 class="text-xl font-bold text-gray-800 mb-3">ขาย ID เกม</h2>
+                <h2 class="text-xl font-extrabold text-gray-900 mb-4 tracking-tight">ขาย ID เกม</h2>
 
                 <!-- โปสเตอร์ -->
-                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-4">
-                    <div class="w-full flex justify-center bg-white p-2">
+                <div class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mb-5 p-2">
+                    <div class="w-full flex justify-center bg-gray-50 rounded-2xl p-2">
                         <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" 
-                             class="w-full rounded-xl object-contain max-h-[320px]" 
+                             class="w-full rounded-xl object-contain max-h-[320px] drop-shadow-md" 
                              alt="โปสเตอร์ ID เกม">
                     </div>
                 </div>
 
                 <!-- คลิปยูทูป -->
-                <div class="mb-4">
-                    <div class="text-sm font-bold text-gray-700 mb-2">รายละเอียด ID เกม</div>
-                    <div class="rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-black aspect-video">
+                <div class="mb-5 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
+                    <div class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-600 text-lg"></i> รีวิวรายละเอียด ID เกม
+                    </div>
+                    <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-inner bg-black aspect-video">
                         <iframe 
                             class="w-full h-full"
                             src="https://www.youtube.com/embed/gQjkYbNms8I?si=gNjC2E94bzhYB_jH" 
@@ -512,200 +577,222 @@
                 </div>
 
                 <!-- ราคา -->
-                <div class="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-4 mb-5 text-center">
-                    <div class="text-xs text-gray-500 mb-1">ราคา</div>
-                    <div class="text-3xl font-extrabold text-red-600">419 บาท</div>
-                    <div class="text-[11px] text-gray-500 mt-1">ส่งรหัส ID ไปที่อีเมล + เบอร์โทรศัพท์</div>
+                <div class="bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-3xl p-5 mb-6 text-center shadow-sm">
+                    <div class="text-xs font-bold text-red-500/80 mb-1 uppercase tracking-wider">ราคาพิเศษ</div>
+                    <div class="text-4xl font-black text-red-600 tracking-tight">419 บาท</div>
+                    <div class="text-[11px] font-medium text-red-700 bg-red-100/50 inline-block px-3 py-1 rounded-full mt-2">จัดส่งข้อมูล ID ไปที่อีเมล + เบอร์โทรศัพท์</div>
                 </div>
 
                 <!-- กรอกเบอร์ + อีเมล -->
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">เบอร์โทรศัพท์</label>
-                    <input type="tel" id="gameIdPhone" placeholder="เช่น 08x-xxx-xxxx" 
-                        class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
-                </div>
-                <div class="mb-5">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">อีเมล</label>
-                    <input type="email" id="gameIdEmail" placeholder="เช่น name@gmail.com" 
-                        class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
-                    <p class="text-[11px] text-gray-500 mt-1.5">เราจะส่งรหัส ID เกมไปที่อีเมลและเบอร์โทรศัพท์ของคุณ</p>
+                <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm mb-6">
+                    <div class="mb-5">
+                        <label class="block text-sm font-bold text-gray-800 mb-2">เบอร์โทรศัพท์</label>
+                        <input type="tel" id="gameIdPhone" placeholder="เช่น 08x-xxx-xxxx" 
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition shadow-inner">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-800 mb-2">อีเมล</label>
+                        <input type="email" id="gameIdEmail" placeholder="เช่น name@gmail.com" 
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100 transition shadow-inner">
+                        <p class="text-[11px] text-gray-500 mt-2 font-medium">เราจะส่งรหัสและข้อมูลการโอนย้าย ID เกมไปที่นี่</p>
+                    </div>
                 </div>
 
-                <button onclick="proceedGameIdBuy()" class="w-full bg-red-600 hover:bg-red-700 py-3.5 rounded-xl font-bold text-white shadow-md active:scale-[0.98] transition text-sm">
+                <button onclick="proceedGameIdBuy()" class="w-full btn-danger py-4 rounded-2xl font-bold text-white text-base">
                     ชำระเงินด้วย TrueMoney
                 </button>
             </div>
 
             <!-- Profile -->
-            <div id="profileSection" class="hidden pb-10">
-                <div class="bg-gradient-to-b from-blue-500 to-blue-600 rounded-3xl p-6 text-white text-center shadow-lg mt-2 relative overflow-hidden">
-                    <div class="w-20 h-20 bg-white rounded-full mx-auto p-1 shadow-md mb-3">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luna" class="w-full h-full bg-gray-100 rounded-full">
+            <div id="profileSection" class="hidden pb-10 animate-section">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white text-center shadow-lg shadow-blue-500/30 mt-2 relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="w-24 h-24 bg-white rounded-full mx-auto p-1.5 shadow-xl mb-4 relative z-10">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luna" class="w-full h-full bg-gray-50 rounded-full">
                     </div>
-                    <h2 class="text-xl font-bold">สมาชิกทั่วไป</h2>
-                    <p class="text-blue-200 text-sm">UID: LUNA-8849</p>
+                    <h2 class="text-2xl font-extrabold tracking-tight relative z-10">สมาชิกทั่วไป</h2>
+                    <p class="text-blue-200 text-sm font-medium mt-1 relative z-10 bg-black/20 inline-block px-3 py-1 rounded-full">UID: LUNA-8849</p>
                 </div>
-                <div class="mt-6 space-y-3">
-                    <h3 class="font-bold text-gray-800 mb-2 px-1">ตั้งค่าบัญชี</h3>
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <a href="#" class="flex justify-between items-center p-4 border-b border-gray-50 active:bg-gray-50">
-                            <div class="flex items-center gap-3 text-gray-700"><i class="fa-solid fa-headset w-5 text-center text-purple-500"></i> ศูนย์ช่วยเหลือ</div>
-                            <i class="fa-solid fa-chevron-right text-gray-300"></i>
+                <div class="mt-8 space-y-3">
+                    <h3 class="font-bold text-gray-800 mb-3 px-2 text-sm uppercase tracking-wide">ตั้งค่าบัญชี</h3>
+                    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                        <a href="#" class="flex justify-between items-center p-5 border-b border-gray-50 active:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-4 text-gray-800 font-bold">
+                                <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+                                    <i class="fa-solid fa-headset text-lg"></i>
+                                </div> 
+                                ศูนย์ช่วยเหลือ
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-gray-300 text-sm"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Navbar -->
-        <nav class="fixed bottom-0 w-full max-w-[420px] bg-white border-t border-gray-100 flex justify-around items-center pt-3 pb-5 z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
-            <a href="#" onclick="showHome()" id="navHome" class="flex flex-col items-center text-blue-600 transition">
-                <i class="fa-solid fa-house text-[22px] mb-1"></i>
+        <!-- Navbar (Glass Effect) -->
+        <nav class="fixed bottom-0 w-full max-w-[420px] glass-effect border-t border-gray-100/50 flex justify-around items-center pt-3 pb-6 z-20 shadow-[0_-5px_20px_rgba(0,0,0,0.03)]">
+            <a href="#" onclick="showHome()" id="navHome" class="flex flex-col items-center text-blue-600 transition-colors group">
+                <div class="w-14 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1 group-hover:bg-blue-200 transition-colors"><i class="fa-solid fa-house text-lg"></i></div>
                 <span class="text-[10px] font-bold">หน้าแรก</span>
             </a>
-            <a href="#" onclick="showStatusModal()" class="flex flex-col items-center text-gray-400 hover:text-blue-500 transition">
-                <i class="fa-solid fa-receipt text-[22px] mb-1"></i>
-                <span class="text-[10px] font-semibold">ใบเสร็จ</span>
+            <a href="#" onclick="showStatusModal()" class="flex flex-col items-center text-gray-400 hover:text-blue-600 transition-colors group">
+                <div class="w-14 h-8 rounded-full flex items-center justify-center mb-1 group-hover:bg-blue-50 transition-colors"><i class="fa-solid fa-receipt text-lg"></i></div>
+                <span class="text-[10px] font-bold">ใบเสร็จ</span>
             </a>
-            <a href="#" onclick="showProfile()" id="navProfile" class="flex flex-col items-center text-gray-400 hover:text-blue-500 transition">
-                <i class="fa-solid fa-user text-[22px] mb-1"></i>
-                <span class="text-[10px] font-semibold">โปรไฟล์</span>
+            <a href="#" onclick="showProfile()" id="navProfile" class="flex flex-col items-center text-gray-400 hover:text-blue-600 transition-colors group">
+                <div class="w-14 h-8 rounded-full flex items-center justify-center mb-1 group-hover:bg-blue-50 transition-colors"><i class="fa-solid fa-user text-lg"></i></div>
+                <span class="text-[10px] font-bold">โปรไฟล์</span>
             </a>
         </nav>
     </div>
 
     <!-- Payment Method Modal -->
-    <div id="paymentMethodModal" class="fixed inset-0 bg-black bg-opacity-70 items-center justify-center z-50 hidden p-4 backdrop-blur-sm">
-        <div class="checkout-modal w-full max-w-[340px] rounded-2xl p-5 relative">
-            <button onclick="closePaymentMethodModal()" class="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+    <div id="paymentMethodModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm items-center justify-center z-50 hidden p-4 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-[340px] rounded-3xl p-6 relative shadow-2xl animate-modal">
+            <button onclick="closePaymentMethodModal()" class="absolute top-4 right-4 w-8 h-8 bg-gray-50 text-gray-400 hover:text-gray-700 rounded-full flex items-center justify-center font-bold transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
            
-            <h3 class="text-base font-bold text-gray-800 text-center mb-1">เลือกช่องทางชำระเงิน</h3>
-            <p class="text-xs text-gray-600 text-center mb-4 font-medium" id="methodPkgInfo">แพ็คเกจที่เลือก</p>
+            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                <i class="fa-solid fa-wallet"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-gray-900 text-center mb-1 tracking-tight">เลือกช่องทางชำระเงิน</h3>
+            <p class="text-[11px] text-gray-500 text-center mb-6 font-medium px-2" id="methodPkgInfo">แพ็คเกจที่เลือก</p>
            
             <div class="space-y-3">
-                <button onclick="selectPaymentMethod('truemoney')" class="w-full flex items-center gap-3 p-3.5 bg-white border-2 border-blue-500 rounded-xl active:scale-95 transition shadow-sm">
-                    <img src="https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png" class="h-11 object-contain">
+                <button onclick="selectPaymentMethod('truemoney')" class="w-full flex items-center gap-4 p-4 bg-white border-2 border-orange-500 rounded-2xl active:scale-95 hover:bg-orange-50/50 transition-all shadow-sm">
+                    <img src="https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png" class="h-10 object-contain drop-shadow-sm">
                     <div class="text-left flex-1">
-                        <div class="font-bold text-sm text-gray-800">TrueMoney Wallet</div>
-                        <div class="text-[10px] text-blue-600 font-semibold">ซองของขวัญเท่านั้น</div>
+                        <div class="font-bold text-sm text-gray-900">TrueMoney Wallet</div>
+                        <div class="text-[10px] text-orange-600 font-bold bg-orange-100 px-2 py-0.5 rounded-md inline-block mt-1">ซองของขวัญเท่านั้น</div>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-blue-500"></i>
+                    <i class="fa-solid fa-chevron-right text-orange-500"></i>
                 </button>
 
-                <button onclick="selectPaymentMethod('promptpay')" class="w-full flex items-center gap-3 p-3.5 bg-gray-100 border border-gray-200 rounded-xl opacity-70 relative">
-                    <div class="h-11 w-11 bg-green-100 rounded-lg flex items-center justify-center text-green-600 font-bold text-sm">PP</div>
+                <button onclick="selectPaymentMethod('promptpay')" class="w-full flex items-center gap-4 p-4 bg-gray-50 border border-gray-200 rounded-2xl opacity-60 relative cursor-not-allowed">
+                    <div class="h-10 w-10 bg-gray-200 rounded-xl flex items-center justify-center text-gray-500 font-black text-sm shadow-inner">PP</div>
                     <div class="text-left flex-1">
                         <div class="font-bold text-sm text-gray-600">พร้อมเพย์</div>
-                        <div class="text-[10px] text-red-500 font-semibold">ยังไม่พร้อมให้บริการ</div>
+                        <div class="text-[10px] text-gray-400 font-bold mt-1">ปิดปรับปรุงชั่วคราว</div>
                     </div>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded font-bold">ปิด</span>
+                    <span class="absolute top-3 right-3 bg-red-500 text-white text-[9px] px-2 py-0.5 rounded-md font-bold shadow-sm">ปิด</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Payment Modal (TrueMoney) -->
-    <div id="paymentModal" class="fixed inset-0 bg-black/60 z-50 hidden">
-        <div class="bg-white w-full h-full max-w-[420px] mx-auto flex flex-col relative">
-            <div class="flex items-center justify-between px-4 py-3.5 border-b border-gray-100 bg-white sticky top-0 z-10">
-                <h3 class="font-bold text-gray-800 text-base">ชำระเงิน</h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 active:bg-gray-200">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+    <div id="paymentModal" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 hidden flex-col justify-end">
+        <div class="bg-white w-full max-w-[420px] h-[92vh] mx-auto flex flex-col relative rounded-t-3xl shadow-2xl animate-modal">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white sticky top-0 z-10 rounded-t-3xl">
+                <h3 class="font-extrabold text-gray-900 text-lg tracking-tight">ยืนยันชำระเงิน</h3>
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 active:scale-95 transition-all">
+                    <i class="fa-solid fa-chevron-down text-lg"></i>
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto px-4 py-4 pb-28">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-20 h-20 bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden">
-                        <img id="modalPkgImage" src="" class="w-full h-full object-contain p-1.5">
+            <div class="flex-1 overflow-y-auto px-5 py-5 pb-32">
+                <!-- ข้อมูลแพ็คเกจ -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-4 shadow-sm flex items-center gap-4 mb-5">
+                    <div class="w-20 h-20 bg-gray-50/80 rounded-2xl border border-gray-100 flex items-center justify-center flex-shrink-0 shadow-inner p-2">
+                        <img id="modalPkgImage" src="" class="w-full h-full object-contain drop-shadow-md">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <div class="text-xs text-gray-400 mb-0.5">รายการ</div>
-                        <div class="font-bold text-gray-800 text-sm leading-tight" id="selectedPackageText">แพ็คเกจ</div>
-                        <div class="mt-1.5">
-                            <span class="text-xs text-gray-500">คุณจะได้รับ</span>
-                            <span class="text-sm font-semibold text-emerald-600 ml-1" id="receiveText">...</span>
+                        <div class="text-[11px] font-bold text-gray-400 mb-1 uppercase tracking-wide">สั่งซื้อรายการ</div>
+                        <div class="font-extrabold text-gray-900 text-sm leading-tight truncate" id="selectedPackageText">แพ็คเกจ</div>
+                        <div class="mt-2 flex items-center gap-1.5">
+                            <span class="text-[11px] font-medium text-gray-500">รับ:</span>
+                            <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-md" id="receiveText">...</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- แสดง UID ที่กรอกไว้แล้ว (ไม่ต้องกรอกใหม่) อยู่ด้านบนตรงรายการ -->
-                <div id="modalUidDisplay" class="hidden mb-4 bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-center gap-3">
-                    <img id="modalGameLogo" src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png" class="w-10 h-10 rounded-xl object-cover flex-shrink-0 border border-gray-200">
+                <!-- แสดง UID ที่กรอกไว้แล้ว -->
+                <div id="modalUidDisplay" class="hidden mb-5 bg-gray-50 border border-gray-200 rounded-2xl p-4 flex items-center gap-4 shadow-inner">
+                    <img id="modalGameLogo" src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png" class="w-12 h-12 rounded-xl object-cover flex-shrink-0 border border-gray-200 shadow-sm">
                     <div class="min-w-0 flex-1">
-                        <div class="text-[10px] text-gray-500 mb-0.5">UID</div>
-                        <div class="text-sm font-bold text-gray-800 break-all" id="modalUidValue">-</div>
+                        <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1">เติมเข้าบัญชี (UID)</div>
+                        <div class="text-sm font-black text-gray-800 break-all bg-white px-3 py-1.5 rounded-lg border border-gray-100 shadow-sm" id="modalUidValue">-</div>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-4 mb-5 text-center">
-                    <div class="text-xs text-gray-500 mb-1">ยอดที่ต้องชำระ</div>
-                    <div class="text-2xl font-extrabold text-blue-600 tracking-tight" id="payText">0 บาท</div>
-                    <div class="mt-1.5 inline-flex items-center gap-1.5 bg-white/80 text-blue-600 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-                        <img src="https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png" class="h-3.5">
-                        ชำระด้วยซองทรูมันนี่เท่านั้น
+                <!-- ยอดชำระ -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50/30 border border-blue-100 rounded-3xl p-5 mb-6 text-center shadow-sm relative overflow-hidden">
+                    <div class="text-[11px] font-bold text-gray-500 mb-1 relative z-10 uppercase tracking-wide">ยอดที่ต้องสร้างซองทรูมันนี่</div>
+                    <div class="text-3xl font-black text-blue-700 tracking-tight mb-2 relative z-10" id="payText">0 บาท</div>
+                    <div class="inline-flex items-center justify-center gap-2 bg-white text-orange-600 text-[11px] font-bold px-3 py-1.5 rounded-full shadow-sm border border-orange-100 relative z-10">
+                        <img src="https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png" class="h-4 drop-shadow-sm">
+                        รองรับเฉพาะซองของขวัญเท่านั้น
                     </div>
                 </div>
 
                 <!-- ช่องกรอกปกติ (เกม/มือถือ/gift) -->
-                <div class="mb-5" id="normalInputBox">
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5" id="accountLabel">ข้อมูลบัญชีเกม</label>
+                <div class="mb-6 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm" id="normalInputBox">
+                    <label class="block text-xs font-bold text-gray-800 mb-2" id="accountLabel">ข้อมูลบัญชีเกม</label>
                     <div class="relative">
                         <input type="text" id="uidInput" placeholder="กรอกข้อมูล..." 
-                            class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-16 transition">
-                        <button onclick="pasteUid()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold active:bg-blue-100">
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-20 transition shadow-inner">
+                        <button onclick="pasteUid()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-xs font-bold active:scale-95 transition hover:bg-blue-100">
                             วาง
                         </button>
                     </div>
                 </div>
 
                 <!-- ช่องกรอกสำหรับขาย ID เกม (เบอร์ + อีเมล) -->
-                <div class="mb-5 hidden" id="gameIdInputBox">
-                    <div class="mb-3">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">เบอร์โทรศัพท์</label>
+                <div class="mb-6 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm hidden" id="gameIdInputBox">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-800 mb-2">เบอร์โทรศัพท์</label>
                         <input type="tel" id="phoneInput" placeholder="เช่น 08x-xxx-xxxx" 
-                            class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition shadow-inner">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">อีเมล</label>
+                        <label class="block text-xs font-bold text-gray-800 mb-2">อีเมล</label>
                         <input type="email" id="emailInput" placeholder="เช่น name@gmail.com" 
-                            class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                            class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition shadow-inner">
                     </div>
-                    <p class="text-[11px] text-gray-500 mt-2">เราจะส่งรหัส ID เกมไปที่อีเมลและเบอร์โทรศัพท์ของคุณ</p>
+                    <p class="text-[11px] text-gray-500 mt-2.5 font-medium">เราจะส่งรหัส ID เกมไปที่อีเมลและเบอร์โทรศัพท์ของคุณ</p>
                 </div>
 
-                <div class="mb-5 border border-gray-200 rounded-2xl overflow-hidden">
-                    <button onclick="toggleGuide()" class="w-full flex items-center justify-between p-3.5 bg-gray-50 active:bg-gray-100">
-                        <div class="flex items-center gap-2">
-                            <img src="https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png" class="h-5">
-                            <span class="text-xs font-semibold text-gray-700">วิธีส่งซองทรูมันนี่</span>
+                <!-- วิธีส่งซอง -->
+                <div class="mb-6 border border-gray-200 rounded-3xl overflow-hidden shadow-sm bg-white">
+                    <button onclick="toggleGuide()" class="w-full flex items-center justify-between p-4 bg-gray-50 active:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-gray-100">
+                                <i class="fa-solid fa-circle-question text-orange-500"></i>
+                            </div>
+                            <span class="text-sm font-bold text-gray-800">วิธีสร้างซองทรูมันนี่ที่ถูกต้อง</span>
                         </div>
-                        <i id="guideChevron" class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform"></i>
+                        <i id="guideChevron" class="fa-solid fa-chevron-down text-gray-400 text-sm transition-transform duration-300"></i>
                     </button>
-                    <div id="guideContent" class="hidden p-3 space-y-2.5 bg-white border-t border-gray-100">
-                        <p class="text-[11px] text-gray-500 mb-1">กดที่รูปเพื่อดูขนาดใหญ่ · ต้องส่งซองตรงตามยอดที่ต้องชำระ</p>
-                        <a href="https://i.ibb.co/V0W6Lyvd/D69-AC6-C5-D54-E-4-A4-F-A12-B-2-FFCD5-B99-C24.jpg" target="_blank" class="block rounded-lg overflow-hidden border border-gray-100">
+                    <div id="guideContent" class="hidden p-4 space-y-3 bg-white border-t border-gray-100">
+                        <p class="text-[11px] font-bold text-red-600 bg-red-50 p-2 rounded-lg text-center mb-2 border border-red-100">⚠️ สำคัญ: ต้องเลือก "แบ่งจำนวนเงินเท่ากัน"</p>
+                        <a href="https://i.ibb.co/V0W6Lyvd/D69-AC6-C5-D54-E-4-A4-F-A12-B-2-FFCD5-B99-C24.jpg" target="_blank" class="block rounded-xl overflow-hidden border border-gray-100 shadow-sm">
                             <img src="https://i.ibb.co/V0W6Lyvd/D69-AC6-C5-D54-E-4-A4-F-A12-B-2-FFCD5-B99-C24.jpg" class="w-full object-cover" style="aspect-ratio: 739/990;">
                         </a>
-                        <a href="https://i.ibb.co/cnXb4fn/IMG-3040.jpg" target="_blank" class="block rounded-lg overflow-hidden border border-gray-100">
+                        <a href="https://i.ibb.co/cnXb4fn/IMG-3040.jpg" target="_blank" class="block rounded-xl overflow-hidden border border-gray-100 shadow-sm">
                             <img src="https://i.ibb.co/cnXb4fn/IMG-3040.jpg" class="w-full object-cover" style="aspect-ratio: 1125/1414;">
                         </a>
-                        <a href="https://i.ibb.co/Xx2sZc0W/1-CED66-FA-7-A33-4-FB3-8-A1-C-1185671737-BC.jpg" target="_blank" class="block rounded-lg overflow-hidden border border-gray-100">
+                        <a href="https://i.ibb.co/Xx2sZc0W/1-CED66-FA-7-A33-4-FB3-8-A1-C-1185671737-BC.jpg" target="_blank" class="block rounded-xl overflow-hidden border border-gray-100 shadow-sm">
                             <img src="https://i.ibb.co/Xx2sZc0W/1-CED66-FA-7-A33-4-FB3-8-A1-C-1185671737-BC.jpg" class="w-full object-cover" style="aspect-ratio: 1023/1537;">
                         </a>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">ลิงก์ซองทรูมันนี่</label>
-                    <input type="text" id="voucherInput" placeholder="https://gift.truemoney.com/..." 
-                        class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
-                    <p class="text-[11px] text-gray-400 mt-1.5">วางลิงก์ซองที่มียอดตรงกับจำนวนที่ต้องชำระ</p>
+                <!-- Input ลิงก์ซอง -->
+                <div class="bg-orange-50/50 p-4 rounded-3xl border border-orange-100 shadow-sm">
+                    <label class="block text-xs font-bold text-gray-800 mb-2 flex justify-between items-center">
+                        <span>ลิงก์ซองของขวัญทรูมันนี่</span>
+                        <i class="fa-solid fa-link text-orange-500"></i>
+                    </label>
+                    <input type="text" id="voucherInput" placeholder="https://gift.truemoney.com/campaign/..." 
+                        class="w-full p-4 bg-white border-2 border-orange-200 rounded-xl text-sm font-bold text-gray-800 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition shadow-inner">
+                    <p class="text-[11px] font-medium text-orange-600 mt-2">วางลิงก์ซองที่มียอดตรงกับจำนวนที่ต้องชำระด้านบน</p>
                 </div>
             </div>
 
-            <div class="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-                <button id="submitBtn" onclick="sendToTelegram()" class="w-full bg-blue-600 hover:bg-blue-700 py-3.5 rounded-xl font-bold text-white shadow-md active:scale-[0.98] transition text-sm">
+            <div class="absolute bottom-0 left-0 right-0 p-5 bg-white border-t border-gray-100 shadow-[0_-10px_30px_rgba(0,0,0,0.06)] rounded-t-3xl z-20">
+                <button id="submitBtn" onclick="sendToTelegram()" class="w-full btn-primary py-4 rounded-2xl font-bold text-white text-base">
                     ยืนยันชำระเงิน
                 </button>
             </div>
@@ -713,60 +800,60 @@
     </div>
 
     <!-- Status Modal -->
-    <div id="statusModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="w-full max-w-[400px] bg-white rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col">
-            <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100 sticky top-0 bg-white z-10">
-                <h3 class="text-lg font-bold text-gray-800">ประวัติการสั่งซื้อ</h3>
-                <button onclick="closeStatusModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 active:bg-gray-200">
-                    <i class="fa-solid fa-xmark"></i>
+    <div id="statusModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity duration-300">
+        <div class="w-full max-w-[400px] bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col animate-modal">
+            <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                <h3 class="text-xl font-extrabold text-gray-900 tracking-tight">ประวัติการสั่งซื้อ</h3>
+                <button onclick="closeStatusModal()" class="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 active:scale-95 transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <div id="statusOrderList" class="flex-1 overflow-y-auto px-4 py-3 space-y-3"></div>
+            <div id="statusOrderList" class="flex-1 overflow-y-auto px-5 py-4 space-y-4"></div>
 
-            <div class="p-4 border-t border-gray-100 bg-gray-50">
-                <button onclick="closeStatusModal()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-bold text-white text-sm active:scale-[0.98] transition">
-                    ปิด
+            <div class="p-5 border-t border-gray-100 bg-gray-50">
+                <button onclick="closeStatusModal()" class="w-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 py-3.5 rounded-2xl font-bold text-sm shadow-sm active:scale-95 transition-all">
+                    ปิดหน้าต่าง
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Alert Modal -->
-    <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-70 items-center justify-center z-50 hidden p-4 backdrop-blur-sm">
-        <div class="bg-white w-full max-w-[300px] rounded-2xl p-5 text-center shadow-2xl relative">
-            <div id="alertIcon" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"></div>
-            <h3 id="alertTitle" class="text-base font-bold text-gray-800 mb-1">แจ้งเตือน</h3>
-            <p id="alertMessage" class="text-xs text-gray-500 mb-5"></p>
-            <button onclick="closeAlertModal()" class="w-full bg-blue-600 hover:bg-blue-700 py-2.5 rounded-xl font-bold text-white text-sm shadow-md transition active:scale-95">
-                ตกลง
+    <div id="alertModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm items-center justify-center z-50 hidden p-4 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-[300px] rounded-3xl p-6 text-center shadow-2xl relative animate-modal">
+            <div id="alertIcon" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner"></div>
+            <h3 id="alertTitle" class="text-lg font-extrabold text-gray-900 mb-1.5 tracking-tight">แจ้งเตือน</h3>
+            <p id="alertMessage" class="text-sm text-gray-500 mb-6 font-medium"></p>
+            <button onclick="closeAlertModal()" class="w-full btn-primary py-3.5 rounded-2xl font-bold text-white text-sm shadow-md transition active:scale-95">
+                ตกลงรับทราบ
             </button>
         </div>
     </div>
 
     <!-- UID Guide Image Modal -->
-    <div id="uidGuideModal" class="fixed inset-0 bg-black/80 z-[60] hidden items-center justify-center p-3 backdrop-blur-sm" onclick="closeUidGuide()">
-        <div class="relative w-full max-w-[400px] max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
-            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-white sticky top-0">
-                <h3 class="font-bold text-gray-800 text-sm">วิธีดู UID</h3>
-                <button onclick="closeUidGuide()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 active:bg-gray-200">
-                    <i class="fa-solid fa-xmark"></i>
+    <div id="uidGuideModal" class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4 backdrop-blur-md transition-opacity duration-300" onclick="closeUidGuide()">
+        <div class="relative w-full max-w-[400px] max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl animate-modal" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white sticky top-0">
+                <h3 class="font-extrabold text-gray-900 text-base">วิธีดู UID ของคุณ</h3>
+                <button onclick="closeUidGuide()" class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 active:scale-95 transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <div class="overflow-y-auto max-h-[calc(90vh-56px)]">
-                <img id="uidGuideImg" src="" class="w-full h-auto object-contain" alt="วิธีดู UID">
+            <div class="overflow-y-auto max-h-[calc(90vh-68px)] p-2 bg-gray-50">
+                <img id="uidGuideImg" src="" class="w-full h-auto object-contain rounded-2xl shadow-sm border border-gray-200" alt="วิธีดู UID">
             </div>
         </div>
     </div>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
         new Swiper(".promoSwiper", {
             slidesPerView: 1, loop: true,
-            autoplay: { delay: 3000, disableOnInteraction: false },
+            autoplay: { delay: 3500, disableOnInteraction: false },
             pagination: { el: ".swiper-pagination", clickable: true },
+            effect: "fade", // Add smooth fade effect if Swiper supports it
+            fadeEffect: { crossFade: true }
         });
 
         new Swiper(".hotPkgSwiper", {
@@ -815,11 +902,13 @@
             const loader = document.getElementById('pageLoader');
             if (loader) {
                 loader.classList.remove('hidden');
+                setTimeout(() => loader.style.opacity = '1', 10);
             }
             setTimeout(() => {
                 if (typeof callback === 'function') callback();
                 if (loader) {
-                    loader.classList.add('hidden');
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.classList.add('hidden'), 300);
                 }
             }, delay);
         }
@@ -844,10 +933,10 @@
             titleEl.innerText = title;
             msgEl.innerText = message;
             if (type === 'success') {
-                iconEl.className = "w-12 h-12 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl";
+                iconEl.className = "w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner border border-green-100";
                 iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
             } else {
-                iconEl.className = "w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl";
+                iconEl.className = "w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner border border-red-100";
                 iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
             }
             modal.classList.remove('hidden');
@@ -879,7 +968,7 @@
             'roblox': {
                 name: 'Roblox',
                 inputLabel: 'Username (ชื่อผู้ใช้ Roblox)',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/512px-Roblox_player_icon_black.svg.png',
+                logo: 'https://i.ibb.co/JFy0v0tW/Roblox-Corporation-2025-logo-svg.webp', // Updated logo to match main page
                 packages: [
                     { amount: '416 Robux', price: 50, img: 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png' },
                     { amount: '895 Robux', price: 100, img: 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png' },
@@ -918,6 +1007,12 @@
             document.getElementById('giftSection').classList.add('hidden');
             document.getElementById('gameIdSection').classList.add('hidden');
             document.getElementById('profileSection').classList.add('hidden');
+            
+            // Remove active bg from nav icons
+            document.querySelectorAll('nav a div').forEach(el => {
+                el.classList.remove('bg-blue-100');
+                el.classList.add('bg-transparent');
+            });
         }
 
         function showHome() {
@@ -925,6 +1020,7 @@
                 resetNav();
                 document.getElementById('homeSection').classList.remove('hidden');
                 document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             });
         }
 
@@ -933,6 +1029,7 @@
                 resetNav();
                 document.getElementById('profileSection').classList.remove('hidden');
                 document.getElementById('navProfile').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('navProfile').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             });
         }
 
@@ -940,6 +1037,7 @@
             withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             const data = gameData[gameKey];
             document.getElementById('packageSection').classList.remove('hidden');
             document.getElementById('gameTitleDisplay').innerText = data.name;
@@ -949,9 +1047,16 @@
             listEl.innerHTML = '';
             data.packages.forEach(pkg => {
                 const item = document.createElement('div');
-                item.className = 'bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col';
+                item.className = 'bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all flex flex-col group';
                 item.onclick = () => showPackageDetail('game', data.name, pkg.amount, pkg.price, pkg.img, data.inputLabel, gameKey);
-                item.innerHTML = `<div class="w-full bg-gray-50 flex justify-center items-center"><img src="${pkg.img}" class="w-full h-auto object-cover rounded-t-2xl"></div><div class="p-3 text-center bg-white"><div class="text-[11px] text-gray-600 font-medium mb-2">${pkg.amount}</div><div class="bg-blue-50 text-blue-600 font-bold text-sm py-1.5 rounded-lg w-full">${pkg.price} บาท</div></div>`;
+                item.innerHTML = `
+                    <div class="w-full bg-gray-50/50 flex justify-center items-center p-3">
+                        <img src="${pkg.img}" class="w-full h-auto object-cover rounded-xl drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4 text-center bg-white border-t border-gray-50">
+                        <div class="text-[11px] text-gray-800 font-bold mb-2">${pkg.amount}</div>
+                        <div class="bg-blue-50 text-blue-700 font-extrabold text-sm py-2 rounded-xl w-full border border-blue-100">${pkg.price} บาท</div>
+                    </div>`;
                 listEl.appendChild(item);
             });
             });
@@ -963,6 +1068,7 @@
             withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             document.getElementById('packageDetailSection').classList.remove('hidden');
             lastPackageGameKey = gameKey || '';
 
@@ -1116,11 +1222,12 @@
             withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             document.getElementById('mobileSection').classList.remove('hidden');
             selectedCarrier = '';
             document.querySelectorAll('.carrier-btn').forEach(btn => {
                 btn.classList.remove('border-blue-500', 'bg-blue-50');
-                btn.classList.add('border-gray-200');
+                btn.classList.add('border-gray-100', 'bg-gray-50');
             });
             document.getElementById('mobileAmount').value = '';
             document.getElementById('mobileBonusBox').classList.add('hidden');
@@ -1132,10 +1239,10 @@
             document.querySelectorAll('.carrier-btn').forEach(btn => {
                 if (btn.dataset.carrier === name) {
                     btn.classList.add('border-blue-500', 'bg-blue-50');
-                    btn.classList.remove('border-gray-200');
+                    btn.classList.remove('border-gray-100', 'bg-gray-50');
                 } else {
                     btn.classList.remove('border-blue-500', 'bg-blue-50');
-                    btn.classList.add('border-gray-200');
+                    btn.classList.add('border-gray-100', 'bg-gray-50');
                 }
             });
         }
@@ -1169,24 +1276,27 @@
             withPageLoad(() => {
             resetNav();
             document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+            document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
             document.getElementById('giftSection').classList.remove('hidden');
 
             const listEl = document.getElementById('giftList');
             listEl.innerHTML = '';
             giftCards.forEach(card => {
                 const item = document.createElement('div');
-                item.className = 'bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col';
+                item.className = 'bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.04)] cursor-pointer active:scale-95 hover:-translate-y-1 transition-all flex flex-col group';
                 item.onclick = () => openModal('gift', card.name, card.amount, card.price, card.img, 'อีเมลหรือเบอร์โทรศัพท์ (สำหรับรับโค้ด)');
                 item.innerHTML = `
-                    <div class="w-full bg-gray-50 flex justify-center items-center p-4 h-24">
-                        <img src="${card.img}" class="h-14 object-contain">
+                    <div class="w-full bg-gray-50/50 flex justify-center items-center p-4 h-28">
+                        <img src="${card.img}" class="h-16 object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300">
                     </div>
-                    <div class="p-3 text-center bg-white">
-                        <div class="text-[11px] text-gray-600 font-medium mb-0.5">${card.name}</div>
-                        <div class="text-xs font-bold text-gray-800 mb-1.5">${card.amount}</div>
-                        <div class="flex items-center justify-center gap-1.5 mb-1">
+                    <div class="p-4 text-center bg-white border-t border-gray-50 flex flex-col justify-between flex-1">
+                        <div>
+                            <div class="text-[11px] text-gray-500 font-medium mb-1">${card.name}</div>
+                            <div class="text-sm font-extrabold text-gray-900 mb-2">${card.amount}</div>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 mb-1">
                             <span class="text-[10px] text-gray-400 line-through">${card.original}฿</span>
-                            <span class="text-xs font-bold text-red-500">${card.price} บาท</span>
+                            <span class="text-sm font-black text-red-600">${card.price} ฿</span>
                         </div>
                     </div>`;
                 listEl.appendChild(item);
@@ -1229,6 +1339,7 @@
             withPageLoad(() => {
                 resetNav();
                 document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('navHome').querySelector('div').classList.replace('bg-transparent', 'bg-blue-100');
                 document.getElementById('gameIdSection').classList.remove('hidden');
                 document.getElementById('gameIdPhone').value = '';
                 document.getElementById('gameIdEmail').value = '';
@@ -1316,6 +1427,7 @@
                 }
 
                 document.getElementById('paymentModal').classList.remove('hidden');
+                document.getElementById('paymentModal').classList.add('flex');
                 });
             } else if (method === 'promptpay') {
                 showCustomAlert('ยังไม่พร้อมใช้งาน', 'ช่องทางพร้อมเพย์ปิดชั่วคราว รออัปเดตเร็วๆ นี้', 'error');
@@ -1324,6 +1436,7 @@
 
         function closeModal() {
             document.getElementById('paymentModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('flex');
             const guide = document.getElementById('guideContent');
             if (guide && !guide.classList.contains('hidden')) {
                 guide.classList.add('hidden');
@@ -1478,12 +1591,12 @@ ${voucher}
 
             if (orders.length === 0) {
                 listEl.innerHTML = `
-                    <div class="text-center py-10">
-                        <div class="w-14 h-14 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner border border-gray-100">
                             <i class="fa-solid fa-receipt"></i>
                         </div>
-                        <h3 class="text-base font-bold text-gray-800">ไม่พบประวัติ</h3>
-                        <p class="text-xs text-gray-400 mt-1">ยังไม่มีรายการสั่งซื้อในระบบ</p>
+                        <h3 class="text-base font-extrabold text-gray-800 tracking-tight">ไม่พบประวัติ</h3>
+                        <p class="text-xs text-gray-500 mt-1 font-medium">ยังไม่มีรายการสั่งซื้อในระบบ</p>
                     </div>
                 `;
             } else {
@@ -1495,20 +1608,20 @@ ${voucher}
                     if (isSuccess) {
                         statusIcon = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
                         statusBg = 'bg-emerald-50';
-                        statusTextColor = 'text-emerald-600';
-                        statusLabelColor = 'text-emerald-500';
-                        statusText = 'ยืนยันการเติมสำเร็จ';
+                        statusTextColor = 'text-emerald-700';
+                        statusLabelColor = 'text-emerald-600 bg-emerald-100/50';
+                        statusText = 'สำเร็จ';
                     } else if (isChecking) {
                         statusIcon = '<i class="fa-solid fa-spinner animate-spin text-blue-500"></i>';
                         statusBg = 'bg-blue-50';
-                        statusTextColor = 'text-blue-600';
-                        statusLabelColor = 'text-blue-500';
+                        statusTextColor = 'text-blue-700';
+                        statusLabelColor = 'text-blue-600 bg-blue-100/50';
                         statusText = 'กำลังตรวจสอบ';
                     } else {
                         statusIcon = '<i class="fa-solid fa-spinner animate-spin text-amber-500"></i>';
                         statusBg = 'bg-amber-50';
-                        statusTextColor = 'text-amber-600';
-                        statusLabelColor = 'text-amber-500';
+                        statusTextColor = 'text-amber-700';
+                        statusLabelColor = 'text-amber-600 bg-amber-100/50';
                         statusText = 'กำลังดำเนินการ';
                     }
                     const timeText = isSuccess
@@ -1516,33 +1629,35 @@ ${voucher}
                         : `${order.date} · ${order.time}`;
 
                     return `
-                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-                        <button onclick="toggleOrderDetail(${index})" class="w-full text-left p-4 active:bg-gray-50 transition">
+                    <div class="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <button onclick="toggleOrderDetail(${index})" class="w-full text-left p-4 active:bg-gray-50 transition-colors">
                             <div class="flex items-start justify-between gap-3">
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-9 h-9 rounded-full ${statusBg} flex items-center justify-center flex-shrink-0 text-lg">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-12 h-12 rounded-2xl ${statusBg} border border-white flex items-center justify-center flex-shrink-0 text-xl shadow-inner">
                                         ${statusIcon}
                                     </div>
                                     <div class="min-w-0">
-                                        <div class="font-bold text-sm text-gray-800 truncate">${order.game}</div>
-                                        <div class="text-[11px] text-gray-500 mt-0.5">${order.package}</div>
-                                        <div class="text-[10px] text-gray-400 mt-0.5">${timeText}</div>
+                                        <div class="font-extrabold text-sm text-gray-900 truncate tracking-tight">${order.game}</div>
+                                        <div class="text-[11px] font-bold text-gray-500 mt-0.5 truncate max-w-[120px]">${order.package}</div>
+                                        <div class="text-[10px] text-gray-400 mt-1 font-medium">${timeText}</div>
                                     </div>
                                 </div>
-                                <div class="text-right flex-shrink-0">
-                                    <div class="font-bold text-sm ${statusTextColor}">${order.price} ฿</div>
-                                    <div class="text-[10px] font-semibold ${statusLabelColor} mt-0.5">${statusText}</div>
-                                    <i id="orderChevron${index}" class="fa-solid fa-chevron-down text-gray-300 text-[10px] mt-1 transition-transform"></i>
+                                <div class="text-right flex-shrink-0 flex flex-col items-end">
+                                    <div class="font-black text-sm ${statusTextColor}">${order.price} ฿</div>
+                                    <div class="text-[10px] font-bold ${statusLabelColor} px-2 py-0.5 rounded-md mt-1 mb-1.5">${statusText}</div>
+                                    <div class="w-6 h-6 rounded-full bg-gray-50 flex items-center justify-center">
+                                        <i id="orderChevron${index}" class="fa-solid fa-chevron-down text-gray-400 text-[10px] transition-transform duration-300"></i>
+                                    </div>
                                 </div>
                             </div>
                         </button>
-                        <div id="orderDetail${index}" class="hidden px-4 pb-4 border-t border-gray-100">
-                            <div class="space-y-2 pt-3 text-sm">
-                                <div class="flex justify-between"><span class="text-gray-400 text-xs">รหัสอ้างอิง</span><span class="font-medium text-gray-700 text-xs">${order.id}</span></div>
-                                <div class="flex justify-between"><span class="text-gray-400 text-xs">รายการ</span><span class="font-medium text-gray-800 text-xs text-right max-w-[60%]">${order.game}</span></div>
-                                <div class="flex justify-between"><span class="text-gray-400 text-xs">แพ็คเกจ</span><span class="font-medium text-blue-600 text-xs">${order.package}</span></div>
-                                <div class="flex justify-between gap-2"><span class="text-gray-400 text-xs flex-shrink-0">${labelName}</span><span class="font-medium text-gray-800 text-xs text-right break-all">${order.uid}</span></div>
-                                <div class="flex justify-between pt-2 border-t border-gray-100"><span class="text-gray-500 font-medium text-xs">ยอดชำระ</span><span class="font-bold ${statusTextColor} text-sm">${order.price}.00 ฿</span></div>
+                        <div id="orderDetail${index}" class="hidden px-5 pb-5 border-t border-gray-50 bg-gray-50/50">
+                            <div class="space-y-3 pt-4 text-sm">
+                                <div class="flex justify-between items-center"><span class="text-gray-500 text-xs font-bold">รหัสอ้างอิง</span><span class="font-black text-gray-800 text-xs bg-white px-2 py-1 rounded-md border border-gray-100 shadow-sm">${order.id}</span></div>
+                                <div class="flex justify-between items-center"><span class="text-gray-500 text-xs font-bold">รายการ</span><span class="font-extrabold text-gray-900 text-xs text-right max-w-[60%]">${order.game}</span></div>
+                                <div class="flex justify-between items-center"><span class="text-gray-500 text-xs font-bold">แพ็คเกจ</span><span class="font-extrabold text-blue-600 text-xs">${order.package}</span></div>
+                                <div class="flex justify-between items-start gap-3"><span class="text-gray-500 text-xs font-bold flex-shrink-0">${labelName}</span><span class="font-bold text-gray-800 text-xs text-right break-all bg-white px-2 py-1.5 rounded-lg border border-gray-100 shadow-sm">${order.uid}</span></div>
+                                <div class="flex justify-between items-center pt-3 border-t border-gray-200/50"><span class="text-gray-600 font-extrabold text-xs">ยอดชำระสุทธิ</span><span class="font-black ${statusTextColor} text-base">${order.price}.00 ฿</span></div>
                             </div>
                         </div>
                     </div>
@@ -1576,4 +1691,3 @@ ${voucher}
     </script>
 </body>
 </html>
-
