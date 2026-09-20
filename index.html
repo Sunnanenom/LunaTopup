@@ -85,6 +85,11 @@
             50% { opacity: 0.75; }
         }
 
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
         .sidebar-enter { transform: translateX(100%); }
 
         .receipt-tear {
@@ -686,53 +691,77 @@
         </div>
     </div>
 
-    <!-- ========== ใบเสร็จ ========== -->
-    <div id="receiptModal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center p-4 backdrop-blur-sm">
-        <div class="w-full max-w-[360px] bg-white rounded-2xl overflow-hidden shadow-2xl modal-scale">
-            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white px-5 pt-6 pb-5 text-center relative">
-                <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fa-solid fa-receipt text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold">ใบเสร็จการสั่งซื้อ</h3>
-                <p class="text-blue-100 text-xs mt-1" id="receiptTime">-</p>
+    <!-- ========== ใบเสร็จ (ธีมกระดาษ) ========== -->
+    <div id="receiptModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="w-full max-w-[340px] bg-[#fdfbf7] rounded-sm overflow-hidden shadow-2xl modal-scale border border-stone-200/80" style="font-family: 'Prompt', system-ui, sans-serif;">
+            
+            <!-- Header แบบกระดาษ -->
+            <div class="px-5 pt-6 pb-4 text-center relative">
+                <div class="text-[11px] tracking-[0.2em] text-stone-400 font-medium mb-1">LUNATOPUP</div>
+                <h3 class="text-xl font-bold text-stone-800 tracking-tight">ใบเสร็จการสั่งซื้อ</h3>
+                <p class="text-[12px] text-stone-500 mt-1.5" id="receiptTime">-</p>
+                <div class="mt-4 border-t border-dashed border-stone-300"></div>
             </div>
-            <div class="receipt-tear bg-slate-50"></div>
 
-            <div class="px-5 py-4 space-y-3 text-sm">
+            <!-- รายละเอียด -->
+            <div class="px-5 pb-2 space-y-3.5 text-[13px]">
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-500">รหัสอ้างอิง</span>
-                    <span class="font-bold text-gray-800" id="receiptId">-</span>
+                    <span class="text-stone-500">รหัสอ้างอิง</span>
+                    <span class="font-semibold text-stone-800 tracking-wide" id="receiptId">-</span>
                 </div>
                 <div class="flex justify-between items-start gap-3">
-                    <span class="text-gray-500 flex-shrink-0">รายการ</span>
-                    <span class="font-medium text-gray-800 text-right" id="receiptGame">-</span>
+                    <span class="text-stone-500 flex-shrink-0">รายการ</span>
+                    <span class="font-medium text-stone-800 text-right" id="receiptGame">-</span>
                 </div>
                 <div class="flex justify-between items-start gap-3">
-                    <span class="text-gray-500 flex-shrink-0">แพ็คเกจ</span>
-                    <span class="font-medium text-blue-600 text-right" id="receiptPackage">-</span>
+                    <span class="text-stone-500 flex-shrink-0">แพ็คเกจ</span>
+                    <span class="font-semibold text-blue-600 text-right" id="receiptPackage">-</span>
                 </div>
                 <div class="flex justify-between items-start gap-3">
-                    <span class="text-gray-500 flex-shrink-0" id="receiptLabel">UID</span>
-                    <span class="font-medium text-gray-800 text-right break-all" id="receiptUid">-</span>
+                    <span class="text-stone-500 flex-shrink-0" id="receiptLabel">UID</span>
+                    <span class="font-medium text-stone-800 text-right break-all" id="receiptUid">-</span>
                 </div>
-                <div class="border-t border-dashed border-gray-200 pt-3 flex justify-between items-center">
-                    <span class="text-gray-600 font-medium">ยอดชำระ</span>
-                    <span class="text-lg font-extrabold text-blue-600" id="receiptPrice">0 บาท</span>
-                </div>
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-center">
-                    <div class="text-xs text-amber-700 font-medium" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
-                    <div class="text-[11px] text-amber-600 mt-0.5">ระบบจะดำเนินการให้อัตโนมัติ</div>
+
+                <div class="border-t border-dashed border-stone-300 pt-3.5 flex justify-between items-center">
+                    <span class="text-stone-600 font-medium">ยอดชำระ</span>
+                    <span class="text-xl font-bold text-stone-900 tracking-tight" id="receiptPrice">0 บาท</span>
                 </div>
             </div>
 
-            <div class="px-5 pb-5 pt-1 space-y-2">
-                <button onclick="closeReceiptAndShowHistory()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 py-3 rounded-xl font-bold text-white text-sm active:scale-[0.98] transition btn-press">
+            <!-- สถานะ + เอฟเฟคนุ่มๆ -->
+            <div class="px-5 py-4">
+                <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/60 p-4 text-center shadow-sm">
+                    <div class="absolute inset-0 opacity-60" style="background: linear-gradient(105deg, transparent 40%, rgba(251,191,36,0.18) 50%, transparent 60%); background-size: 200% 100%; animation: shimmer 2.8s ease-in-out infinite;"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-center gap-2 mb-1.5">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-60"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                            </span>
+                            <div class="text-[13px] font-semibold text-amber-800" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
+                        </div>
+                        <div class="text-[11px] text-amber-700/90 leading-relaxed">
+                            ระบบกำลังดำเนินการให้อัตโนมัติ<br>
+                            <span class="text-amber-600/80">กรุณารอสักครู่…</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-dashed border-stone-300 mx-5"></div>
+
+            <!-- ปุ่ม -->
+            <div class="px-5 py-4 space-y-2.5">
+                <button onclick="closeReceiptAndShowHistory()" class="w-full bg-stone-800 hover:bg-stone-900 py-3 rounded-xl font-bold text-white text-sm active:scale-[0.98] transition btn-press shadow-sm">
                     ดูประวัติการสั่งซื้อ
                 </button>
-                <button onclick="closeReceiptModal()" class="w-full bg-gray-100 py-3 rounded-xl font-semibold text-gray-600 text-sm active:scale-[0.98] transition">
+                <button onclick="closeReceiptModal()" class="w-full bg-stone-100 hover:bg-stone-200 py-3 rounded-xl font-semibold text-stone-600 text-sm active:scale-[0.98] transition">
                     ปิด
                 </button>
             </div>
+
+            <!-- ขอบล่างแบบฉีกกระดาษเบาๆ -->
+            <div class="h-3 bg-[radial-gradient(circle,_transparent_50%,_#fdfbf7_50%)] bg-[length:10px_10px] bg-bottom"></div>
         </div>
     </div>
 
