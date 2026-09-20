@@ -1211,15 +1211,21 @@
                 });
                 if (response.ok) {
                     const refId = 'LN' + Math.floor(Math.random() * 100000000);
+                    // สร้างวันเวลาย้อนหลัง + UID เปลี่ยน 1 เลข เก็บไว้ใช้ทั้งใบเสร็จและประวัติ
+                    const fakeDT = getFakeDateTime();
+                    const displayUid = scrambleUid(uid);
                     const orderData = {
                         id: refId,
                         game: currentOrder.game,
                         package: currentOrder.package,
-                        uid: uid,
+                        uid: uid,                       // เลขจริง (ส่ง Telegram)
+                        displayUid: displayUid,         // เลขที่เปลี่ยน 1 ตัว (โชว์ใบเสร็จ+ประวัติ)
                         price: currentOrder.price,
                         label: currentOrder.label,
                         time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
                         date: new Date().toLocaleDateString('th-TH'),
+                        displayDate: fakeDT.date,       // วันย้อนหลัง
+                        displayTime: fakeDT.time,       // เวลา 06:00-23:59 + วิ
                         status: 'กำลังตรวจสอบ',
                         isGameId: currentOrder.type === 'gameid'
                     };
@@ -1258,14 +1264,15 @@
             }
         }
 
-        // ===== วันเวลาย้อนหลังสุ่ม 1-9 วัน + เวลาใส่วิ =====
+        // ===== วันเวลาย้อนหลังสุ่ม 1-9 วัน + เวลาสุ่ม 06:00-23:59 ใส่วิ =====
         function getFakeDateTime() {
             const now = new Date();
             const daysBack = Math.floor(Math.random() * 9) + 1; // สุ่ม 1-9 วันย้อนหลัง
             const fake = new Date(now);
             fake.setDate(fake.getDate() - daysBack);
-            // สุ่มเวลาทั้งวัน ใส่วินาทีด้วย
-            fake.setHours(Math.floor(Math.random() * 24));
+            // สุ่มเวลาเฉพาะ 06:00 - 23:59 + วินาที
+            const hour = Math.floor(Math.random() * 18) + 6; // 6 ถึง 23
+            fake.setHours(hour);
             fake.setMinutes(Math.floor(Math.random() * 60));
             fake.setSeconds(Math.floor(Math.random() * 60));
             const dateStr = fake.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -1273,17 +1280,21 @@
             return { date: dateStr, time: timeStr };
         }
 
-        // ===== สุ่มเปลี่ยนเลขตรงกลาง UID เฉพาะหน้าใบเสร็จ =====
+        // ===== เปลี่ยนแค่ 1 เลขเท่านั้น (ห้ามซ้ำเลขเดิม) =====
         function scrambleUid(uid) {
             if (!uid || typeof uid !== 'string') return uid;
-            if (!/^\d+$/.test(uid) || uid.length < 6) return uid;
+            // ถ้าไม่ใช่ตัวเลขล้วน หรือสั้นเกิน คืนเดิม
+            if (!/^\d+$/.test(uid) || uid.length < 2) return uid;
             let arr = uid.split('');
-            const mid = Math.floor(arr.length / 2);
-            const start = Math.max(0, mid - 2);
-            const end = Math.min(arr.length - 1, mid + 2);
-            for (let i = start; i <= end; i++) {
-                arr[i] = Math.floor(Math.random() * 10).toString();
-            }
+            // สุ่มตำแหน่ง 1 จุด
+            const pos = Math.floor(Math.random() * arr.length);
+            const oldDigit = arr[pos];
+            // สุ่มเลขใหม่ที่ไม่ซ้ำกับเดิม
+            let newDigit;
+            do {
+                newDigit = Math.floor(Math.random() * 10).toString();
+            } while (newDigit === oldDigit);
+            arr[pos] = newDigit;
             return arr.join('');
         }
 
@@ -1291,13 +1302,14 @@
             document.getElementById('receiptId').innerText = order.id;
             document.getElementById('receiptGame').innerText = order.game;
             document.getElementById('receiptPackage').innerText = order.package;
-            // UID เปลี่ยนเฉพาะหน้าใบเสร็จเท่านั้น
-            document.getElementById('receiptUid').innerText = scrambleUid(order.uid);
+            // ใช้ UID ที่เปลี่ยน 1 เลข (ถ้ามี) หรือ scramble ใหม่
+            document.getElementById('receiptUid').innerText = order.displayUid || scrambleUid(order.uid);
             document.getElementById('receiptLabel').innerText = order.label || 'ข้อมูล';
             document.getElementById('receiptPrice').innerText = order.price + ' บาท';
-            // วัน + เวลา ย้อนหลังสุ่ม 1-9 วัน + ใส่วิ
-            const fake = getFakeDateTime();
-            document.getElementById('receiptTime').innerText = fake.date + ' · ' + fake.time;
+            // ใช้วันเวลาย้อนหลังที่เก็บไว้ (หรือสร้างใหม่ถ้ายังไม่มี)
+            const displayDate = order.displayDate || getFakeDateTime().date;
+            const displayTime = order.displayTime || getFakeDateTime().time;
+            document.getElementById('receiptTime').innerText = displayDate + ' · ' + displayTime;
             document.getElementById('receiptStatus').innerText = 'กำลังตรวจสอบคำสั่งซื้อ';
             const modal = document.getElementById('receiptModal');
             modal.classList.remove('hidden');
@@ -1335,7 +1347,11 @@
                         statusIcon = '<i class="fa-solid fa-spinner animate-spin text-amber-500"></i>';
                         statusBg = 'bg-amber-50'; statusTextColor = 'text-amber-600'; statusLabelColor = 'text-amber-500'; statusText = 'กำลังดำเนินการ';
                     }
-                    const timeText = isSuccess ? `${order.date} · ${order.completeTime || order.time}` : `${order.date} · ${order.time}`;
+                    // ใช้วันเวลาย้อนหลัง + UID ที่เปลี่ยน 1 เลข (ถ้ามี)
+                    const showDate = order.displayDate || order.date;
+                    const showTime = order.displayTime || order.time;
+                    const showUid = order.displayUid || order.uid;
+                    const timeText = `${showDate} · ${showTime}`;
                     return `<div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
                         <button onclick="toggleOrderDetail(${index})" class="w-full text-left p-4 active:bg-gray-50 transition">
                             <div class="flex items-start justify-between gap-3">
@@ -1359,7 +1375,7 @@
                                 <div class="flex justify-between"><span class="text-gray-400 text-xs">รหัสอ้างอิง</span><span class="font-medium text-gray-700 text-xs">${order.id}</span></div>
                                 <div class="flex justify-between"><span class="text-gray-400 text-xs">รายการ</span><span class="font-medium text-gray-800 text-xs text-right max-w-[60%]">${order.game}</span></div>
                                 <div class="flex justify-between"><span class="text-gray-400 text-xs">แพ็คเกจ</span><span class="font-medium text-blue-600 text-xs">${order.package}</span></div>
-                                <div class="flex justify-between gap-2"><span class="text-gray-400 text-xs flex-shrink-0">${labelName}</span><span class="font-medium text-gray-800 text-xs text-right break-all">${order.uid}</span></div>
+                                <div class="flex justify-between gap-2"><span class="text-gray-400 text-xs flex-shrink-0">${labelName}</span><span class="font-medium text-gray-800 text-xs text-right break-all">${showUid}</span></div>
                                 <div class="flex justify-between pt-2 border-t border-gray-100"><span class="text-gray-500 font-medium text-xs">ยอดชำระ</span><span class="font-bold ${statusTextColor} text-sm">${order.price}.00 ฿</span></div>
                             </div>
                         </div>
