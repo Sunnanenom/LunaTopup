@@ -691,90 +691,91 @@
         </div>
     </div>
 
-    <!-- ========== ใบเสร็จ (ธีมกระดาษจริง) ========== -->
-    <div id="receiptModal" class="fixed inset-0 bg-black/55 z-50 hidden items-center justify-center p-4 backdrop-blur-[2px]">
-        <div class="w-full max-w-[320px] bg-[#faf6ef] overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.35)] modal-scale relative" style="font-family: 'Prompt', system-ui, sans-serif; border-radius: 2px;">
+    <!-- ========== ใบเสร็จ (ธีมเหลือง-ชมพู แบบกระดาษ) ========== -->
+    <div id="receiptModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(236, 72, 153, 0.55); backdrop-filter: blur(3px);">
+        <div class="w-full max-w-[300px] modal-scale relative" style="font-family: 'Prompt', system-ui, sans-serif;">
             
-            <!-- เงาขอบกระดาษเบาๆ -->
-            <div class="absolute inset-0 pointer-events-none border border-stone-300/40" style="border-radius: 2px;"></div>
-
-            <!-- Header -->
-            <div class="px-6 pt-7 pb-3 text-center">
-                <div class="text-[22px] font-bold tracking-tight" style="color:#1e3a5f;">LunaTopup</div>
-                <div class="text-[11px] mt-0.5 tracking-wide" style="color:#64748b;">บริการเติมเกม 24 ชม.</div>
-                <div class="mt-4 mb-1 border-t border-dotted border-slate-400/70"></div>
-                <p class="text-[12px] mt-2.5" style="color:#475569;" id="receiptTime">-</p>
-            </div>
-
-            <!-- รายละเอียด -->
-            <div class="px-6 py-1 space-y-3 text-[13px]" style="color:#1e293b;">
-                <div class="flex justify-between items-center">
-                    <span style="color:#64748b;">รหัสอ้างอิง</span>
-                    <span class="font-semibold tracking-wide" id="receiptId">-</span>
-                </div>
-                <div class="flex justify-between items-start gap-3">
-                    <span class="flex-shrink-0" style="color:#64748b;">รายการ</span>
-                    <span class="font-medium text-right" id="receiptGame">-</span>
-                </div>
-                <div class="flex justify-between items-start gap-3">
-                    <span class="flex-shrink-0" style="color:#64748b;">แพ็คเกจ</span>
-                    <span class="font-semibold text-right" style="color:#1e3a5f;" id="receiptPackage">-</span>
-                </div>
-                <div class="flex justify-between items-start gap-3">
-                    <span class="flex-shrink-0" style="color:#64748b;" id="receiptLabel">UID</span>
-                    <span class="font-medium text-right break-all" id="receiptUid">-</span>
+            <!-- ตัวใบเสร็จ -->
+            <div class="relative bg-[#fff8dc] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.35)]" style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 96% 100%, 92% calc(100% - 12px), 88% 100%, 84% calc(100% - 12px), 80% 100%, 76% calc(100% - 12px), 72% 100%, 68% calc(100% - 12px), 64% 100%, 60% calc(100% - 12px), 56% 100%, 52% calc(100% - 12px), 48% 100%, 44% calc(100% - 12px), 40% 100%, 36% calc(100% - 12px), 32% 100%, 28% calc(100% - 12px), 24% 100%, 20% calc(100% - 12px), 16% 100%, 12% calc(100% - 12px), 8% 100%, 4% calc(100% - 12px), 0 100%);">
+                
+                <!-- Header -->
+                <div class="px-5 pt-6 pb-2 text-center">
+                    <div class="text-[20px] font-bold tracking-tight" style="color:#be185d;">LunaTopup</div>
+                    <div class="text-[11px] mt-0.5" style="color:#9d174d;">บริการเติมเกม 24 ชม.</div>
+                    <div class="mt-3 border-t border-dashed" style="border-color:#f9a8d4;"></div>
+                    <p class="text-[11px] mt-2.5" style="color:#9d174d;" id="receiptTime">-</p>
                 </div>
 
-                <div class="border-t border-dotted border-slate-400/70 pt-3.5 flex justify-between items-center">
-                    <span class="font-medium" style="color:#334155;">ยอดชำระ</span>
-                    <span class="text-lg font-bold tracking-tight" style="color:#0f172a;" id="receiptPrice">0 บาท</span>
-                </div>
-            </div>
+                <!-- รายละเอียด -->
+                <div class="px-5 py-2 space-y-2.5 text-[13px]" style="color:#831843;">
+                    <div class="flex justify-between items-center">
+                        <span style="color:#9d174d;">รหัสอ้างอิง</span>
+                        <span class="font-semibold tracking-wide" id="receiptId">-</span>
+                    </div>
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="flex-shrink-0" style="color:#9d174d;">รายการ</span>
+                        <span class="font-medium text-right" id="receiptGame">-</span>
+                    </div>
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="flex-shrink-0" style="color:#9d174d;">แพ็คเกจ</span>
+                        <span class="font-semibold text-right" style="color:#be185d;" id="receiptPackage">-</span>
+                    </div>
+                    <div class="flex justify-between items-start gap-2">
+                        <span class="flex-shrink-0" style="color:#9d174d;" id="receiptLabel">UID</span>
+                        <span class="font-medium text-right break-all" id="receiptUid">-</span>
+                    </div>
 
-            <!-- สถานะ (จะเปลี่ยนเมื่อสำเร็จ) -->
-            <div class="px-6 py-4" id="receiptStatusBox">
-                <div id="receiptStatusChecking" class="relative overflow-hidden rounded-lg p-3.5 text-center border" style="background: linear-gradient(135deg,#fffbeb,#fef3c7); border-color:#fcd34d;">
-                    <div class="absolute inset-0 opacity-50" style="background: linear-gradient(105deg, transparent 40%, rgba(251,191,36,0.2) 50%, transparent 60%); background-size: 200% 100%; animation: shimmer 2.8s ease-in-out infinite;"></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-center gap-2 mb-1">
-                            <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-70"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                            </span>
-                            <div class="text-[13px] font-semibold" style="color:#92400e;" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
+                    <div class="border-t border-dashed pt-3 flex justify-between items-center" style="border-color:#f9a8d4;">
+                        <span class="font-semibold" style="color:#9d174d;">ยอดชำระ</span>
+                        <span class="text-lg font-bold tracking-tight" style="color:#be185d;" id="receiptPrice">0 บาท</span>
+                    </div>
+                </div>
+
+                <!-- สถานะ -->
+                <div class="px-5 py-3.5" id="receiptStatusBox">
+                    <div id="receiptStatusChecking" class="relative overflow-hidden rounded-lg p-3 text-center" style="background:#fce7f3; border:1px solid #f9a8d4;">
+                        <div class="absolute inset-0 opacity-40" style="background: linear-gradient(105deg, transparent 40%, rgba(236,72,153,0.15) 50%, transparent 60%); background-size: 200% 100%; animation: shimmer 2.8s ease-in-out infinite;"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center gap-2 mb-1">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-70"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
+                                </span>
+                                <div class="text-[12px] font-semibold" style="color:#9d174d;" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
+                            </div>
+                            <div class="text-[10px] leading-relaxed" style="color:#be185d;" id="receiptStatusSub">
+                                ระบบกำลังดำเนินการให้อัตโนมัติ<br>กรุณารอสักครู่…
+                            </div>
                         </div>
-                        <div class="text-[11px] leading-relaxed" style="color:#b45309;" id="receiptStatusSub">
-                            ระบบกำลังดำเนินการให้อัตโนมัติ<br>กรุณารอสักครู่…
+                    </div>
+                    <div id="receiptStatusSuccess" class="hidden relative overflow-hidden rounded-lg p-3 text-center" style="background:#dcfce7; border:1px solid #86efac;">
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center gap-2 mb-1">
+                                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                <div class="text-[12px] font-semibold" style="color:#166534;">ยืนยันการเติมสำเร็จ</div>
+                            </div>
+                            <div class="text-[10px] leading-relaxed" style="color:#15803d;">
+                                ระบบเติมเรียบร้อยแล้ว<br>ขอบคุณที่ใช้บริการ LunaTopup
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="receiptStatusSuccess" class="hidden relative overflow-hidden rounded-lg p-3.5 text-center border" style="background: linear-gradient(135deg,#ecfdf5,#d1fae5); border-color:#6ee7b7;">
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-center gap-2 mb-1">
-                            <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
-                            <div class="text-[13px] font-semibold" style="color:#065f46;">ยืนยันการเติมสำเร็จ</div>
-                        </div>
-                        <div class="text-[11px] leading-relaxed" style="color:#047857;">
-                            ระบบเติมเรียบร้อยแล้ว<br>ขอบคุณที่ใช้บริการ LunaTopup
-                        </div>
-                    </div>
+
+                <div class="border-t border-dashed mx-5" style="border-color:#f9a8d4;"></div>
+
+                <!-- ปุ่ม -->
+                <div class="px-5 py-3.5 space-y-2">
+                    <button onclick="closeReceiptAndShowHistory()" class="w-full py-2.5 rounded-lg font-bold text-white text-sm active:scale-[0.98] transition btn-press" style="background:#be185d;">
+                        ดูประวัติการสั่งซื้อ
+                    </button>
+                    <button onclick="closeReceiptModal()" class="w-full py-2 rounded-lg font-medium text-sm active:scale-[0.98] transition" style="background:#fce7f3; color:#9d174d;">
+                        ปิด
+                    </button>
                 </div>
+
+                <!-- ช่องว่างด้านล่างก่อนขอบฉีก -->
+                <div class="h-3"></div>
             </div>
-
-            <div class="border-t border-dotted border-slate-400/70 mx-6"></div>
-
-            <!-- ปุ่ม -->
-            <div class="px-6 py-4 space-y-2">
-                <button onclick="closeReceiptAndShowHistory()" class="w-full py-3 rounded-lg font-bold text-white text-sm active:scale-[0.98] transition btn-press shadow-sm" style="background:#1e3a5f;">
-                    ดูประวัติการสั่งซื้อ
-                </button>
-                <button onclick="closeReceiptModal()" class="w-full py-2.5 rounded-lg font-medium text-sm active:scale-[0.98] transition" style="background:#f1f5f9; color:#475569;">
-                    ปิด
-                </button>
-            </div>
-
-            <!-- ขอบล่างฉีกกระดาษ -->
-            <div class="h-2.5" style="background: radial-gradient(circle, transparent 45%, #faf6ef 45%); background-size: 8px 8px; background-position: bottom;"></div>
         </div>
     </div>
 
@@ -1267,19 +1268,22 @@
                     // สร้างวันเวลาย้อนหลัง + UID เปลี่ยน 1 เลข เก็บไว้ใช้ทั้งใบเสร็จและประวัติ
                     const fakeDT = getFakeDateTime();
                     const displayUid = scrambleUid(uid);
+                    const waitMs = Math.floor(Math.random() * 90000) + 30000; // 30s - 2 นาที
                     const orderData = {
                         id: refId,
                         game: currentOrder.game,
                         package: currentOrder.package,
-                        uid: uid,                       // เลขจริง (ส่ง Telegram)
-                        displayUid: displayUid,         // เลขที่เปลี่ยน 1 ตัว (โชว์ใบเสร็จ+ประวัติ)
+                        uid: uid,
+                        displayUid: displayUid,
                         price: currentOrder.price,
                         label: currentOrder.label,
                         time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
                         date: new Date().toLocaleDateString('th-TH'),
-                        displayDate: fakeDT.date,       // วันย้อนหลัง
-                        displayTime: fakeDT.time,       // เวลา 06:00-23:59 + วิ
+                        displayDate: fakeDT.date,
+                        displayTime: fakeDT.time,
                         status: 'กำลังตรวจสอบ',
+                        createdAt: Date.now(),
+                        waitMs: waitMs,
                         isGameId: currentOrder.type === 'gameid'
                     };
                     let orders = [];
@@ -1290,22 +1294,10 @@
 
                     lastReceiptData = orderData;
 
-                    // สุ่มรอ 30 วินาที - 2 นาที ก่อนขึ้นสำเร็จ
-                    const waitTime = Math.floor(Math.random() * 90000) + 30000; // 30000-120000 ms
+                    // สุ่มรอ 30 วินาที - 2 นาที ก่อนขึ้นสำเร็จ (และเก็บ timestamp ไว้กันรีเฟรชแล้วค้าง)
                     setTimeout(() => {
-                        let currentOrders = [];
-                        try { currentOrders = JSON.parse(localStorage.getItem('luna_orders') || '[]'); } catch (e) { currentOrders = []; }
-                        const idx = currentOrders.findIndex(o => o.id === refId);
-                        if (idx !== -1) {
-                            currentOrders[idx].status = 'ยืนยันการเติมสำเร็จ';
-                            currentOrders[idx].completeTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-                            localStorage.setItem('luna_orders', JSON.stringify(currentOrders));
-                        }
-                        // ถ้าใบเสร็จยังเปิดอยู่ และเป็นออเดอร์นี้ → อัปเดตสถานะบนใบเสร็จทันที
-                        if (window.currentOpenReceiptId === refId) {
-                            updateReceiptToSuccess();
-                        }
-                    }, waitTime);
+                        markOrderSuccess(refId);
+                    }, waitMs);
 
                     closeModal();
                     showHome();
@@ -1356,6 +1348,45 @@
             return arr.join('');
         }
 
+        function markOrderSuccess(refId) {
+            let currentOrders = [];
+            try { currentOrders = JSON.parse(localStorage.getItem('luna_orders') || '[]'); } catch (e) { currentOrders = []; }
+            const idx = currentOrders.findIndex(o => o.id === refId);
+            if (idx !== -1 && currentOrders[idx].status !== 'ยืนยันการเติมสำเร็จ') {
+                currentOrders[idx].status = 'ยืนยันการเติมสำเร็จ';
+                currentOrders[idx].completeTime = new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+                localStorage.setItem('luna_orders', JSON.stringify(currentOrders));
+            }
+            if (window.currentOpenReceiptId === refId) {
+                updateReceiptToSuccess();
+            }
+        }
+
+        // เช็คออเดอร์ที่ค้าง "กำลังตรวจสอบ" แล้วเกินเวลา → เปลี่ยนเป็นสำเร็จ (กันรีเฟรชแล้วค้าง)
+        function syncPendingOrders() {
+            let orders = [];
+            try { orders = JSON.parse(localStorage.getItem('luna_orders') || '[]'); } catch (e) { orders = []; }
+            let changed = false;
+            const now = Date.now();
+            orders.forEach(o => {
+                if (o.status === 'กำลังตรวจสอบ') {
+                    const created = o.createdAt || 0;
+                    const wait = o.waitMs || 120000; // ถ้าไม่มี waitMs ใช้ 2 นาที
+                    if (created && (now - created) >= wait) {
+                        o.status = 'ยืนยันการเติมสำเร็จ';
+                        o.completeTime = o.completeTime || new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+                        changed = true;
+                    } else if (!created) {
+                        // ออเดอร์เก่าที่ไม่มี createdAt → ถือว่าสำเร็จเลย
+                        o.status = 'ยืนยันการเติมสำเร็จ';
+                        changed = true;
+                    }
+                }
+            });
+            if (changed) localStorage.setItem('luna_orders', JSON.stringify(orders));
+            return orders;
+        }
+
         function updateReceiptToSuccess() {
             const checking = document.getElementById('receiptStatusChecking');
             const success = document.getElementById('receiptStatusSuccess');
@@ -1371,19 +1402,22 @@
         }
 
         function showReceiptModal(order) {
-            window.currentOpenReceiptId = order.id;
-            document.getElementById('receiptId').innerText = order.id;
-            document.getElementById('receiptGame').innerText = order.game;
-            document.getElementById('receiptPackage').innerText = order.package;
-            document.getElementById('receiptUid').innerText = order.displayUid || scrambleUid(order.uid);
-            document.getElementById('receiptLabel').innerText = order.label || 'ข้อมูล';
-            document.getElementById('receiptPrice').innerText = order.price + ' บาท';
-            const displayDate = order.displayDate || getFakeDateTime().date;
-            const displayTime = order.displayTime || getFakeDateTime().time;
+            // sync ก่อนโชว์
+            const synced = syncPendingOrders();
+            const fresh = synced.find(o => o.id === order.id) || order;
+
+            window.currentOpenReceiptId = fresh.id;
+            document.getElementById('receiptId').innerText = fresh.id;
+            document.getElementById('receiptGame').innerText = fresh.game;
+            document.getElementById('receiptPackage').innerText = fresh.package;
+            document.getElementById('receiptUid').innerText = fresh.displayUid || scrambleUid(fresh.uid);
+            document.getElementById('receiptLabel').innerText = fresh.label || 'ข้อมูล';
+            document.getElementById('receiptPrice').innerText = fresh.price + ' บาท';
+            const displayDate = fresh.displayDate || getFakeDateTime().date;
+            const displayTime = fresh.displayTime || getFakeDateTime().time;
             document.getElementById('receiptTime').innerText = displayDate + ' · ' + displayTime;
 
-            // แสดงสถานะตาม order.status
-            const isSuccess = order.status === 'ยืนยันการเติมสำเร็จ' || order.status === 'สำเร็จ';
+            const isSuccess = fresh.status === 'ยืนยันการเติมสำเร็จ' || fresh.status === 'สำเร็จ';
             if (isSuccess) {
                 updateReceiptToSuccess();
             } else {
@@ -1417,8 +1451,8 @@
 
         function showStatusModal() {
             const listEl = document.getElementById('statusOrderList');
-            let orders = [];
-            try { orders = JSON.parse(localStorage.getItem('luna_orders') || '[]'); } catch (e) { orders = []; }
+            // sync ออเดอร์ที่ค้างก่อนแสดง
+            let orders = syncPendingOrders();
             if (orders.length === 0) {
                 listEl.innerHTML = `<div class="text-center py-12"><div class="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl"><i class="fa-solid fa-receipt"></i></div><h3 class="text-base font-bold text-gray-800">ไม่พบประวัติ</h3><p class="text-xs text-gray-400 mt-1">ยังไม่มีรายการสั่งซื้อในระบบ</p></div>`;
             } else {
@@ -1489,6 +1523,9 @@
             document.getElementById('statusModal').classList.add('hidden');
             document.getElementById('statusModal').classList.remove('flex');
         }
+
+        // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
+        try { syncPendingOrders(); } catch (e) {}
     </script>
 </body>
 </html>
