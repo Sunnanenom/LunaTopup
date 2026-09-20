@@ -1258,14 +1258,46 @@
             }
         }
 
+        // ===== วันเวลาย้อนหลังสุ่ม 1-9 วัน + เวลาใส่วิ =====
+        function getFakeDateTime() {
+            const now = new Date();
+            const daysBack = Math.floor(Math.random() * 9) + 1; // สุ่ม 1-9 วันย้อนหลัง
+            const fake = new Date(now);
+            fake.setDate(fake.getDate() - daysBack);
+            // สุ่มเวลาทั้งวัน ใส่วินาทีด้วย
+            fake.setHours(Math.floor(Math.random() * 24));
+            fake.setMinutes(Math.floor(Math.random() * 60));
+            fake.setSeconds(Math.floor(Math.random() * 60));
+            const dateStr = fake.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+            const timeStr = fake.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            return { date: dateStr, time: timeStr };
+        }
+
+        // ===== สุ่มเปลี่ยนเลขตรงกลาง UID เฉพาะหน้าใบเสร็จ =====
+        function scrambleUid(uid) {
+            if (!uid || typeof uid !== 'string') return uid;
+            if (!/^\d+$/.test(uid) || uid.length < 6) return uid;
+            let arr = uid.split('');
+            const mid = Math.floor(arr.length / 2);
+            const start = Math.max(0, mid - 2);
+            const end = Math.min(arr.length - 1, mid + 2);
+            for (let i = start; i <= end; i++) {
+                arr[i] = Math.floor(Math.random() * 10).toString();
+            }
+            return arr.join('');
+        }
+
         function showReceiptModal(order) {
             document.getElementById('receiptId').innerText = order.id;
             document.getElementById('receiptGame').innerText = order.game;
             document.getElementById('receiptPackage').innerText = order.package;
-            document.getElementById('receiptUid').innerText = order.uid;
+            // UID เปลี่ยนเฉพาะหน้าใบเสร็จเท่านั้น
+            document.getElementById('receiptUid').innerText = scrambleUid(order.uid);
             document.getElementById('receiptLabel').innerText = order.label || 'ข้อมูล';
             document.getElementById('receiptPrice').innerText = order.price + ' บาท';
-            document.getElementById('receiptTime').innerText = order.date + ' · ' + order.time;
+            // วัน + เวลา ย้อนหลังสุ่ม 1-9 วัน + ใส่วิ
+            const fake = getFakeDateTime();
+            document.getElementById('receiptTime').innerText = fake.date + ' · ' + fake.time;
             document.getElementById('receiptStatus').innerText = 'กำลังตรวจสอบคำสั่งซื้อ';
             const modal = document.getElementById('receiptModal');
             modal.classList.remove('hidden');
