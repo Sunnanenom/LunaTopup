@@ -10,15 +10,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { -webkit-tap-highlight-color: transparent; }
-        body {
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            overscroll-behavior: none;
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
             background: #f1f5f9;
             font-family: 'Prompt', sans-serif;
-            overscroll-behavior: none;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
         }
         .app-container {
             max-width: 420px;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
             box-shadow: 0 0 40px rgba(0,0,0,0.08);
             background: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        #mainContent {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
         .swiper-pagination-bullet { background: #cbd5e1; opacity: 1; transition: all .3s; }
         .swiper-pagination-bullet-active { background: #3b82f6; width: 22px; border-radius: 10px; }
@@ -115,8 +145,8 @@
         .btn-press:active { transform: scale(0.97); }
     </style>
 </head>
-<body class="text-gray-800 antialiased flex justify-center bg-slate-100">
-    <div class="app-container w-full min-h-screen relative pb-28 overflow-hidden flex flex-col mx-auto">
+<body class="text-gray-800 antialiased bg-slate-100">
+    <div class="app-container pb-28">
 
         <div id="toast" class="toast"></div>
 
@@ -171,7 +201,7 @@
             </div>
         </div>
 
-        <main class="px-4 mt-3 flex-grow relative overflow-y-auto" id="mainContent">
+        <main class="px-4 mt-3 relative" id="mainContent">
 
             <!-- HOME -->
             <div id="homeSection" class="section-fade">
@@ -907,6 +937,28 @@
     <script>
         new Swiper(".promoSwiper", { slidesPerView: 1, loop: true, autoplay: { delay: 3200, disableOnInteraction: false }, pagination: { el: ".swiper-pagination", clickable: true }, speed: 600 });
         new Swiper(".hotPkgSwiper", { slidesPerView: "auto", spaceBetween: 12, loop: true, speed: 800, autoplay: { delay: 2800, disableOnInteraction: false, pauseOnMouseEnter: true }, grabCursor: true, resistanceRatio: 0.6, touchReleaseOnEdges: true, nested: true });
+
+        // กัน pull-to-refresh / เลื่อนไม่สุด บน iPhone Chrome/Safari
+        (function preventPullToRefresh() {
+            const main = document.getElementById('mainContent');
+            if (!main) return;
+            let startY = 0;
+            main.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            main.addEventListener('touchmove', function(e) {
+                const scrollTop = main.scrollTop;
+                const deltaY = e.touches[0].clientY - startY;
+                // ถ้าอยู่บนสุดแล้วลากลงต่อ → กันไม่ให้ browser ดึงรีเฟรช
+                if (scrollTop <= 0 && deltaY > 0) {
+                    e.preventDefault();
+                }
+                // ถ้าอยู่ล่างสุดแล้วลากขึ้นต่อ
+                if (scrollTop + main.clientHeight >= main.scrollHeight - 1 && deltaY < 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        })();
 
         function updateHotCountdown() {
             const now = new Date();
