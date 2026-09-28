@@ -154,6 +154,12 @@
                     <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-house"></i></div>
                     <span class="font-medium">หน้าแรก</span>
                 </a>
+                <a href="#" onclick="toggleSidebar(); showPremiumSection()" class="p-4 rounded-xl flex items-center gap-3.5 text-gray-700 active:bg-pink-50 transition">
+                    <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center overflow-hidden border border-gray-100">
+                        <img src="https://i.ibb.co/kgW5S9j4/IMG-4175.jpg" class="w-full h-full object-cover" alt="แอป Premium">
+                    </div>
+                    <span class="font-medium">แอป Premium</span>
+                </a>
                 <a href="#" onclick="toggleSidebar(); showMobileSection()" class="p-4 rounded-xl flex items-center gap-3.5 text-gray-700 active:bg-green-50 transition">
                     <div class="w-9 h-9 rounded-xl bg-green-100 text-green-600 flex items-center justify-center"><i class="fa-solid fa-mobile-screen-button"></i></div>
                     <span class="font-medium">เติมเงินมือถือ</span>
@@ -184,22 +190,36 @@
                     <div class="swiper-pagination"></div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-2 mt-4 text-center">
-                    <div class="flex flex-col items-center p-2.5 rounded-2xl active:bg-blue-50 transition cursor-pointer" onclick="showHome()">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-2xl flex items-center justify-center mb-1.5 text-lg shadow-sm"><i class="fa-solid fa-gamepad"></i></div>
-                        <span class="text-[11px] font-semibold text-gray-700">เติมเกม</span>
+                <div class="grid grid-cols-5 gap-1.5 mt-4 text-center">
+                    <div class="flex flex-col items-center p-2 rounded-2xl active:bg-blue-50 transition cursor-pointer" onclick="showHome()">
+                        <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center mb-1 shadow-sm overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/hFSWLrQr/IMG-4170.jpg" class="w-full h-full object-cover" alt="เติมเกม">
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-700">เติมเกม</span>
                     </div>
-                    <div class="flex flex-col items-center p-2.5 rounded-2xl active:bg-orange-50 transition cursor-pointer" onclick="showGiftSection()">
-                        <div class="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 text-orange-600 rounded-2xl flex items-center justify-center mb-1.5 text-lg shadow-sm"><i class="fa-solid fa-gift"></i></div>
-                        <span class="text-[11px] font-semibold text-gray-700">Gift Card</span>
+                    <div class="flex flex-col items-center p-2 rounded-2xl active:bg-pink-50 transition cursor-pointer" onclick="showPremiumSection()">
+                        <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center mb-1 shadow-sm overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/kgW5S9j4/IMG-4175.jpg" class="w-full h-full object-cover" alt="แอป Premium">
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-700">แอป Premium</span>
                     </div>
-                    <div class="flex flex-col items-center p-2.5 rounded-2xl active:bg-green-50 transition cursor-pointer" onclick="showMobileSection()">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-2xl flex items-center justify-center mb-1.5 text-lg shadow-sm"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                        <span class="text-[11px] font-semibold text-gray-700">เติมมือถือ</span>
+                    <div class="flex flex-col items-center p-2 rounded-2xl active:bg-orange-50 transition cursor-pointer" onclick="showGiftSection()">
+                        <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center mb-1 shadow-sm overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/bjdD1mXN/IMG-4168.jpg" class="w-full h-full object-cover" alt="Gift Card">
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-700">Gift Card</span>
                     </div>
-                    <div onclick="showStatusModal()" class="flex flex-col items-center p-2.5 rounded-2xl active:bg-purple-50 transition cursor-pointer">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 rounded-2xl flex items-center justify-center mb-1.5 text-lg shadow-sm"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <span class="text-[11px] font-semibold text-gray-700">เช็คสถานะ</span>
+                    <div class="flex flex-col items-center p-2 rounded-2xl active:bg-green-50 transition cursor-pointer" onclick="showMobileSection()">
+                        <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center mb-1 shadow-sm overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/spB7ZNVk/97-D96311-AD23-43-F7-A838-C51-FD77-DAD27.png" class="w-full h-full object-cover" alt="เติมมือถือ">
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-700">เติมมือถือ</span>
+                    </div>
+                    <div onclick="showStatusModal()" class="flex flex-col items-center p-2 rounded-2xl active:bg-purple-50 transition cursor-pointer">
+                        <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center mb-1 shadow-sm overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/C5mj2m8K/IMG-4156.jpg" class="w-full h-full object-cover" alt="เช็คสถานะ">
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-700">เช็คสถานะ</span>
                     </div>
                 </div>
 
@@ -353,8 +373,8 @@
 
                 <div onclick="showStatusModal()" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl p-4 mt-5 flex items-center justify-between cursor-pointer active:scale-[0.98] transition shadow-sm">
                     <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white flex items-center justify-center shadow-md">
-                            <i class="fa-solid fa-receipt"></i>
+                        <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden border border-gray-100">
+                            <img src="https://i.ibb.co/C5mj2m8K/IMG-4156.jpg" class="w-full h-full object-cover" alt="ใบเสร็จ">
                         </div>
                         <div>
                             <h3 class="text-sm font-bold text-gray-800">เช็คใบเสร็จ / สถานะ</h3>
@@ -369,29 +389,29 @@
                     <p class="text-[11px] text-gray-500 mb-4">บริการเติมเกมและของรางวัลที่ลูกค้าไว้ใจมากกว่า 10,000 ออเดอร์</p>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="feature-card bg-gradient-to-br from-blue-50 to-blue-100/40 border border-blue-100/80 rounded-2xl p-3.5 text-center shadow-sm">
-                            <div class="w-11 h-11 bg-blue-500 text-white rounded-xl flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
-                                <i class="fa-solid fa-bolt"></i>
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center mx-auto mb-2.5 shadow-sm overflow-hidden border border-gray-100">
+                                <img src="https://i.ibb.co/Wvc23JMB/IMG-4178.jpg" class="w-full h-full object-cover" alt="เติมเร็วสุด">
                             </div>
                             <div class="text-xs font-bold text-gray-800 mb-1">เติมเร็วสุด</div>
                             <div class="text-[10px] text-gray-500 leading-relaxed">ระบบออโต้ทำงานตลอด<br>เฉลี่ยเสร็จใน 30-60 วินาที</div>
                         </div>
                         <div class="feature-card bg-gradient-to-br from-green-50 to-green-100/40 border border-green-100/80 rounded-2xl p-3.5 text-center shadow-sm">
-                            <div class="w-11 h-11 bg-green-500 text-white rounded-xl flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
-                                <i class="fa-solid fa-tags"></i>
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center mx-auto mb-2.5 shadow-sm overflow-hidden border border-gray-100">
+                                <img src="https://i.ibb.co/MxhX1J7D/IMG-4180.jpg" class="w-full h-full object-cover" alt="ราคาถูกจริง">
                             </div>
                             <div class="text-xs font-bold text-gray-800 mb-1">ราคาถูกจริง</div>
                             <div class="text-[10px] text-gray-500 leading-relaxed">ถูกกว่าท้องตลาด 20-40%<br>ไม่มีค่าธรรมเนียมแอบแฝง</div>
                         </div>
                         <div class="feature-card bg-gradient-to-br from-purple-50 to-purple-100/40 border border-purple-100/80 rounded-2xl p-3.5 text-center shadow-sm">
-                            <div class="w-11 h-11 bg-purple-500 text-white rounded-xl flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
-                                <i class="fa-solid fa-shield-halved"></i>
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center mx-auto mb-2.5 shadow-sm overflow-hidden border border-gray-100">
+                                <img src="https://i.ibb.co/20V5NXPX/IMG-4181.jpg" class="w-full h-full object-cover" alt="ปลอดภัย 100%">
                             </div>
                             <div class="text-xs font-bold text-gray-800 mb-1">ปลอดภัย 100%</div>
                             <div class="text-[10px] text-gray-500 leading-relaxed">ระบบตรวจซองอัตโนมัติ<br>ข้อมูลเข้ารหัส ไม่เก็บรหัส</div>
                         </div>
                         <div class="feature-card bg-gradient-to-br from-orange-50 to-orange-100/40 border border-orange-100/80 rounded-2xl p-3.5 text-center shadow-sm">
-                            <div class="w-11 h-11 bg-orange-500 text-white rounded-xl flex items-center justify-center mx-auto mb-2.5 text-base shadow-sm">
-                                <i class="fa-solid fa-headset"></i>
+                            <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center mx-auto mb-2.5 shadow-sm overflow-hidden border border-gray-100">
+                                <img src="https://i.ibb.co/7Jy3KT9j/IMG-4179.jpg" class="w-full h-full object-cover" alt="ดูแล 24 ชม.">
                             </div>
                             <div class="text-xs font-bold text-gray-800 mb-1">ดูแล 24 ชม.</div>
                             <div class="text-[10px] text-gray-500 leading-relaxed">แอดมินตอบเร็วทุกช่วงเวลา<br>มีปัญหาแจ้งได้ทันที</div>
@@ -489,6 +509,14 @@
                 <div class="grid grid-cols-2 gap-3 pb-6" id="giftList"></div>
             </div>
 
+            <!-- PREMIUM APPS -->
+            <div id="premiumSection" class="hidden section-fade">
+                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                <h2 class="text-xl font-bold text-gray-800 mb-1">แอป Premium ราคาพิเศษ</h2>
+                <p class="text-xs text-gray-500 mb-5">บัญชีส่วนตัว ส่งรหัส Email+Password ไปที่อีเมลที่คุณกรอกหลังชำระด้วยซองทรูมันนี่</p>
+                <div class="grid grid-cols-2 gap-3 pb-6" id="premiumList"></div>
+            </div>
+
             <!-- GAME ID -->
             <div id="gameIdSection" class="hidden pb-8 section-fade">
                 <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
@@ -549,7 +577,7 @@
                 <span class="text-[10px] font-bold">หน้าแรก</span>
             </a>
             <a href="#" onclick="showStatusModal()" class="flex flex-col items-center text-gray-400 hover:text-blue-500 transition">
-                <i class="fa-solid fa-receipt text-[22px] mb-1"></i>
+                <img src="https://i.ibb.co/C5mj2m8K/IMG-4156.jpg" class="w-6 h-6 object-cover rounded mb-1" alt="ใบเสร็จ">
                 <span class="text-[10px] font-semibold">ใบเสร็จ</span>
             </a>
             <a href="#" onclick="showProfile()" id="navProfile" class="flex flex-col items-center text-gray-400 hover:text-blue-500 transition">
@@ -557,6 +585,63 @@
                 <span class="text-[10px] font-semibold">โปรไฟล์</span>
             </a>
         </nav>
+    </div>
+
+    <!-- ========== PREMIUM PRODUCT DETAIL MODAL (ตามรูป) ========== -->
+    <div id="premiumDetailModal" class="fixed inset-0 bg-black/60 items-center justify-center z-50 hidden p-4 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-[360px] rounded-2xl relative modal-scale shadow-2xl overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <img id="pdImg" src="" class="w-full h-full object-contain p-1" alt="">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <div class="font-bold text-gray-800 text-base leading-tight" id="pdName">ชื่อสินค้า</div>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 text-sm mb-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">ราคา</span>
+                        <div class="text-right">
+                            <span class="text-gray-400 line-through text-xs mr-1.5" id="pdOriginal">0฿</span>
+                            <span class="font-bold text-gray-900" id="pdPrice">0.00 บาท</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">จำนวน</span>
+                        <span class="font-medium text-gray-800">1 ชิ้น</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">ระยะเวลา</span>
+                        <span class="font-medium text-gray-800" id="pdDuration">30 วัน</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-basket-shopping text-xs"></i> คงเหลือ</span>
+                        <span class="font-medium text-green-600" id="pdStock">พร้อมส่ง</span>
+                    </div>
+                </div>
+
+                <button type="button" onclick="togglePdDetails()" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 text-blue-600 text-sm font-medium mb-3 active:bg-blue-100 transition">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> รายละเอียดสินค้า</span>
+                    <i class="fa-solid fa-chevron-up text-xs" id="pdChevron"></i>
+                </button>
+
+                <div id="pdDetailsBox" class="bg-gray-50 rounded-xl p-4 mb-4 border border-gray-100">
+                    <div class="font-bold text-gray-800 text-sm mb-2.5 underline">รายละเอียด</div>
+                    <div id="pdDetailsList" class="space-y-2 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="closePremiumDetail()" class="flex-1 py-3 rounded-xl font-semibold text-gray-600 bg-gray-100 active:bg-gray-200 transition text-sm">
+                        ยกเลิก
+                    </button>
+                    <button onclick="buyPremiumFromDetail()" class="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 active:scale-[0.98] transition text-sm shadow-md">
+                        ชำระ TrueMoney
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ========== PAYMENT METHOD MODAL ========== -->
@@ -911,6 +996,15 @@
             { name: 'Apple Gift Card', amount: '100 บาท', price: 75, original: 100, img: 'https://i.ibb.co/0pczdTmH/S-1pvwa-OI5-Ofg-j-MWD7woi2x-Mul-QM0-MTi-Geb65-YRI.jpg' }
         ];
 
+        const premiumApps = [
+            { name: 'Netflix', amount: 'Premium 30 วัน', price: 50, original: 419, img: 'https://byshop.me/api/img/app/netflix.png', desc: 'บัญชีส่วนตัว 4K Ultra HD ดูได้ 4 จอ', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'Netflix แพ็กเกจ Premium รายเดือน', 'ดูพร้อมกันได้ 4 อุปกรณ์ + 4K HDR', 'website https://www.netflix.com/'] },
+            { name: 'Disney+', amount: 'Premium 30 วัน', price: 59, original: 289, img: 'https://byshop.me/api/img/app/disney.png', desc: 'บัญชีส่วนตัว 4K 4 อุปกรณ์', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'Disney+ Hotstar แพ็กเกจ Premium', '4K Ultra HD + Dolby Atmos', 'website https://www.hotstar.com/'] },
+            { name: 'YouTube Premium', amount: 'Individual 30 วัน', price: 50, original: 199, img: 'https://byshop.me/api/img/app/yt.png', desc: 'ไม่มีโฆษณา + YouTube Music', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'YouTube Premium แพ็กเกจรายเดือน', 'ไม่มีโฆษณา + ดาวน์โหลด + YouTube Music', 'website https://www.youtube.com/'] },
+            { name: 'Spotify Premium', amount: 'Individual 60 วัน', price: 50, original: 298, img: 'https://www.scdn.co/i/_global/twitter_card-default.jpg', desc: 'บัญชีส่วนตัว ฟังไม่มีโฆษณา', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'Spotify Premium แพ็กเกจรายเดือน x2', 'ฟังไม่มีโฆษณา + ดาวน์โหลดออฟไลน์', 'website https://www.spotify.com/'] },
+            { name: 'CapCut Pro', amount: 'Pro 30 วัน', price: 50, original: 699, img: 'https://byshop.me/buy/img/img_app/cc.png', desc: 'บัญชีส่วนตัว AI ครบชุด', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'CapCut Pro แพ็กเกจรายเดือน', 'AI ครบ + 4K export + ไม่มีลายน้ำ', 'website https://www.capcut.com/'] },
+            { name: 'ChatGPT Plus', amount: 'Plus 30 วัน', price: 69, original: 699, img: 'https://byshop.me/buy/img/img_app/gpt.png', desc: 'บัญชีส่วนตัว Email/Password', details: ['บัญชีส่วนตัว', 'จะได้รับเป็น Email/Password เข้าใช้งานได้ทันที', 'ChatGPT Plus แพ็กเกจรายเดือน', 'website https://chatgpt.com/'] }
+        ];
+
         let currentOrder = { type: 'game', game: '', package: '', price: 0, img: '', label: '' };
         let selectedCarrier = '';
         let lastPackageGameKey = '';
@@ -919,7 +1013,7 @@
         function resetNav() {
             document.getElementById('navHome').classList.replace('text-blue-600', 'text-gray-400');
             document.getElementById('navProfile').classList.replace('text-blue-600', 'text-gray-400');
-            ['homeSection','packageSection','packageDetailSection','mobileSection','giftSection','gameIdSection','profileSection'].forEach(id => {
+            ['homeSection','packageSection','packageDetailSection','mobileSection','giftSection','premiumSection','gameIdSection','profileSection'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
         }
@@ -1105,6 +1199,84 @@
             });
         }
 
+        function showPremiumSection() {
+            withPageLoad(() => {
+                resetNav();
+                document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('premiumSection').classList.remove('hidden');
+                const listEl = document.getElementById('premiumList');
+                listEl.innerHTML = '';
+                premiumApps.forEach((app, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm cursor-pointer active:scale-95 transition flex flex-col pkg-card';
+                    item.onclick = () => showPremiumDetail(idx);
+                    item.innerHTML = `<div class="w-full bg-gray-50 flex justify-center items-center p-4 h-24"><img src="${app.img}" class="h-14 object-contain"></div><div class="p-3 text-center bg-white"><div class="text-[11px] text-gray-600 font-medium mb-0.5">${app.name}</div><div class="text-xs font-bold text-gray-800 mb-1">${app.amount}</div><div class="text-[10px] text-gray-400 mb-1.5 leading-tight">${app.desc || ''}</div><div class="flex items-center justify-center gap-1.5"><span class="text-[10px] text-gray-400 line-through">${app.original}฿</span><span class="text-xs font-bold text-red-500">${app.price} บาท</span></div></div>`;
+                    listEl.appendChild(item);
+                });
+            });
+        }
+
+        let currentPremiumIdx = -1;
+
+        function showPremiumDetail(idx) {
+            const app = premiumApps[idx];
+            if (!app) return;
+            currentPremiumIdx = idx;
+            document.getElementById('pdImg').src = app.img;
+            const durationText = app.amount.includes('60') ? '60วัน' : '30วัน';
+            const planPart = app.amount.replace(/\s*\d+\s*วัน/g, '').trim();
+            document.getElementById('pdName').innerText = app.name + (planPart ? ' ' + planPart : '') + ' /' + durationText;
+            document.getElementById('pdOriginal').innerText = app.original + '฿';
+            document.getElementById('pdPrice').innerText = app.price.toFixed(2) + ' บาท';
+            document.getElementById('pdDuration').innerText = app.amount.includes('60') ? '60 วัน' : '30 วัน';
+            document.getElementById('pdStock').innerText = 'พร้อมส่ง';
+            document.getElementById('pdStock').className = 'font-medium text-green-600';
+
+            const list = document.getElementById('pdDetailsList');
+            list.innerHTML = '';
+            (app.details || []).forEach(d => {
+                const isWeb = d.toLowerCase().startsWith('website');
+                const row = document.createElement('div');
+                row.className = 'flex items-start gap-2';
+                if (isWeb) {
+                    row.innerHTML = `<span class="text-gray-400 mt-0.5">•</span><span class="text-sm">${d.replace(/^website\s*/i, 'website ')} <a href="${d.split(' ').pop()}" target="_blank" class="text-blue-500 underline break-all">${d.split(' ').pop()}</a></span>`;
+                } else {
+                    row.innerHTML = `<span class="text-blue-500 mt-0.5"><i class="fa-solid fa-play text-[10px]"></i></span><span>${d}</span>`;
+                }
+                list.appendChild(row);
+            });
+
+            document.getElementById('pdDetailsBox').classList.remove('hidden');
+            document.getElementById('pdChevron').classList.remove('fa-chevron-down');
+            document.getElementById('pdChevron').classList.add('fa-chevron-up');
+
+            const modal = document.getElementById('premiumDetailModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePremiumDetail() {
+            const modal = document.getElementById('premiumDetailModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentPremiumIdx = -1;
+        }
+
+        function togglePdDetails() {
+            const box = document.getElementById('pdDetailsBox');
+            const chev = document.getElementById('pdChevron');
+            box.classList.toggle('hidden');
+            chev.classList.toggle('fa-chevron-up');
+            chev.classList.toggle('fa-chevron-down');
+        }
+
+        function buyPremiumFromDetail() {
+            if (currentPremiumIdx < 0) return;
+            const app = premiumApps[currentPremiumIdx];
+            closePremiumDetail();
+            openModal('premium', app.name, app.amount, app.price, app.img, 'อีเมลของคุณ (เพื่อรับ ' + app.name + ')');
+        }
+
         function openModal(type, name, pkgAmount, price, img, inputLabel) {
             currentOrder = { type, game: name, package: pkgAmount, price, img: img || 'https://i.ibb.co/ch6hG3Ry/True-Money-Wallet-Icon-Logo-Vector-svg.png', label: inputLabel };
             document.getElementById('modalPkgImage').src = currentOrder.img;
@@ -1236,6 +1408,13 @@
             } else {
                 uid = document.getElementById('uidInput').value.trim();
                 if (!uid) { showToast(`กรุณาระบุ ${currentOrder.label}`, 'error'); return; }
+                if (currentOrder.type === 'premium') {
+                    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(uid);
+                    if (!emailOk) {
+                        showToast('กรุณากรอกอีเมลให้ถูกต้อง เช่น name@gmail.com', 'error');
+                        return;
+                    }
+                }
             }
             if (!voucher.includes('gift.truemoney.com')) { showToast('ลิงก์ซองทรูมันนี่ไม่ถูกต้อง', 'error'); return; }
 
@@ -1246,6 +1425,7 @@
             let typeText = 'เกม';
             if (currentOrder.type === 'mobile') typeText = 'เติมมือถือ';
             if (currentOrder.type === 'gift') typeText = 'Gift Card';
+            if (currentOrder.type === 'premium') typeText = 'แอป Premium';
             if (currentOrder.type === 'gameid') typeText = 'ขาย ID เกม';
 
             let extraInfo = '';
