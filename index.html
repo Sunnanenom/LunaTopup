@@ -387,20 +387,6 @@
                     </div>
                 </div>
 
-                <div class="mt-7 mb-2">
-                    <h2 class="text-lg font-bold text-gray-800 mb-3">🔥 โปรโมชั่นพิเศษ ขาย ID เกม</h2>
-                    <div onclick="showGameIdSection()" class="bg-white border border-red-200 rounded-2xl overflow-hidden shadow-md cursor-pointer active:scale-[0.98] transition pkg-card">
-                        <div class="w-full flex justify-center bg-white p-2">
-                            <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" class="w-full rounded-xl object-contain max-h-[260px]" alt="ขาย ID เกม">
-                        </div>
-                        <div class="px-3 py-3 text-center bg-gradient-to-r from-red-50 to-orange-50 border-t border-red-100">
-                            <div class="text-sm font-bold text-gray-800">ID เกมคุณภาพดี</div>
-                            <div class="text-2xl font-extrabold text-red-600 mt-0.5">419 บาท</div>
-                            <div class="text-[11px] text-gray-500 mt-1">แตะเพื่อดูรายละเอียดและสั่งซื้อ</div>
-                        </div>
-                    </div>
-                </div>
-
                 <div onclick="showStatusModal()" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl p-4 mt-5 flex items-center justify-between cursor-pointer active:scale-[0.98] transition shadow-sm">
                     <div class="flex items-center gap-3">
                         <div class="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-md overflow-hidden border border-gray-100">
@@ -448,6 +434,22 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Footer links + copyright -->
+                <div class="mt-8 pt-5 border-t border-gray-200">
+                    <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[11px] font-medium text-blue-600 mb-4">
+                        <button onclick="showInfoPage('about')" class="active:opacity-70">เกี่ยวกับเรา</button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="showInfoPage('privacy')" class="active:opacity-70">นโยบายความเป็นส่วนตัว</button>
+                        <span class="text-gray-300">|</span>
+                        <button onclick="showInfoPage('terms')" class="active:opacity-70">เงื่อนไขการให้บริการ</button>
+                    </div>
+                    <p class="text-center text-[10px] text-gray-400 leading-relaxed px-2">
+                        Copyright © 2023-2026 Over Topup All Rights Reserved.<br>
+                        Produced by LunaTopup
+                    </p>
+                </div>
+
                 <div class="h-6"></div>
             </div>
 
@@ -547,38 +549,6 @@
                 <div class="grid grid-cols-2 gap-3 pb-6" id="premiumList"></div>
             </div>
 
-            <!-- GAME ID -->
-            <div id="gameIdSection" class="hidden pb-8 section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
-                <h2 class="text-xl font-bold text-gray-800 mb-3">ขาย ID เกม</h2>
-                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-4">
-                    <div class="w-full flex justify-center bg-white p-2">
-                        <img src="https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png" class="w-full rounded-xl object-contain max-h-[320px]" alt="โปสเตอร์ ID เกม">
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="text-sm font-bold text-gray-700 mb-2">รายละเอียด ID เกม</div>
-                    <div class="rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-black aspect-video">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/gQjkYbNms8I?si=gNjC2E94bzhYB_jH" title="รายละเอียด ID เกม" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-4 mb-5 text-center">
-                    <div class="text-xs text-gray-500 mb-1">ราคา</div>
-                    <div class="text-3xl font-extrabold text-red-600">419 บาท</div>
-                    <div class="text-[11px] text-gray-500 mt-1">ส่งรหัส ID ไปที่อีเมล + เบอร์โทรศัพท์</div>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">เบอร์โทรศัพท์</label>
-                    <input type="tel" id="gameIdPhone" placeholder="เช่น 08x-xxx-xxxx" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium transition">
-                </div>
-                <div class="mb-5">
-                    <label class="block text-sm font-bold text-gray-700 mb-2">อีเมล</label>
-                    <input type="email" id="gameIdEmail" placeholder="เช่น name@gmail.com" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium transition">
-                    <p class="text-[11px] text-gray-500 mt-1.5">เราจะส่งรหัส ID เกมไปที่อีเมลและเบอร์โทรศัพท์ของคุณ</p>
-                </div>
-                <button onclick="proceedGameIdBuy()" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-3.5 rounded-xl font-bold text-white shadow-md active:scale-[0.98] transition text-sm btn-press">ชำระเงินด้วย TrueMoney</button>
-            </div>
-
             <!-- PROFILE -->
             <div id="profileSection" class="hidden pb-10 section-fade">
                 <div class="bg-gradient-to-b from-blue-500 to-blue-600 rounded-3xl p-6 text-white text-center shadow-lg mt-2 relative overflow-hidden">
@@ -598,6 +568,16 @@
                     </div>
                 </div>
             </div>
+
+            <!-- INFO PAGES (เกี่ยวกับเรา / นโยบาย / เงื่อนไข) -->
+            <div id="infoSection" class="hidden pb-10 section-fade">
+                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm">
+                    <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
+                </button>
+                <h2 id="infoTitle" class="text-xl font-bold text-gray-800 mb-4">-</h2>
+                <div id="infoBody" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-[13px] text-gray-700 leading-relaxed space-y-3"></div>
+            </div>
+
         </main>
 
         <!-- Navbar -->
@@ -1077,7 +1057,7 @@
         function resetNav() {
             document.getElementById('navHome').classList.replace('text-blue-600', 'text-gray-400');
             document.getElementById('navProfile').classList.replace('text-blue-600', 'text-gray-400');
-            ['homeSection','packageSection','packageDetailSection','mobileSection','giftSection','premiumSection','gameIdSection','profileSection'].forEach(id => {
+            ['homeSection','packageSection','packageDetailSection','mobileSection','giftSection','premiumSection','profileSection','infoSection'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
         }
@@ -1358,35 +1338,6 @@
             const uidDisp = document.getElementById('modalUidDisplay');
             if (uidDisp) uidDisp.classList.add('hidden');
             document.getElementById('methodPkgInfo').innerText = `${name} - ${pkgAmount} | ต้องจ่าย ${price} บาท`;
-            document.getElementById('paymentMethodModal').classList.remove('hidden');
-            document.getElementById('paymentMethodModal').classList.add('flex');
-        }
-
-        function showGameIdSection() {
-            withPageLoad(() => {
-                resetNav();
-                document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
-                document.getElementById('gameIdSection').classList.remove('hidden');
-                document.getElementById('gameIdPhone').value = '';
-                document.getElementById('gameIdEmail').value = '';
-            });
-        }
-        function proceedGameIdBuy() {
-            const phone = document.getElementById('gameIdPhone').value.trim();
-            const email = document.getElementById('gameIdEmail').value.trim();
-            if (!phone || !email) { showToast('กรอกเบอร์และอีเมลให้ครบ', 'error'); return; }
-            currentOrder = { type: 'gameid', game: 'ขาย ID เกม', package: 'ID เกมคุณภาพดี', price: 419, img: 'https://i.ibb.co/rfFzh00F/F0-F4099-C-6057-42-D0-96-F7-35-EA0340-E057.png', label: 'เบอร์ + อีเมล', phone, email };
-            document.getElementById('modalPkgImage').src = currentOrder.img;
-            document.getElementById('selectedPackageText').innerText = currentOrder.game;
-            document.getElementById('receiveText').innerText = currentOrder.package;
-            document.getElementById('payText').innerText = currentOrder.price + ' บาท';
-            document.getElementById('uidInput').value = '';
-            document.getElementById('voucherInput').value = '';
-            document.getElementById('phoneInput').value = phone;
-            document.getElementById('emailInput').value = email;
-            document.getElementById('normalInputBox').classList.add('hidden');
-            document.getElementById('gameIdInputBox').classList.remove('hidden');
-            document.getElementById('methodPkgInfo').innerText = `ขาย ID เกม | ต้องจ่าย 419 บาท`;
             document.getElementById('paymentMethodModal').classList.remove('hidden');
             document.getElementById('paymentMethodModal').classList.add('flex');
         }
@@ -1770,7 +1721,50 @@
             document.getElementById('statusModal').classList.remove('flex');
         }
 
-        // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
+
+        function showInfoPage(type) {
+            withPageLoad(() => {
+                resetNav();
+                document.getElementById('navHome').classList.replace('text-gray-400', 'text-blue-600');
+                document.getElementById('infoSection').classList.remove('hidden');
+                const titleEl = document.getElementById('infoTitle');
+                const bodyEl = document.getElementById('infoBody');
+                if (type === 'about') {
+                    titleEl.innerText = 'เกี่ยวกับเรา';
+                    bodyEl.innerHTML = `
+                        <p><b>Over Topup</b> เราเป็นผู้ให้บริการเติมเกมและขายบัตรเติมเกม เว็บเติมเกม เติมเพชร เติมพอยท์ โปรสุดคุ้ม ปลอดภัย เติมได้ทุกค่าย</p>
+                        <p>บริการหลักของเรา ได้แก่ เติมเกม <b>Free Fire</b>, <b>ROV</b>, <b>PUBG Mobile</b>, <b>Roblox</b> รวมถึงบัตรของขวัญ Roblox, Steam, Google Play, Apple และแอป Premium ต่างๆ</p>
+                        <p>เติมเกมราคาถูก ถูกต้องที่นี่เท่านั้น ให้บริการเติมเกมตลอด <b>24 ชั่วโมง</b> ระบบออโต้เร็ว เฉลี่ยเสร็จภายใน 30-60 วินาที</p>
+                        <p class="text-gray-500 text-xs mt-3">Over Topup · Produced by LunaTopup</p>
+                    `;
+                } else if (type === 'privacy') {
+                    titleEl.innerText = 'นโยบายความเป็นส่วนตัว';
+                    bodyEl.innerHTML = `
+                        <p>นโยบายความเป็นส่วนตัวนี้เป็นข้อตกลงระหว่างคุณ ("ผู้ใช้บริการ") กับ <b>Luna Topup</b> ("บริษัท") เพื่อใช้บริการแพลตฟอร์ม โดยตระหนักถึงความสำคัญภายใต้ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
+                        <p><b>การบังคับใช้</b><br>นโยบายนี้ครอบคลุมข้อมูลส่วนตัวของผู้ใช้บริการ รวมถึงผู้เข้าร่วมแคมเปญ ผู้สนใจสินค้า/บริการ และผู้มีอำนาจดำเนินการแทนตามกฎหมาย</p>
+                        <p><b>การเก็บและใช้ข้อมูล</b><br>ผู้ใช้บริการยินยอมให้บริษัทเก็บรวบรวม ใช้งาน และดำเนินการกับข้อมูลส่วนบุคคลและข้อมูลการใช้บริการตามที่ระบุในนโยบายนี้</p>
+                        <p><b>การเปิดเผยข้อมูล</b><br>บริษัทจะไม่เปิดเผยข้อมูลส่วนบุคคลต่อบุคคลภายนอก เว้นแต่ได้รับความยินยอมเป็นลายลักษณ์อักษร หรือตามที่กฎหมายกำหนด</p>
+                        <p><b>ความปลอดภัย</b><br>ผู้ใช้บริการต้องเก็บบัญชีและรหัสผ่านเป็นความลับ และแจ้งบริษัททันทีหากพบการใช้โดยไม่ได้รับอนุญาต</p>
+                        <p class="text-gray-500 text-xs mt-3">อัปเดตล่าสุด: ตุลาคม 2569</p>
+                    `;
+                } else if (type === 'terms') {
+                    titleEl.innerText = 'เงื่อนไขการให้บริการ';
+                    bodyEl.innerHTML = `
+                        <p>การใช้บริการถือว่าผู้ใช้บริการยอมรับเงื่อนไขทั้งหมด บริษัทสงวนสิทธิ์แก้ไขเงื่อนไขได้ตลอดเวลาโดยไม่ต้องแจ้งล่วงหน้า</p>
+                        <p><b>บัญชีและความปลอดภัย</b><br>ผู้ใช้บริการต้องลงทะเบียนบัญชีและเก็บบัญชี/รหัสผ่านเป็นความลับ รับผิดชอบกิจกรรมทั้งหมดภายใต้บัญชีของตน บริษัทอาจระงับหรือยกเลิกบัญชีได้ตลอดเวลาหากพบการละเมิด</p>
+                        <p><b>การใช้บริการ</b><br>บริษัทเป็นตัวกลางจำหน่ายสินค้า ไม่มีส่วนเกี่ยวข้องโดยตรงกับผู้ให้บริการเกม ผู้ใช้บริการต้องชำระค่าธรรมเนียมตามที่กำหนด และไม่สามารถยกเลิกรายการที่ดำเนินการเสร็จแล้ว</p>
+                        <p><b>การสั่งซื้อและเติมเงิน</b><br>รองรับช่องทาง โอนธนาคาร, TrueMoney Wallet, PromptPay บริษัทไม่รับผิดชอบความผิดพลาดจากการกรอกข้อมูลผิดของผู้ใช้บริการ</p>
+                        <p><b>การคืนเงิน</b><br>ไม่มีนโยบายคืนเงินสำหรับรายการที่ดำเนินการเสร็จสมบูรณ์แล้ว เงินคงเหลือในบัญชีไม่มีนโยบายคืน ยกเว้นกรณีชำระบัตรเครดิตที่แจ้งภายใน 7 วันและยังไม่ได้นำไปใช้ซื้อสินค้า</p>
+                        <p><b>การละเมิด</b><br>หากตรวจพบการละเมิด บริษัทอาจระงับบัญชีชั่วคราว/ถาวร โดยไม่คืนเงินคงเหลือ และผู้ใช้บริการต้องรับผิดชอบค่าเสียหายทั้งหมด</p>
+                        <p><b>ผู้เยาว์</b><br>ผู้มีอายุต่ำกว่า 18 ปีต้องได้รับอนุญาตจากผู้ปกครอง ผู้ปกครองต้องยอมรับเงื่อนไขและรับผิดชอบการใช้งานทั้งหมด</p>
+                        <p class="text-gray-500 text-xs mt-3">อัปเดตล่าสุด: ตุลาคม 2569 · Copyright © 2023-2026 Luna Topup</p>
+                    `;
+                }
+            });
+        }
+
+
+                // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
         try { syncPendingOrders(); } catch (e) {}
     </script>
 </body>
