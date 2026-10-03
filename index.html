@@ -26,7 +26,6 @@
             overflow: hidden;
             overscroll-behavior: none;
             overscroll-behavior-y: none;
-            overscroll-behavior-x: none;
             -webkit-overflow-scrolling: touch;
             background: #f1f5f9;
             font-family: 'Prompt', sans-serif;
@@ -34,15 +33,6 @@
             width: 100%;
             left: 0;
             top: 0;
-            touch-action: manipulation;
-        }
-        /* กัน pull-to-refresh / รีเฟรชตอนเลื่อน */
-        body {
-            overscroll-behavior-y: none;
-        }
-        #mainContent {
-            overscroll-behavior-y: contain;
-            -webkit-overflow-scrolling: touch;
         }
         body {
             display: flex;
@@ -949,29 +939,6 @@
     <script>
         new Swiper(".promoSwiper", { slidesPerView: 1, loop: true, autoplay: { delay: 3200, disableOnInteraction: false }, pagination: { el: ".swiper-pagination", clickable: true }, speed: 600 });
         new Swiper(".hotPkgSwiper", { slidesPerView: "auto", spaceBetween: 12, loop: true, speed: 800, autoplay: { delay: 2800, disableOnInteraction: false, pauseOnMouseEnter: true }, grabCursor: true, resistanceRatio: 0.6, touchReleaseOnEdges: true, nested: true });
-
-        // กัน pull-to-refresh / เลื่อนไม่สุด บน iPhone Chrome/Safari
-        (function preventPullToRefresh() {
-            const main = document.getElementById('mainContent');
-            if (!main) return;
-            let startY = 0;
-            main.addEventListener('touchstart', function(e) {
-                startY = e.touches[0].clientY;
-            }, { passive: true });
-            main.addEventListener('touchmove', function(e) {
-                const scrollTop = main.scrollTop;
-                const deltaY = e.touches[0].clientY - startY;
-                // ถ้าอยู่บนสุดแล้วลากลงต่อ → กันไม่ให้ browser ดึงรีเฟรช
-                if (scrollTop <= 0 && deltaY > 0) {
-                    e.preventDefault();
-                }
-                // ถ้าอยู่ล่างสุดแล้วลากขึ้นต่อ
-                if (scrollTop + main.clientHeight >= main.scrollHeight - 1 && deltaY < 0) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-        })();
-
         function updateHotCountdown() {
             const now = new Date();
             const endOfDay = new Date(now); endOfDay.setHours(24, 0, 0, 0);
@@ -1782,25 +1749,6 @@
         }
 
 
-
-        // กัน pull-to-refresh ตอนเลื่อนถึงขอบบน
-        (function() {
-            let startY = 0;
-            const main = document.getElementById('mainContent');
-            if (!main) return;
-            document.body.addEventListener('touchmove', function(e) {
-                // ปล่อยให้ #mainContent เลื่อนได้ตามปกติ
-            }, { passive: true });
-            main.addEventListener('touchstart', function(e) {
-                startY = e.touches[0].pageY;
-            }, { passive: true });
-            main.addEventListener('touchmove', function(e) {
-                const y = e.touches[0].pageY;
-                if (main.scrollTop <= 0 && y > startY + 5) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-        })();
 
         // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
         try { syncPendingOrders(); } catch (e) {}
