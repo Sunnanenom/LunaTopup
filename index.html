@@ -35,10 +35,10 @@
             font-family: 'Prompt', sans-serif;
             display: flex;
             justify-content: center;
-            /* เลื่อนแบบเว็บปกติ → ดึงลงรีหน้าได้ */
             overflow-x: hidden;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
         }
         .app-container {
             max-width: 420px;
@@ -47,11 +47,57 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.08);
             background: #fff;
             position: relative;
-            /* ไม่ล็อก overflow → เลื่อนทั้งหน้าได้ รวมหัวเว็บ */
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         #mainContent {
-            /* เลื่อนตามหน้า ไม่แยก scroll เอง */
             overflow: visible;
+            padding-bottom: 8px;
+        }
+        /* แถบย้อนกลับ sticky ใต้ header หลัก — เห็นตลอดเวลาบนมือถือ */
+        .sub-back-bar {
+            position: sticky;
+            top: var(--header-h, 64px);
+            z-index: 25;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 0 8px;
+            margin: 0 -1rem 12px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-bottom: 1px solid rgba(226,232,240,0.8);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .sub-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 0.875rem;
+            background: #eff6ff;
+            padding: 0.5rem 0.9rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 40px;
+        }
+        .sub-back-btn:active {
+            background: #dbeafe;
+            transform: scale(0.97);
+        }
+        .sub-back-title {
+            margin-left: auto;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+            max-width: 55%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: right;
         }
         .swiper-pagination-bullet { background: #cbd5e1; opacity: 1; transition: all .3s; }
         .swiper-pagination-bullet-active { background: #3b82f6; width: 22px; border-radius: 10px; }
@@ -158,7 +204,7 @@
         </div>
 
         <!-- Header -->
-        <header class="pt-4 pb-3 px-4 flex justify-between items-center bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 z-20 sticky top-0 shadow-sm border-b border-blue-100/80 backdrop-blur-md">
+        <header class="pt-4 pb-3 px-4 flex justify-between items-center bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 z-30 sticky top-0 shadow-sm border-b border-blue-100/80 backdrop-blur-md" style="padding-top:max(1rem, env(safe-area-inset-top, 0px));">
             <div class="flex items-center gap-2.5 cursor-pointer active:opacity-80" onclick="showHome()">
                 <img src="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png" alt="Logo" class="h-9 object-contain drop-shadow-sm">
                 <div>
@@ -458,9 +504,12 @@
 
             <!-- PACKAGE LIST -->
             <div id="packageSection" class="hidden section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm">
-                    <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
-                </button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="showHome()" class="sub-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
+                    </button>
+                    <span class="sub-back-title" id="pkgBackTitle">เลือกแพ็คเกจ</span>
+                </div>
                 <div class="flex items-center gap-3 mb-5">
                     <img id="pkgGameLogo" src="" class="w-11 h-11 rounded-xl shadow-sm border border-gray-200 object-cover">
                     <h2 id="gameTitleDisplay" class="text-xl font-bold text-gray-800">เลือกแพ็คเกจ</h2>
@@ -470,9 +519,12 @@
 
             <!-- PACKAGE DETAIL -->
             <div id="packageDetailSection" class="hidden pb-8 section-fade">
-                <button onclick="backFromPackageDetail()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm">
-                    <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
-                </button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="backFromPackageDetail()" class="sub-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
+                    </button>
+                    <span class="sub-back-title" id="detailBackTitle">รายละเอียดแพ็คเกจ</span>
+                </div>
                 <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-5">
                     <div class="w-full flex justify-center items-center bg-gray-50">
                         <img id="detailPkgImg" src="" class="w-full h-auto object-contain" alt="แพ็คเกจ">
@@ -509,7 +561,10 @@
 
             <!-- MOBILE -->
             <div id="mobileSection" class="hidden section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="showHome()" class="sub-back-btn"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                    <span class="sub-back-title">เติมเงินมือถือ</span>
+                </div>
                 <h2 class="text-xl font-bold text-gray-800 mb-1">เติมเงินมือถือ</h2>
                 <p class="text-xs text-gray-500 mb-5">โปรโมชั่นพิเศษ ซื้อเท่าไหร่ได้คูณ 2 (สูงสุด 1,000 บาท)</p>
                 <div class="mb-5">
@@ -538,7 +593,10 @@
 
             <!-- GIFT -->
             <div id="giftSection" class="hidden section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="showHome()" class="sub-back-btn"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                    <span class="sub-back-title">Gift Card</span>
+                </div>
                 <h2 class="text-xl font-bold text-gray-800 mb-1">Gift Card ราคาโคตรถูก</h2>
                 <p class="text-xs text-gray-500 mb-5">ถูกกว่าท้องตลาดแรง ระบบส่งโค้ดหลังชำระด้วยซองทรูมันนี่</p>
                 <div class="grid grid-cols-2 gap-3 pb-6" id="giftList"></div>
@@ -546,7 +604,10 @@
 
             <!-- PREMIUM APPS -->
             <div id="premiumSection" class="hidden section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="showHome()" class="sub-back-btn"><i class="fa-solid fa-arrow-left"></i> ย้อนกลับ</button>
+                    <span class="sub-back-title">แอป Premium</span>
+                </div>
                 <h2 class="text-xl font-bold text-gray-800 mb-1">แอป Premium ราคาพิเศษ</h2>
                 <p class="text-xs text-gray-500 mb-5">บัญชีส่วนตัว ส่งรหัส Email+Password ไปที่อีเมลที่คุณกรอกหลังชำระด้วยซองทรูมันนี่</p>
                 <div class="grid grid-cols-2 gap-3 pb-6" id="premiumList"></div>
@@ -574,9 +635,12 @@
 
             <!-- INFO PAGES (เกี่ยวกับเรา / นโยบาย / เงื่อนไข) -->
             <div id="infoSection" class="hidden pb-10 section-fade">
-                <button onclick="showHome()" class="mb-4 text-blue-600 font-semibold flex items-center gap-2 bg-blue-50 px-3.5 py-2 rounded-full active:bg-blue-100 transition text-sm">
-                    <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
-                </button>
+                <div class="sub-back-bar flex items-center gap-2">
+                    <button type="button" onclick="showHome()" class="sub-back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> ย้อนกลับ
+                    </button>
+                    <span class="sub-back-title" id="infoBackTitle">ข้อมูล</span>
+                </div>
                 <h2 id="infoTitle" class="text-xl font-bold text-gray-800 mb-4">-</h2>
                 <div id="infoBody" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-[13px] text-gray-700 leading-relaxed space-y-3"></div>
             </div>
@@ -584,7 +648,7 @@
         </main>
 
         <!-- Navbar -->
-        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[420px] bg-white/95 backdrop-blur-md border-t border-gray-100 flex justify-around items-center pt-3 pb-5 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[420px] bg-white/95 backdrop-blur-md border-t border-gray-100 flex justify-around items-center pt-3 z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]" style="padding-bottom:max(1.25rem, env(safe-area-inset-bottom, 0px));">
             <a href="#" onclick="showHome()" id="navHome" class="flex flex-col items-center text-blue-600 transition">
                 <i class="fa-solid fa-house text-[22px] mb-1"></i>
                 <span class="text-[10px] font-bold">หน้าแรก</span>
@@ -955,10 +1019,41 @@
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
         }
 
+        function measureHeaderHeight() {
+            const header = document.querySelector('header');
+            if (header) {
+                const h = header.getBoundingClientRect().height;
+                document.documentElement.style.setProperty('--header-h', h + 'px');
+            }
+        }
+        window.addEventListener('resize', measureHeaderHeight);
+        window.addEventListener('orientationchange', () => setTimeout(measureHeaderHeight, 150));
+        document.addEventListener('DOMContentLoaded', measureHeaderHeight);
+        // วัดทันทีถ้า DOM พร้อมแล้ว
+        if (document.readyState !== 'loading') measureHeaderHeight();
+
         function withPageLoad(callback, delay = 380) {
             const loader = document.getElementById('pageLoader');
             if (loader) loader.classList.remove('hidden');
-            setTimeout(() => { if (typeof callback === 'function') callback(); if (loader) loader.classList.add('hidden'); }, delay);
+            // เลื่อนขึ้นบนสุดทันที ก่อนสลับหน้า — ปุ่มย้อนกลับไม่หาย
+            try {
+                window.scrollTo({ top: 0, left: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            } catch (e) {
+                window.scrollTo(0, 0);
+            }
+            setTimeout(() => {
+                if (typeof callback === 'function') callback();
+                if (loader) loader.classList.add('hidden');
+                // เลื่อนอีกครั้งหลังแสดงหน้าใหม่ (กัน layout ดัน scroll)
+                try {
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                } catch (e) {}
+                measureHeaderHeight();
+            }, delay);
         }
 
         function toggleSidebar() {
@@ -1070,6 +1165,8 @@
                 document.getElementById('packageSection').classList.remove('hidden');
                 document.getElementById('gameTitleDisplay').innerText = data.name;
                 document.getElementById('pkgGameLogo').src = data.logo;
+                const pkgBack = document.getElementById('pkgBackTitle');
+                if (pkgBack) pkgBack.innerText = data.name;
                 const listEl = document.getElementById('packageList');
                 listEl.innerHTML = '';
                 data.packages.forEach(pkg => {
@@ -1095,6 +1192,8 @@
                 };
                 document.getElementById('detailPkgImg').src = img;
                 document.getElementById('detailGameName').innerText = name;
+                const detailBack = document.getElementById('detailBackTitle');
+                if (detailBack) detailBack.innerText = name;
                 document.getElementById('detailPrice').innerText = price + ' บาท';
                 document.getElementById('detailReceive').innerText = pkgAmount;
                 document.getElementById('detailInputLabel').innerText = inputLabel;
@@ -1713,6 +1812,13 @@
                 document.getElementById('infoSection').classList.remove('hidden');
                 const titleEl = document.getElementById('infoTitle');
                 const bodyEl = document.getElementById('infoBody');
+                const infoBack = document.getElementById('infoBackTitle');
+                if (infoBack) {
+                    if (type === 'about') infoBack.innerText = 'เกี่ยวกับเรา';
+                    else if (type === 'privacy') infoBack.innerText = 'ความเป็นส่วนตัว';
+                    else if (type === 'terms') infoBack.innerText = 'เงื่อนไขบริการ';
+                    else infoBack.innerText = 'ข้อมูล';
+                }
                 if (type === 'about') {
                     titleEl.innerText = 'เกี่ยวกับเรา';
                     bodyEl.innerHTML = `
