@@ -735,7 +735,7 @@
                 <div id="modalUidDisplay" class="hidden mb-4 bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3">
                     <img id="modalGameLogo" src="" class="w-10 h-10 rounded-xl object-cover flex-shrink-0 border border-gray-200">
                     <div class="min-w-0 flex-1">
-                        <div class="text-[10px] text-gray-500 mb-0.5">UID</div>
+                        <div class="text-[10px] text-gray-500 mb-0.5" id="modalUidLabel">UID</div>
                         <div class="text-sm font-bold text-gray-800 break-all" id="modalUidValue">-</div>
                     </div>
                 </div>
@@ -806,90 +806,104 @@
         </div>
     </div>
 
-    <!-- ========== ใบเสร็จ (ธีมเหลือง-ชมพู แบบกระดาษ) ========== -->
-    <div id="receiptModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(236, 72, 153, 0.55); backdrop-filter: blur(3px);">
-        <div class="w-full max-w-[300px] modal-scale relative" style="font-family: 'Prompt', system-ui, sans-serif;">
+    <!-- ========== ใบเสร็จ แบบแสตมป์ / โปสการ์ด (คล้ายรูป) ========== -->
+    <div id="receiptModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(30, 58, 95, 0.65); backdrop-filter: blur(4px);">
+        <div class="w-full max-w-[320px] modal-scale relative" style="font-family: 'Prompt', system-ui, sans-serif;">
             
-            <!-- ตัวใบเสร็จ -->
-            <div class="relative bg-[#fff8dc] overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.35)]" style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 96% 100%, 92% calc(100% - 12px), 88% 100%, 84% calc(100% - 12px), 80% 100%, 76% calc(100% - 12px), 72% 100%, 68% calc(100% - 12px), 64% 100%, 60% calc(100% - 12px), 56% 100%, 52% calc(100% - 12px), 48% 100%, 44% calc(100% - 12px), 40% 100%, 36% calc(100% - 12px), 32% 100%, 28% calc(100% - 12px), 24% 100%, 20% calc(100% - 12px), 16% 100%, 12% calc(100% - 12px), 8% 100%, 4% calc(100% - 12px), 0 100%);">
-                
-                <!-- Header -->
-                <div class="px-5 pt-6 pb-2 text-center">
-                    <div class="text-[20px] font-bold tracking-tight" style="color:#be185d;">LunaTopup</div>
-                    <div class="text-[11px] mt-0.5" style="color:#9d174d;">บริการเติมเกม 24 ชม.</div>
-                    <div class="mt-3 border-t border-dashed" style="border-color:#f9a8d4;"></div>
-                    <p class="text-[11px] mt-2.5" style="color:#9d174d;" id="receiptTime">-</p>
-                </div>
+            <!-- ตัวใบเสร็จ แบบแสตมป์ -->
+            <div class="relative bg-[#fefcf3] overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)]" style="
+                border: 3px dashed #c4a574;
+                border-radius: 4px;
+                background-image: radial-gradient(circle at 8px 8px, transparent 6px, #fefcf3 6px);
+                background-size: 16px 16px;
+                background-position: -4px -4px;
+                padding: 2px;
+            ">
+                <!-- ขอบแสตมป์ด้านใน -->
+                <div class="relative bg-[#fffdf7] m-[6px] rounded-sm" style="border: 1.5px solid #e8d5b5;">
+                    
+                    <!-- เทปสีฟ้าด้านบน (คล้ายรูป) -->
+                    <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-4 bg-[#5b9bd5] opacity-90 rotate-[-2deg] shadow-sm z-10" style="clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);"></div>
 
-                <!-- รายละเอียด -->
-                <div class="px-5 py-2 space-y-2.5 text-[13px]" style="color:#831843;">
-                    <div class="flex justify-between items-center">
-                        <span style="color:#9d174d;">รหัสอ้างอิง</span>
-                        <span class="font-semibold tracking-wide" id="receiptId">-</span>
-                    </div>
-                    <div class="flex justify-between items-start gap-2">
-                        <span class="flex-shrink-0" style="color:#9d174d;">รายการ</span>
-                        <span class="font-medium text-right" id="receiptGame">-</span>
-                    </div>
-                    <div class="flex justify-between items-start gap-2">
-                        <span class="flex-shrink-0" style="color:#9d174d;">แพ็คเกจ</span>
-                        <span class="font-semibold text-right" style="color:#be185d;" id="receiptPackage">-</span>
-                    </div>
-                    <div class="flex justify-between items-start gap-2">
-                        <span class="flex-shrink-0" style="color:#9d174d;" id="receiptLabel">UID</span>
-                        <span class="font-medium text-right break-all" id="receiptUid">-</span>
+                    <!-- Header -->
+                    <div class="px-5 pt-7 pb-2 text-center relative">
+                        <div class="text-[11px] tracking-[0.2em] uppercase font-medium" style="color:#8b6f47;">LunaTopup Receipt</div>
+                        <div class="text-[22px] font-bold tracking-tight mt-1" style="color:#1e3a5f;">ใบเสร็จรับเงิน</div>
+                        <div class="text-[11px] mt-0.5" style="color:#a07850;">บริการเติมเกม 24 ชม.</div>
+                        <div class="mt-3 mx-auto w-20 border-t-2 border-dashed" style="border-color:#d4b896;"></div>
+                        <p class="text-[11px] mt-2.5 font-medium" style="color:#8b6f47;" id="receiptTime">-</p>
                     </div>
 
-                    <div class="border-t border-dashed pt-3 flex justify-between items-center" style="border-color:#f9a8d4;">
-                        <span class="font-semibold" style="color:#9d174d;">ยอดชำระ</span>
-                        <span class="text-lg font-bold tracking-tight" style="color:#be185d;" id="receiptPrice">0 บาท</span>
+                    <!-- รายละเอียด -->
+                    <div class="px-5 py-2 space-y-2.5 text-[13px]" style="color:#3d2b1f;">
+                        <div class="flex justify-between items-center">
+                            <span style="color:#8b6f47;">รหัสอ้างอิง</span>
+                            <span class="font-semibold tracking-wide" id="receiptId">-</span>
+                        </div>
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="flex-shrink-0" style="color:#8b6f47;">รายการ</span>
+                            <span class="font-medium text-right" id="receiptGame">-</span>
+                        </div>
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="flex-shrink-0" style="color:#8b6f47;">แพ็คเกจ</span>
+                            <span class="font-semibold text-right" style="color:#1e3a5f;" id="receiptPackage">-</span>
+                        </div>
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="flex-shrink-0" style="color:#8b6f47;" id="receiptLabel">Username</span>
+                            <span class="font-medium text-right break-all" id="receiptUid">-</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 mt-1 border-t border-dashed" style="border-color:#e8d5b5;">
+                            <span class="font-medium" style="color:#8b6f47;">ยอดชำระ</span>
+                            <span class="text-lg font-bold tracking-tight" style="color:#c2410c;" id="receiptPrice">0 บาท</span>
+                        </div>
                     </div>
-                </div>
 
-                <!-- สถานะ -->
-                <div class="px-5 py-3.5" id="receiptStatusBox">
-                    <div id="receiptStatusChecking" class="relative overflow-hidden rounded-lg p-3 text-center" style="background:#fce7f3; border:1px solid #f9a8d4;">
-                        <div class="absolute inset-0 opacity-40" style="background: linear-gradient(105deg, transparent 40%, rgba(236,72,153,0.15) 50%, transparent 60%); background-size: 200% 100%; animation: shimmer 2.8s ease-in-out infinite;"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-center gap-2 mb-1">
-                                <span class="relative flex h-2 w-2">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-70"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
-                                </span>
-                                <div class="text-[12px] font-semibold" style="color:#9d174d;" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
+                    <!-- สถานะ -->
+                    <div class="px-5 py-3.5" id="receiptStatusBox">
+                        <div id="receiptStatusChecking" class="relative overflow-hidden rounded-lg p-3 text-center" style="background:#fef3c7; border:1px solid #fcd34d;">
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-center gap-2 mb-1">
+                                    <span class="relative flex h-2 w-2">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-70"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                    </span>
+                                    <div class="text-[12px] font-semibold" style="color:#92400e;" id="receiptStatus">กำลังตรวจสอบคำสั่งซื้อ</div>
+                                </div>
+                                <div class="text-[10px] leading-relaxed" style="color:#b45309;" id="receiptStatusSub">
+                                    ระบบกำลังดำเนินการให้อัตโนมัติ<br>กรุณารอสักครู่…
+                                </div>
                             </div>
-                            <div class="text-[10px] leading-relaxed" style="color:#be185d;" id="receiptStatusSub">
-                                ระบบกำลังดำเนินการให้อัตโนมัติ<br>กรุณารอสักครู่…
+                        </div>
+                        <div id="receiptStatusSuccess" class="hidden relative overflow-hidden rounded-lg p-3 text-center" style="background:#dcfce7; border:1px solid #86efac;">
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-center gap-2 mb-1">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                    <div class="text-[12px] font-semibold" style="color:#166534;">ยืนยันการเติมสำเร็จ</div>
+                                </div>
+                                <div class="text-[10px] leading-relaxed" style="color:#15803d;">
+                                    ระบบเติมเรียบร้อยแล้ว<br>ขอบคุณที่ใช้บริการ LunaTopup
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div id="receiptStatusSuccess" class="hidden relative overflow-hidden rounded-lg p-3 text-center" style="background:#dcfce7; border:1px solid #86efac;">
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-center gap-2 mb-1">
-                                <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
-                                <div class="text-[12px] font-semibold" style="color:#166534;">ยืนยันการเติมสำเร็จ</div>
-                            </div>
-                            <div class="text-[10px] leading-relaxed" style="color:#15803d;">
-                                ระบบเติมเรียบร้อยแล้ว<br>ขอบคุณที่ใช้บริการ LunaTopup
-                            </div>
-                        </div>
+
+                    <div class="border-t border-dashed mx-5" style="border-color:#e8d5b5;"></div>
+
+                    <!-- ปุ่ม -->
+                    <div class="px-5 py-3.5 space-y-2">
+                        <button onclick="closeReceiptAndShowHistory()" class="w-full py-2.5 rounded-lg font-bold text-white text-sm active:scale-[0.98] transition btn-press" style="background:#1e3a5f;">
+                            ดูประวัติการสั่งซื้อ
+                        </button>
+                        <button onclick="closeReceiptModal()" class="w-full py-2 rounded-lg font-medium text-sm active:scale-[0.98] transition" style="background:#f5e6d3; color:#8b6f47;">
+                            ปิด
+                        </button>
+                    </div>
+
+                    <!-- ข้อความด้านล่าง -->
+                    <div class="text-center pb-4 pt-1">
+                        <div class="text-[10px] tracking-widest uppercase" style="color:#c4a574;">Thank you · See you again</div>
                     </div>
                 </div>
-
-                <div class="border-t border-dashed mx-5" style="border-color:#f9a8d4;"></div>
-
-                <!-- ปุ่ม -->
-                <div class="px-5 py-3.5 space-y-2">
-                    <button onclick="closeReceiptAndShowHistory()" class="w-full py-2.5 rounded-lg font-bold text-white text-sm active:scale-[0.98] transition btn-press" style="background:#be185d;">
-                        ดูประวัติการสั่งซื้อ
-                    </button>
-                    <button onclick="closeReceiptModal()" class="w-full py-2 rounded-lg font-medium text-sm active:scale-[0.98] transition" style="background:#fce7f3; color:#9d174d;">
-                        ปิด
-                    </button>
-                </div>
-
-                <!-- ช่องว่างด้านล่างก่อนขอบฉีก -->
-                <div class="h-3"></div>
             </div>
         </div>
     </div>
@@ -1027,7 +1041,7 @@
             'rov': { name: 'Arena of Valor', inputLabel: 'OpenID / ID ผู้เล่น', logo: 'https://cdn-gop.garenanow.com/gop/app/0000/100/055/icon.png', packages: [
                 { amount: '255 คูปอง', price: 50, img: 'https://i.ibb.co/zhYrv70h/88484-ADC-E052-40-E9-B53-C-3-C41414-F0749.png' }
             ]},
-            'roblox': { name: 'Roblox', inputLabel: 'Username (ชื่อผู้ใช้ Roblox)', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/512px-Roblox_player_icon_black.svg.png', packages: [
+            'roblox': { name: 'Roblox', inputLabel: 'Username (ชื่อผู้ใช้ Roblox)', logo: 'https://i.ibb.co/JFy0v0tW/Roblox-Corporation-2025-logo-svg.webp', packages: [
                 { amount: '416 Robux', price: 50, img: 'https://i.ibb.co/jk852zzz/8-CFCDB3-A-92-AD-4-B65-807-E-18015067-EC74.png' },
                 { amount: '895 Robux', price: 100, img: 'https://i.ibb.co/L2wWsT1/34-DCF92-E-190-C-47-B6-A016-1-AC9-A515-CA00.png' },
                 { amount: '1955 Robux', price: 200, img: 'https://i.ibb.co/CKZjDFG6/580-C91-D0-FC37-4-BB8-B5-C2-ECDBCEFAACC3.png' }
@@ -1038,12 +1052,10 @@
         };
 
         const giftCards = [
-            { name: 'Roblox Gift Card', amount: '400 Robux', price: 28, original: 55, img: 'https://i.ibb.co/qYJpvgb6/Qmc-Hvfy-ADvffjb5y9g-Vnf-Tc-Gsoz-Me-Eon-E6m-Xi-MKACPYra-G.png' },
-            { name: 'Roblox Gift Card', amount: '800 Robux', price: 52, original: 100, img: 'https://i.ibb.co/qYJpvgb6/Qmc-Hvfy-ADvffjb5y9g-Vnf-Tc-Gsoz-Me-Eon-E6m-Xi-MKACPYra-G.png' },
+            { name: 'Roblox Gift Card', amount: '400 Robux', price: 60, original: 100, img: 'https://i.ibb.co/qYJpvgb6/Qmc-Hvfy-ADvffjb5y9g-Vnf-Tc-Gsoz-Me-Eon-E6m-Xi-MKACPYra-G.png' },
+            { name: 'Roblox Gift Card', amount: '800 Robux', price: 110, original: 200, img: 'https://i.ibb.co/qYJpvgb6/Qmc-Hvfy-ADvffjb5y9g-Vnf-Tc-Gsoz-Me-Eon-E6m-Xi-MKACPYra-G.png' },
             { name: 'Steam Wallet', amount: '5 USD', price: 105, original: 185, img: 'https://i.ibb.co/jvqZ3zmr/images.jpg' },
             { name: 'Steam Wallet', amount: '10 USD', price: 199, original: 360, img: 'https://i.ibb.co/jvqZ3zmr/images.jpg' },
-            { name: 'Razer Gold', amount: '50 Gold', price: 28, original: 55, img: 'https://seagm-media.seagmcdn.com/item_480/178.png' },
-            { name: 'Razer Gold', amount: '100 Gold', price: 55, original: 110, img: 'https://seagm-media.seagmcdn.com/item_480/178.png' },
             { name: 'Google Play', amount: '100 บาท', price: 72, original: 100, img: 'https://i.ibb.co/TBZzF1s1/CITYPNG-COM-HD-Google-Play-Gift-Card-Transparent-PNG-1000x1000.png' },
             { name: 'Apple Gift Card', amount: '100 บาท', price: 75, original: 100, img: 'https://i.ibb.co/0pczdTmH/S-1pvwa-OI5-Ofg-j-MWD7woi2x-Mul-QM0-MTi-Geb65-YRI.jpg' }
         ];
@@ -1401,6 +1413,8 @@
                         document.getElementById('gameIdInputBox').classList.add('hidden');
                         uidDisplay.classList.remove('hidden');
                         uidDisplayValue.innerText = currentOrder.uid;
+                        const uidLabelEl = document.getElementById('modalUidLabel');
+                        if (uidLabelEl) uidLabelEl.innerText = currentOrder.label || 'UID';
                         if (modalGameLogo) modalGameLogo.src = currentOrder.logo || 'https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png';
                         document.getElementById('uidInput').value = currentOrder.uid;
                     } else if (currentOrder.type === 'gameid') {
