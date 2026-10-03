@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>LunaTopup - บริการเติมเกม 24 ชม.</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="LunaTopup">
+    <meta name="application-name" content="LunaTopup">
+    <meta property="og:title" content="LunaTopup - บริการเติมเกม 24 ชม.">
+    <meta property="og:image" content="https://i.ibb.co/0pCHNr2f/38-AFA269-2-A0-D-4816-B145-00-DA993-ECA78.png">
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
@@ -18,6 +26,7 @@
             overflow: hidden;
             overscroll-behavior: none;
             overscroll-behavior-y: none;
+            overscroll-behavior-x: none;
             -webkit-overflow-scrolling: touch;
             background: #f1f5f9;
             font-family: 'Prompt', sans-serif;
@@ -25,6 +34,15 @@
             width: 100%;
             left: 0;
             top: 0;
+            touch-action: manipulation;
+        }
+        /* กัน pull-to-refresh / รีเฟรชตอนเลื่อน */
+        body {
+            overscroll-behavior-y: none;
+        }
+        #mainContent {
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
         }
         body {
             display: flex;
@@ -262,13 +280,13 @@
                             <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/067/icon.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-100 object-cover mb-1.5">
                             <span class="text-[11px] font-bold text-gray-700">Free Fire</span>
                         </div>
-                        <div onclick="showPackages('rov')" class="flex flex-col items-center cursor-pointer active:scale-90 transition pkg-card">
-                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/055/icon.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-100 object-cover mb-1.5">
-                            <span class="text-[11px] font-bold text-gray-700">RoV</span>
-                        </div>
                         <div onclick="showPackages('roblox')" class="flex flex-col items-center cursor-pointer active:scale-90 transition pkg-card">
                             <img src="https://i.ibb.co/JFy0v0tW/Roblox-Corporation-2025-logo-svg.webp" class="w-16 h-16 rounded-2xl shadow-md border border-gray-100 object-cover mb-1.5">
                             <span class="text-[11px] font-bold text-gray-700">Roblox</span>
+                        </div>
+                        <div onclick="showPackages('rov')" class="flex flex-col items-center cursor-pointer active:scale-90 transition pkg-card">
+                            <img src="https://cdn-gop.garenanow.com/gop/app/0000/100/055/icon.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-100 object-cover mb-1.5">
+                            <span class="text-[11px] font-bold text-gray-700">RoV</span>
                         </div>
                         <div onclick="showPackages('pubg')" class="flex flex-col items-center cursor-pointer active:scale-90 transition pkg-card">
                             <img src="https://i.ibb.co/PZR1zbRf/IMG-2275.png" class="w-16 h-16 rounded-2xl shadow-md border border-gray-100 object-cover mb-1.5">
@@ -1740,7 +1758,7 @@
                 } else if (type === 'privacy') {
                     titleEl.innerText = 'นโยบายความเป็นส่วนตัว';
                     bodyEl.innerHTML = `
-                        <p>นโยบายความเป็นส่วนตัวนี้เป็นข้อตกลงระหว่างคุณ ("ผู้ใช้บริการ") กับ <b>Luna Topup</b> ("บริษัท") เพื่อใช้บริการแพลตฟอร์ม โดยตระหนักถึงความสำคัญภายใต้ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
+                        <p>นโยบายความเป็นส่วนตัวนี้เป็นข้อตกลงระหว่างคุณ ("ผู้ใช้บริการ") กับ <b>Over Topup</b> ("บริษัท") เพื่อใช้บริการแพลตฟอร์ม โดยตระหนักถึงความสำคัญภายใต้ พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
                         <p><b>การบังคับใช้</b><br>นโยบายนี้ครอบคลุมข้อมูลส่วนตัวของผู้ใช้บริการ รวมถึงผู้เข้าร่วมแคมเปญ ผู้สนใจสินค้า/บริการ และผู้มีอำนาจดำเนินการแทนตามกฎหมาย</p>
                         <p><b>การเก็บและใช้ข้อมูล</b><br>ผู้ใช้บริการยินยอมให้บริษัทเก็บรวบรวม ใช้งาน และดำเนินการกับข้อมูลส่วนบุคคลและข้อมูลการใช้บริการตามที่ระบุในนโยบายนี้</p>
                         <p><b>การเปิดเผยข้อมูล</b><br>บริษัทจะไม่เปิดเผยข้อมูลส่วนบุคคลต่อบุคคลภายนอก เว้นแต่ได้รับความยินยอมเป็นลายลักษณ์อักษร หรือตามที่กฎหมายกำหนด</p>
@@ -1757,14 +1775,34 @@
                         <p><b>การคืนเงิน</b><br>ไม่มีนโยบายคืนเงินสำหรับรายการที่ดำเนินการเสร็จสมบูรณ์แล้ว เงินคงเหลือในบัญชีไม่มีนโยบายคืน ยกเว้นกรณีชำระบัตรเครดิตที่แจ้งภายใน 7 วันและยังไม่ได้นำไปใช้ซื้อสินค้า</p>
                         <p><b>การละเมิด</b><br>หากตรวจพบการละเมิด บริษัทอาจระงับบัญชีชั่วคราว/ถาวร โดยไม่คืนเงินคงเหลือ และผู้ใช้บริการต้องรับผิดชอบค่าเสียหายทั้งหมด</p>
                         <p><b>ผู้เยาว์</b><br>ผู้มีอายุต่ำกว่า 18 ปีต้องได้รับอนุญาตจากผู้ปกครอง ผู้ปกครองต้องยอมรับเงื่อนไขและรับผิดชอบการใช้งานทั้งหมด</p>
-                        <p class="text-gray-500 text-xs mt-3">อัปเดตล่าสุด: ตุลาคม 2569 · Copyright © 2023-2026 Luna Topup</p>
+                        <p class="text-gray-500 text-xs mt-3">อัปเดตล่าสุด: ตุลาคม 2569 · Copyright © 2023-2026 Over Topup</p>
                     `;
                 }
             });
         }
 
 
-                // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
+
+        // กัน pull-to-refresh ตอนเลื่อนถึงขอบบน
+        (function() {
+            let startY = 0;
+            const main = document.getElementById('mainContent');
+            if (!main) return;
+            document.body.addEventListener('touchmove', function(e) {
+                // ปล่อยให้ #mainContent เลื่อนได้ตามปกติ
+            }, { passive: true });
+            main.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].pageY;
+            }, { passive: true });
+            main.addEventListener('touchmove', function(e) {
+                const y = e.touches[0].pageY;
+                if (main.scrollTop <= 0 && y > startY + 5) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        })();
+
+        // ตอนโหลดหน้า เช็คออเดอร์ที่ค้างแล้วอัปเดตอัตโนมัติ
         try { syncPendingOrders(); } catch (e) {}
     </script>
 </body>
